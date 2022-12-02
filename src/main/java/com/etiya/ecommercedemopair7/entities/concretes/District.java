@@ -1,6 +1,5 @@
-package com.etiya.ecommercedemopair7.business.abstracts.concretes;
+package com.etiya.ecommercedemopair7.entities.concretes;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,21 +11,21 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "categories")
-public class Category {
+@Table(name = "districts")
+public class District {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "ref_id")
-    private int refId;
-
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    @JsonBackReference
-    private List<ProductCategory> productCategories;
+    @ManyToOne
+    @JoinColumn(name = "town_id")
+    private Town town;
+
+    @OneToMany(mappedBy = "district")
+    private List<Street> streets;
 }

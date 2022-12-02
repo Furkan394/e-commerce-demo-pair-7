@@ -1,7 +1,7 @@
 package com.etiya.ecommercedemopair7.repository.abstracts;
 
 
-import com.etiya.ecommercedemopair7.business.abstracts.concretes.Product;
+import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

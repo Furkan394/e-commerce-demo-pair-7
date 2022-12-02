@@ -1,6 +1,6 @@
 package com.etiya.ecommercedemopair7.business.abstracts;
 
-import com.etiya.ecommercedemopair7.business.abstracts.concretes.Product;
+import com.etiya.ecommercedemopair7.entities.concretes.Product;
 
 import java.util.List;
 

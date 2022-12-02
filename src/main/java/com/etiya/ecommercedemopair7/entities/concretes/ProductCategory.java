@@ -1,18 +1,18 @@
-package com.etiya.ecommercedemopair7.business.abstracts.concretes;
+package com.etiya.ecommercedemopair7.entities.concretes;
 
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "product_details")
-public class ProductDetail {
+@Table(name = "product_categories")
+public class ProductCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +20,12 @@ public class ProductDetail {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "category_id")
+    @JsonManagedReference
+    private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "product_char_id")
-    private ProductChar productChar;
+    @ManyToOne()
+    @JoinColumn(name = "product_id")
+    @JsonManagedReference
+    private Product product;
 }

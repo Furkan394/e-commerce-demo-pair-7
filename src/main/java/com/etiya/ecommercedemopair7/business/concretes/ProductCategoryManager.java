@@ -1,7 +1,7 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IProductCategoryService;
-import com.etiya.ecommercedemopair7.business.abstracts.concretes.ProductCategory;
+import com.etiya.ecommercedemopair7.entities.concretes.ProductCategory;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

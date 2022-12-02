@@ -1,4 +1,4 @@
-package com.etiya.ecommercedemopair7.business.abstracts.concretes;
+package com.etiya.ecommercedemopair7.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;

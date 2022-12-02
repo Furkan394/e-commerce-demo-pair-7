@@ -1,7 +1,7 @@
 package com.etiya.ecommercedemopair7.api.controllers;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IProductService;
-import com.etiya.ecommercedemopair7.business.abstracts.concretes.Product;
+import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
