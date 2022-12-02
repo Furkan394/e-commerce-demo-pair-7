@@ -1,4 +1,4 @@
-package com.etiya.ecommercedemopair7.entities.concretes;
+package com.etiya.ecommercedemopair7.business.abstracts.concretes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,19 +10,21 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "product_categories")
-public class ProductCategory {
+@Table(name = "phone_numbers")
+public class PhoneNumber {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @ManyToOne()
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(name = "number")
+    private String number;
+
+    @Column(name = "title")
+    private String title;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "user_id")
+    private User user;
 }

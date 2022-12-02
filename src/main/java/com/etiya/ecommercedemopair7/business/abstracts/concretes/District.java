@@ -1,4 +1,4 @@
-package com.etiya.ecommercedemopair7.entities.concretes;
+package com.etiya.ecommercedemopair7.business.abstracts.concretes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class District {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "district_id")
+    @JoinColumn(name = "town_id")
     private Town town;
 
     @OneToMany(mappedBy = "district")

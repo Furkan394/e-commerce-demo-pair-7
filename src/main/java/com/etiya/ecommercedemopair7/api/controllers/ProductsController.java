@@ -1,12 +1,9 @@
 package com.etiya.ecommercedemopair7.api.controllers;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IProductService;
-import com.etiya.ecommercedemopair7.entities.concretes.Product;
+import com.etiya.ecommercedemopair7.business.abstracts.concretes.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +26,16 @@ public class ProductsController {
     @GetMapping("/{id}")
     public Product getById(@PathVariable int id){
         return productService.getById(id);
+    }
+
+    @GetMapping("get-by-name")
+    public Product getByName(@RequestParam("name") String name){
+        return productService.getByName(name);
+    }
+
+    @GetMapping("custom-get-by-name")
+    public Product customGetByName(@RequestParam("name") String name){
+        return productService.customGetByName(name);
     }
 
 }

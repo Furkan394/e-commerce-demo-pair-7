@@ -1,4 +1,4 @@
-package com.etiya.ecommercedemopair7.entities.concretes;
+package com.etiya.ecommercedemopair7.business.abstracts.concretes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,20 +11,18 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "categories")
-public class Category {
+@Table(name = "payment_types")
+public class PaymentType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "ref_id")
-    private int refId;
-
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<ProductCategory> productCategories;
+    @OneToMany(mappedBy = "paymentType")
+    private List<Payment> payments;
+
 }

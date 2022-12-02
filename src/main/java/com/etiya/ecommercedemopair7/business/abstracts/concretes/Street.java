@@ -1,4 +1,4 @@
-package com.etiya.ecommercedemopair7.entities.concretes;
+package com.etiya.ecommercedemopair7.business.abstracts.concretes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,8 +11,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "payment_types")
-public class PaymentType {
+@Table(name = "streets")
+public class Street {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,10 @@ public class PaymentType {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "paymentType")
-    private List<Payment> payments;
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private District district;
 
+    @OneToMany(mappedBy = "street")
+    private List<Address> addresses;
 }

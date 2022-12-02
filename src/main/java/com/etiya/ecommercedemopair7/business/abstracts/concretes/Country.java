@@ -1,4 +1,4 @@
-package com.etiya.ecommercedemopair7.entities.concretes;
+package com.etiya.ecommercedemopair7.business.abstracts.concretes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,8 +11,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "streets")
-public class Street {
+@Table(name = "countries")
+public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,6 @@ public class Street {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "district_id")
-    private District district;
-
-    @OneToMany(mappedBy = "street")
-    private List<Address> addresses;
+    @OneToMany(mappedBy = "country")
+    private List<City> cities;
 }
