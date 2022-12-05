@@ -1,6 +1,8 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.ICategoryService;
+import com.etiya.ecommercedemopair7.business.request.categories.AddCategoryRequest;
+import com.etiya.ecommercedemopair7.business.response.categories.AddCategoryResponse;
 import com.etiya.ecommercedemopair7.entities.concretes.Category;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +38,19 @@ public class CategoryManager implements ICategoryService {
     @Override
     public Category customGetByName(String name) {
         return categoryRepository.customFindByName(name);
+    }
+
+    @Override
+    public AddCategoryResponse add(AddCategoryRequest addCategoryRequest) {
+        Category category = new Category();
+        category.setRefId(addCategoryRequest.getRefId());
+        category.setName(addCategoryRequest.getName());
+
+        Category savedCategory = categoryRepository.save(category);
+
+        AddCategoryResponse response = new AddCategoryResponse(
+                savedCategory.getId(), savedCategory.getRefId(), savedCategory.getName());
+
+        return response;
     }
 }
