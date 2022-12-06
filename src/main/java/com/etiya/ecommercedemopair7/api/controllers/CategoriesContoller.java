@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -43,7 +44,7 @@ public class CategoriesContoller {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AddCategoryResponse> add(@RequestBody AddCategoryRequest addCategoryRequest) {
+    public ResponseEntity<AddCategoryResponse> add(@RequestBody @Valid AddCategoryRequest addCategoryRequest) {
         return new ResponseEntity<AddCategoryResponse>(categoryService.add(addCategoryRequest), HttpStatus.CREATED);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ICategoryRepository extends JpaRepository<Category, Integer> {
     Category findByName(String name);
 
+    boolean existsCategoryByName(String name);
     @Query("SELECT p from Category as p where p.name=:name")
     Category customFindByName(String name);
 }

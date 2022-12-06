@@ -19,6 +19,11 @@ public class SellerManager implements ISellerService {
     }
 
     @Override
+    public Seller getById(int sellerId) {
+        return existsBySellerId(sellerId);
+    }
+
+    @Override
     public AddSellerResponse add(AddSellerRequest addSellerRequest) {
         Seller seller = new Seller();
         seller.setEmail(addSellerRequest.getEmail());
@@ -32,5 +37,15 @@ public class SellerManager implements ISellerService {
                 savedSeller.getNumber(), savedSeller.isVerified());
 
         return response;
+    }
+
+    private Seller existsBySellerId(int sellerId) {
+        Seller currentSeller;
+        try {
+            currentSeller = this.sellerRepository.findById(sellerId).get();
+        } catch (Exception e) {
+            throw new RuntimeException("İlgili satıcı bulunamadı.");
+        }
+        return currentSeller;
     }
 }

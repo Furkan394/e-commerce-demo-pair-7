@@ -19,6 +19,11 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
     }
 
     @Override
+    public DeliveryOption getById(int id) {
+        return deliveryOptionRepository.findById(id).orElseThrow();
+    }
+
+    @Override
     public AddDeliveryOptionResponse add(AddDeliveryOptionRequest addDeliveryOptionRequest) {
         DeliveryOption deliveryOption = new DeliveryOption();
         deliveryOption.setName(addDeliveryOptionRequest.getName());

@@ -12,22 +12,22 @@ import java.util.List;
 
 @Service
 public class CategoryManager implements ICategoryService {
-
     private ICategoryRepository categoryRepository;
 
     @Autowired
-    public CategoryManager(ICategoryRepository categoryRepository) {
+    CategoryManager(ICategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
+
     @Override
     public List<Category> getAll() {
-        return categoryRepository.findAll();
+        return this.categoryRepository.findAll();
     }
 
     @Override
-    public Category getById(int id) {
-        return categoryRepository.findById(id).orElseThrow();
+    public Category getById(int categoryId) {
+        return existsByCategoryId(categoryId);
     }
 
     @Override
@@ -43,14 +43,30 @@ public class CategoryManager implements ICategoryService {
     @Override
     public AddCategoryResponse add(AddCategoryRequest addCategoryRequest) {
         Category category = new Category();
-        category.setRefId(addCategoryRequest.getRefId());
         category.setName(addCategoryRequest.getName());
+        category.setRefId(addCategoryRequest.getRefId());
+
+        categoryCanNotExistWithSameName(addCategoryRequest.getName());
 
         Category savedCategory = categoryRepository.save(category);
 
-        AddCategoryResponse response = new AddCategoryResponse(
-                savedCategory.getId(), savedCategory.getRefId(), savedCategory.getName());
-
+        AddCategoryResponse response = new AddCategoryResponse(savedCategory.getId(), savedCategory.getRefId(), savedCategory.getName());
         return response;
+    }
+
+    private void categoryCanNotExistWithSameName(String name) {
+        boolean isExists = categoryRepository.existsCategoryByName(name);
+        if (isExists)
+            throw new RuntimeException("Bu isimle bir kategori zaten mevcut!");
+    }
+
+    private Category existsByCategoryId(int id) {
+        Category currentCategory;
+        try {
+            currentCategory = this.categoryRepository.findById(id).get();
+        } catch (Exception e) {
+            throw new RuntimeException("İlgili kategori bulunamadı.");
+        }
+        return currentCategory;
     }
 }
