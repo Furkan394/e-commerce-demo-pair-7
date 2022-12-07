@@ -5,6 +5,7 @@ import com.etiya.ecommercedemopair7.business.abstracts.ISellerProductService;
 import com.etiya.ecommercedemopair7.business.abstracts.ISellerService;
 import com.etiya.ecommercedemopair7.business.request.sellerProducts.AddSellerProductRequest;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.AddSellerProductResponse;
+import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import com.etiya.ecommercedemopair7.entities.concretes.Seller;
 import com.etiya.ecommercedemopair7.entities.concretes.SellerProduct;
@@ -18,12 +19,15 @@ public class SellerProductManager implements ISellerProductService {
     private ISellerProductRepository sellerProductRepository;
     private ISellerService sellerService;
     private IProductService productService;
+    private IModelMapperService mapper;
 
     @Autowired
-    public SellerProductManager(ISellerProductRepository sellerProductRepository, ISellerService sellerService, IProductService productService) {
+    public SellerProductManager(ISellerProductRepository sellerProductRepository, ISellerService sellerService,
+                                IProductService productService, IModelMapperService mapper) {
         this.sellerProductRepository = sellerProductRepository;
         this.sellerService = sellerService;
         this.productService = productService;
+        this.mapper = mapper;
     }
 
     @Override
@@ -43,9 +47,9 @@ public class SellerProductManager implements ISellerProductService {
 
         SellerProduct savedSellerProduct = sellerProductRepository.save(sellerProduct);
 
-        return new AddSellerProductResponse(savedSellerProduct.getId(), savedSellerProduct.getSeller().getId(),
-                savedSellerProduct.getProduct().getId(), savedSellerProduct.getDescription(), savedSellerProduct.getImageUrl(),
-                savedSellerProduct.getStock(), savedSellerProduct.getUnitPrice());
+        AddSellerProductResponse response = mapper.forResponse().map(savedSellerProduct, AddSellerProductResponse.class);
+
+        return response;
     }
 
     private Product getProduct(AddSellerProductRequest addSellerProductRequest) {
