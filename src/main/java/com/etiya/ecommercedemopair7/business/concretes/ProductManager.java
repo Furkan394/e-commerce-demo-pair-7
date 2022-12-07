@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductManager implements IProductService {
@@ -26,12 +27,24 @@ public class ProductManager implements IProductService {
     }
 
     @Override
-    public List<Product> getAll() {
-        return this.productRepository.findAll();
+    public List<GetAllProductResponse> getAll() {
+
+        List<Product> products = this.productRepository.findAll();
+        List<GetAllProductResponse> response = products.stream()
+                .map(product -> this.mapper.forResponse().map(product, GetAllProductResponse.class))
+                .collect(Collectors.toList());
+        return response;
     }
 
     @Override
-    public Product getById(int productId) {
+    public GetProductResponse getById(int productId) {
+        Product product = existsByProductId(productId);
+        GetProductResponse response = mapper.forResponse().map(product, GetProductResponse.class);
+        return response;
+    }
+
+    @Override
+    public Product getByProductId(int productId) {
         return existsByProductId(productId);
     }
 

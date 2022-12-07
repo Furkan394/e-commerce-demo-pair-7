@@ -1,5 +1,6 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
+import com.etiya.ecommercedemopair7.business.abstracts.IAddressService;
 import com.etiya.ecommercedemopair7.business.abstracts.IDeliveryOptionService;
 import com.etiya.ecommercedemopair7.business.abstracts.IOrderService;
 import com.etiya.ecommercedemopair7.business.request.orders.AddOrderRequest;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class OrderManager implements IOrderService {
     private IOrderRepository orderRepository;
     private IDeliveryOptionService deliveryOptionService;
+    private IAddressService addressService;
+    private IModelMapperService mapper;
 
     @Autowired
     public OrderManager(IOrderRepository orderRepository, IDeliveryOptionService deliveryOptionService, IAddressService addressService, IModelMapperService mapper) {
@@ -27,18 +30,32 @@ public class OrderManager implements IOrderService {
 
     @Override
     public AddOrderResponse add(AddOrderRequest addOrderRequest) {
-        Order order = new Order();
-        order.setOrderNumber(addOrderRequest.getOrderNumber());
-        order.setTotalPrice(addOrderRequest.getTotalPrice());
-        order.setOrderDate(addOrderRequest.getOrderDate());
 
-        DeliveryOption deliveryOption = deliveryOptionService.getById(addOrderRequest.getDeliveryOptionId());
-        order.setDeliveryOption(deliveryOption);
+        getDeliveryOption(addOrderRequest);
+        getOrderAddress(addOrderRequest.getOrderAddressId());
+        getInvoiceAddress(addOrderRequest.getInvoiceAddressId());
+
+        Order order = mapper.forRequest().map(addOrderRequest, Order.class);
 
         Order savedOrder = orderRepository.save(order);
 
         AddOrderResponse response = mapper.forResponse().map(savedOrder, AddOrderResponse.class);
 
         return response;
+    }
+
+    private Address getInvoiceAddress(int invoiceAddressId) {
+        Address invoiceAddress = addressService.getByAddressId(invoiceAddressId);
+        return invoiceAddress;
+    }
+
+    private Address getOrderAddress(int orderAddressId) {
+        Address orderAddress = addressService.getByAddressId(orderAddressId);
+        return orderAddress;
+    }
+
+    private DeliveryOption getDeliveryOption(AddOrderRequest addOrderRequest) {
+        DeliveryOption deliveryOption = deliveryOptionService.getByDeliveryOptionId(addOrderRequest.getDeliveryOptionId());
+        return deliveryOption;
     }
 }

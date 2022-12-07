@@ -17,13 +17,24 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
     private IModelMapperService mapper;
 
     @Autowired
-    public DeliveryOptionManager(IDeliveryOptionRepository deliveryOptionRepository) {
+    public DeliveryOptionManager(IDeliveryOptionRepository deliveryOptionRepository, IModelMapperService mapper) {
         this.deliveryOptionRepository = deliveryOptionRepository;
         this.mapper = mapper;
     }
 
     @Override
-    public DeliveryOption getById(int id) {
+    public GetDeliveryOptionResponse getById(int id) {
+        DeliveryOption deliveryOption = getDeliveryOption(id);
+        GetDeliveryOptionResponse response = mapper.forResponse().map(deliveryOption, GetDeliveryOptionResponse.class);
+        return response;
+    }
+
+    @Override
+    public DeliveryOption getByDeliveryOptionId(int id) {
+        return getDeliveryOption(id);
+    }
+
+    private DeliveryOption getDeliveryOption(int id) {
         return deliveryOptionRepository.findById(id).orElseThrow();
     }
 

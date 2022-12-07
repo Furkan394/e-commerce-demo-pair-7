@@ -4,8 +4,7 @@ import com.etiya.ecommercedemopair7.business.abstracts.IProductCharService;
 
 import com.etiya.ecommercedemopair7.business.request.productChars.AddProductCharRequest;
 import com.etiya.ecommercedemopair7.business.response.productChars.AddProductCharResponse;
-import com.etiya.ecommercedemopair7.entities.concretes.Product;
-import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
+import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public class ProductCharsController {
     }
 
     @GetMapping("/{id}")
-    public ProductChar getById(@PathVariable int id){
+    public GetProductCharResponse getById(@PathVariable int id){
         return productCharService.getById(id);
     }
 

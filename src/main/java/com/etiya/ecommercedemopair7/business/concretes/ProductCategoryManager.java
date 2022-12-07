@@ -5,6 +5,7 @@ import com.etiya.ecommercedemopair7.business.abstracts.IProductCategoryService;
 import com.etiya.ecommercedemopair7.business.abstracts.IProductService;
 import com.etiya.ecommercedemopair7.business.request.productCategories.AddProductCategoryRequest;
 import com.etiya.ecommercedemopair7.business.response.productCategories.AddProductCategoryResponse;
+import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.Category;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCategory;
@@ -18,12 +19,15 @@ public class ProductCategoryManager implements IProductCategoryService {
     private IProductCategoryRepository productCategoryRepository;
     private ICategoryService categoryService;
     private IProductService productService;
+    private IModelMapperService mapper;
 
     @Autowired
-    public ProductCategoryManager(IProductCategoryRepository productCategoryRepository, ICategoryService categoryService, IProductService productService) {
+    public ProductCategoryManager(IProductCategoryRepository productCategoryRepository,
+                                  ICategoryService categoryService, IProductService productService, IModelMapperService mapper) {
         this.productCategoryRepository = productCategoryRepository;
         this.productService = productService;
         this.categoryService = categoryService;
+        this.mapper = mapper;
     }
 
     @Override
@@ -38,23 +42,26 @@ public class ProductCategoryManager implements IProductCategoryService {
 
     @Override
     public AddProductCategoryResponse add(AddProductCategoryRequest addProductCategoryRequest) {
-        ProductCategory productCategory = new ProductCategory();
-        Category category = existsByCategory(addProductCategoryRequest);
-        Product product = existsByProduct(addProductCategoryRequest);
-        productCategory.setCategory(category);
-        productCategory.setProduct(product);
 
-        ProductCategory productCategorySave = productCategoryRepository.save(productCategory);
-        return new AddProductCategoryResponse(productCategorySave.getId(), productCategorySave.getCategory().getId(), productCategorySave.getProduct().getId());
+        existsByProduct(addProductCategoryRequest);
+        existsByCategory(addProductCategoryRequest);
+
+        ProductCategory productCategory = mapper.forRequest().map(addProductCategoryRequest, ProductCategory.class);
+
+        ProductCategory savedProductCategory = productCategoryRepository.save(productCategory);
+
+        AddProductCategoryResponse response = mapper.forResponse().map(savedProductCategory, AddProductCategoryResponse.class);
+
+        return response;
     }
 
     private Product existsByProduct(AddProductCategoryRequest addProductCategoryRequest) {
-        Product product = productService.getById(addProductCategoryRequest.getProductId());
+        Product product = productService.getByProductId(addProductCategoryRequest.getProductId());
         return product;
     }
 
     private Category existsByCategory(AddProductCategoryRequest addProductCategoryRequest) {
-        Category category = categoryService.getById(addProductCategoryRequest.getCategoryId());
+        Category category = categoryService.getByCategoryId(addProductCategoryRequest.getCategoryId());
         return category;
     }
 }

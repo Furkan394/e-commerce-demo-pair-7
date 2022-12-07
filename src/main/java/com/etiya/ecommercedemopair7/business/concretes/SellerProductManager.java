@@ -32,18 +32,11 @@ public class SellerProductManager implements ISellerProductService {
 
     @Override
     public AddSellerProductResponse add(AddSellerProductRequest addSellerProductRequest) {
-        SellerProduct sellerProduct = new SellerProduct();
 
-        Seller seller = getSeller(addSellerProductRequest);
-        sellerProduct.setSeller(seller);
+        getSeller(addSellerProductRequest);
+        getProduct(addSellerProductRequest);
 
-        Product product = getProduct(addSellerProductRequest);
-        sellerProduct.setProduct(product);
-
-        sellerProduct.setDescription(addSellerProductRequest.getDescription());
-        sellerProduct.setImageUrl(addSellerProductRequest.getImageUrl());
-        sellerProduct.setStock(addSellerProductRequest.getStock());
-        sellerProduct.setUnitPrice(addSellerProductRequest.getUnitPrice());
+        SellerProduct sellerProduct = mapper.forRequest().map(addSellerProductRequest, SellerProduct.class);
 
         SellerProduct savedSellerProduct = sellerProductRepository.save(sellerProduct);
 
@@ -53,12 +46,12 @@ public class SellerProductManager implements ISellerProductService {
     }
 
     private Product getProduct(AddSellerProductRequest addSellerProductRequest) {
-        Product product = productService.getById(addSellerProductRequest.getProductId());
+        Product product = productService.getByProductId(addSellerProductRequest.getProductId());
         return product;
     }
 
     private Seller getSeller(AddSellerProductRequest addSellerProductRequest) {
-        Seller seller = sellerService.getById(addSellerProductRequest.getSellerId());
+        Seller seller = sellerService.getBySellerId(addSellerProductRequest.getSellerId());
         return seller;
     }
 }

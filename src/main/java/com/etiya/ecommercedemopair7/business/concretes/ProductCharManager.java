@@ -23,17 +23,31 @@ public class ProductCharManager implements IProductCharService {
 
 
     @Override
-    public ProductChar getById(int productCharId) {
+    public GetProductCharResponse getById(int productCharId) {
+        ProductChar productChar = getProductChar(productCharId);
+        GetProductCharResponse response = mapper.forResponse().map(productChar, GetProductCharResponse.class);
+        return response;
+    }
+
+    @Override
+    public ProductChar getByProductCharId(int productCharId) {
+        return getProductChar(productCharId);
+    }
+
+    private ProductChar getProductChar(int productCharId) {
         return productCharRepository.findById(productCharId).orElseThrow();
     }
 
     @Override
     public AddProductCharResponse add(AddProductCharRequest addProductCharRequest) {
-        ProductChar productChar = new ProductChar();
-        productChar.setName(addProductCharRequest.getName());
 
-        ProductChar savedProductChar = productCharRepository.save((productChar));
-        return  new AddProductCharResponse(savedProductChar.getId(),savedProductChar.getName(),
-                savedProductChar.getDescription());
+        ProductChar productChar = mapper.forRequest().map(addProductCharRequest, ProductChar.class);
+
+        ProductChar savedProductChar = productCharRepository.save(productChar);
+
+        AddProductCharResponse response = mapper.forResponse().map(savedProductChar, AddProductCharResponse.class);
+
+        return response;
+
     }
 }

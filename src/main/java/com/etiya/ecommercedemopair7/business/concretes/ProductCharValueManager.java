@@ -4,6 +4,7 @@ import com.etiya.ecommercedemopair7.business.abstracts.IProductCharService;
 import com.etiya.ecommercedemopair7.business.abstracts.IProductCharValueService;
 import com.etiya.ecommercedemopair7.business.request.productCharValues.AddProductCharValueRequest;
 import com.etiya.ecommercedemopair7.business.response.productCharValues.AddProductCharValueResponse;
+import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCharValue;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductCharValueRepository;
@@ -15,27 +16,31 @@ public class ProductCharValueManager implements IProductCharValueService {
 
     private IProductCharValueRepository productCharValueRepository;
     private IProductCharService productCharService;
+    private IModelMapperService mapper;
 
     @Autowired
-    ProductCharValueManager(IProductCharValueRepository  productCharValueRepository,  IProductCharService productCharService) {
+    ProductCharValueManager(IProductCharValueRepository productCharValueRepository, IProductCharService productCharService, IModelMapperService mapper) {
         this.productCharValueRepository = productCharValueRepository;
         this.productCharService = productCharService;
+        this.mapper = mapper;
     }
 
     @Override
-    public AddProductCharValueResponse add(AddProductCharValueRequest addProductCharValueRequest){
-        ProductCharValue productCharValue = new ProductCharValue();
-        productCharValue.setName(addProductCharValueRequest.getName());
+    public AddProductCharValueResponse add(AddProductCharValueRequest addProductCharValueRequest) {
 
-        ProductChar productChar = getProductChar(addProductCharValueRequest);
-        productCharValue.setProductChar(productChar);
+        getProductChar(addProductCharValueRequest);
+
+        ProductCharValue productCharValue = mapper.forRequest().map(addProductCharValueRequest, ProductCharValue.class);
 
         ProductCharValue savedProductCharValue = productCharValueRepository.save((productCharValue));
-        return new AddProductCharValueResponse(savedProductCharValue.getId(),savedProductCharValue.getName(),savedProductCharValue.getProductChar().getId());
+
+        AddProductCharValueResponse response = mapper.forResponse().map(savedProductCharValue, AddProductCharValueResponse.class);
+
+        return response;
     }
 
     private ProductChar getProductChar(AddProductCharValueRequest addProductCharValueRequest) {
-        ProductChar productChar = productCharService.getById(addProductCharValueRequest.getProductCharId());
+        ProductChar productChar = productCharService.getByProductCharId(addProductCharValueRequest.getProductCharId());
         return productChar;
     }
 

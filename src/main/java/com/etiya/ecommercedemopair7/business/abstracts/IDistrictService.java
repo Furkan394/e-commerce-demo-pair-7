@@ -1,7 +1,7 @@
 package com.etiya.ecommercedemopair7.business.abstracts;
 
-import com.etiya.ecommercedemopair7.entities.concretes.District;
+import com.etiya.ecommercedemopair7.business.response.districts.GetDistrictResponse;
 
 public interface IDistrictService {
-    District getById(int districtId);
+    GetDistrictResponse getById(int districtId);
 }

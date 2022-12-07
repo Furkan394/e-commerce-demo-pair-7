@@ -23,22 +23,25 @@ public class SellerManager implements ISellerService {
     }
 
     @Override
-    public Seller getById(int sellerId) {
+    public GetSellerResponse getById(int sellerId) {
+        Seller seller = existsBySellerId(sellerId);
+        GetSellerResponse response = mapper.forResponse().map(seller, GetSellerResponse.class);
+        return response;
+    }
+
+    @Override
+    public Seller getBySellerId(int sellerId) {
         return existsBySellerId(sellerId);
     }
 
     @Override
     public AddSellerResponse add(AddSellerRequest addSellerRequest) {
-        Seller seller = new Seller();
-        seller.setEmail(addSellerRequest.getEmail());
-        seller.setPassword(addSellerRequest.getPassword());
-        seller.setName(addSellerRequest.getName());
-        seller.setNumber(addSellerRequest.getNumber());
-        seller.setVerified(addSellerRequest.isVerified());
+
+        Seller seller = mapper.forRequest().map(addSellerRequest, Seller.class);
 
         Seller savedSeller = sellerRepository.save(seller);
-        AddSellerResponse response = new AddSellerResponse(savedSeller.getEmail(), savedSeller.getName(),
-                savedSeller.getNumber(), savedSeller.isVerified());
+
+        AddSellerResponse response = mapper.forResponse().map(savedSeller, AddSellerResponse.class);
 
         return response;
     }

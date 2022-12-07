@@ -3,30 +3,46 @@ package com.etiya.ecommercedemopair7.business.concretes;
 import com.etiya.ecommercedemopair7.business.abstracts.ICategoryService;
 import com.etiya.ecommercedemopair7.business.request.categories.AddCategoryRequest;
 import com.etiya.ecommercedemopair7.business.response.categories.AddCategoryResponse;
+import com.etiya.ecommercedemopair7.business.response.categories.GetAllCategoryResponse;
+import com.etiya.ecommercedemopair7.business.response.categories.GetCategoryResponse;
+import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.Category;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryManager implements ICategoryService {
     private ICategoryRepository categoryRepository;
+    private IModelMapperService mapper;
 
     @Autowired
-    CategoryManager(ICategoryRepository categoryRepository) {
+    CategoryManager(ICategoryRepository categoryRepository, IModelMapperService mapper) {
         this.categoryRepository = categoryRepository;
-    }
-
-
-    @Override
-    public List<Category> getAll() {
-        return this.categoryRepository.findAll();
+        this.mapper = mapper;
     }
 
     @Override
-    public Category getById(int categoryId) {
+    public List<GetAllCategoryResponse> getAll() {
+        List<Category> categories = this.categoryRepository.findAll();
+        List<GetAllCategoryResponse> response = categories.stream()
+                .map(category -> this.mapper.forResponse().map(category, GetAllCategoryResponse.class))
+                .collect(Collectors.toList());
+        return response;
+    }
+
+    @Override
+    public GetCategoryResponse getById(int categoryId) {
+        Category category = existsByCategoryId(categoryId);
+        GetCategoryResponse response = mapper.forResponse().map(category, GetCategoryResponse.class);
+        return response;
+    }
+
+    @Override
+    public Category getByCategoryId(int categoryId) {
         return existsByCategoryId(categoryId);
     }
 
@@ -42,15 +58,19 @@ public class CategoryManager implements ICategoryService {
 
     @Override
     public AddCategoryResponse add(AddCategoryRequest addCategoryRequest) {
-        Category category = new Category();
-        category.setName(addCategoryRequest.getName());
-        category.setRefId(addCategoryRequest.getRefId());
+        //MANUAL MAPPING
+        //Category category = new Category();
+        //category.setName(addCategoryRequest.getName());
+        //category.setRefId(addCategoryRequest.getRefId());
+
+        //MODEL MAPPER
+        Category category = mapper.forRequest().map(addCategoryRequest, Category.class);
 
         categoryCanNotExistWithSameName(addCategoryRequest.getName());
 
         Category savedCategory = categoryRepository.save(category);
 
-        AddCategoryResponse response = new AddCategoryResponse(savedCategory.getId(), savedCategory.getRefId(), savedCategory.getName());
+        AddCategoryResponse response = mapper.forResponse().map(savedCategory, AddCategoryResponse.class);
         return response;
     }
 
