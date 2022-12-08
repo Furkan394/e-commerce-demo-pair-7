@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.ICustomerService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.customers.GetCustomerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.Customer;
@@ -37,7 +38,7 @@ public class CustomerManager implements ICustomerService {
         try {
             currentCustomer = this.customerRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException("Böyle bir müşteri yok.");
+            throw new RuntimeException(Messages.Customer.CustomerNotFound);
         }
         return currentCustomer;
     }

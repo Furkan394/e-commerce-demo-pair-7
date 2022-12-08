@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.ITownService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.towns.GetTownResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.Town;
@@ -28,9 +29,12 @@ public class TownManager implements ITownService {
     }
 
     private Town checkIfTownExistsById(int id) {
-        Town currentTown = this.townRepository.findById(id).orElseThrow();
+        Town currentTown;
+        try {
+            currentTown = this.townRepository.findById(id).get();
+        } catch (Exception e) {
+            throw new RuntimeException(Messages.Town.TownNotFound);
+        }
         return currentTown;
     }
 }
-
-

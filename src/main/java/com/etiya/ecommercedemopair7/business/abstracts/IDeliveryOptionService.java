@@ -6,7 +6,7 @@ import com.etiya.ecommercedemopair7.business.response.deliveryOptions.GetDeliver
 import com.etiya.ecommercedemopair7.entities.concretes.DeliveryOption;
 
 public interface IDeliveryOptionService {
-    GetDeliveryOptionResponse getById(int id);
-    DeliveryOption getByDeliveryOptionId(int id);
+    GetDeliveryOptionResponse getById(int deliveryOptionId);
+    DeliveryOption getByDeliveryOptionId(int deliveryOptionId);
     AddDeliveryOptionResponse add(AddDeliveryOptionRequest addDeliveryOptionRequest);
 }

@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.api.controllers;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IProductCategoryService;
+import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.productCategories.AddProductCategoryRequest;
 import com.etiya.ecommercedemopair7.business.response.productCategories.AddProductCategoryResponse;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCategory;
@@ -10,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/product-categories")
+@RequestMapping(Paths.apiPrefix + "product-categories")
 public class ProductCategoriesController {
 
     private IProductCategoryService productCategoryService;

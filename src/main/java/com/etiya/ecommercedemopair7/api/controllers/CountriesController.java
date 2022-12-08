@@ -1,13 +1,14 @@
 package com.etiya.ecommercedemopair7.api.controllers;
 
 import com.etiya.ecommercedemopair7.business.abstracts.ICountryService;
+import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.response.countries.GetCountryResponse;
 import com.etiya.ecommercedemopair7.entities.concretes.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/countries")
+@RequestMapping(Paths.apiPrefix + "countries")
 public class CountriesController {
 
     private ICountryService countryService;

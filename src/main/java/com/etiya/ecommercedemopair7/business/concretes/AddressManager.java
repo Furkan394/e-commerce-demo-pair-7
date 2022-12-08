@@ -3,6 +3,7 @@ package com.etiya.ecommercedemopair7.business.concretes;
 import com.etiya.ecommercedemopair7.business.abstracts.IAddressService;
 import com.etiya.ecommercedemopair7.business.abstracts.IStreetService;
 import com.etiya.ecommercedemopair7.business.abstracts.IUserService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.addresses.AddAddressRequest;
 import com.etiya.ecommercedemopair7.business.response.addresses.AddAddressResponse;
 import com.etiya.ecommercedemopair7.business.response.addresses.GetAddressResponse;
@@ -68,7 +69,12 @@ public class AddressManager implements IAddressService {
     }
 
     private Address checkIfAddressExistsById(int addressId) {
-        Address currentAddress = this.addressRepository.findById(addressId).orElseThrow();
+        Address currentAddress;
+        try {
+            currentAddress = this.addressRepository.findById(addressId).get();
+        } catch (Exception e) {
+            throw new RuntimeException(Messages.Address.AddressNotFound);
+        }
         return currentAddress;
     }
 }

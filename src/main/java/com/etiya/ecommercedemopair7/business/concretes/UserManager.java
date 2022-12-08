@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IUserService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.users.GetUserResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.User;
@@ -20,19 +21,24 @@ public class UserManager implements IUserService {
     }
 
     @Override
-    public GetUserResponse getById(int id) {
-        User user = checkIfUserExistsById(id);
+    public GetUserResponse getById(int userId) {
+        User user = checkIfUserExistsById(userId);
         GetUserResponse response = mapper.forResponse().map(user, GetUserResponse.class);
         return response;
     }
 
     @Override
-    public User getByUserId(int id) {
-        return checkIfUserExistsById(id);
+    public User getByUserId(int userId) {
+        return checkIfUserExistsById(userId);
     }
 
-    private User checkIfUserExistsById(int id) {
-        User currentUser = this.userRepository.findById(id).orElseThrow();
+    private User checkIfUserExistsById(int userId) {
+        User currentUser;
+        try {
+            currentUser = this.userRepository.findById(userId).get();
+        } catch (Exception e) {
+            throw new RuntimeException(Messages.User.UserNotFound);
+        }
         return currentUser;
     }
 }

@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.api.controllers;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IBasketService;
+import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.baskets.AddBasketRequest;
 import com.etiya.ecommercedemopair7.business.response.baskets.AddBasketResponse;
 import com.etiya.ecommercedemopair7.entities.concretes.Basket;
@@ -10,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/baskets")
+@RequestMapping(Paths.apiPrefix + "baskets")
 public class BasketsController {
     private IBasketService basketService;
 

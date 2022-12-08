@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IProductService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.products.AddProductRequest;
 import com.etiya.ecommercedemopair7.business.response.products.AddProductResponse;
 import com.etiya.ecommercedemopair7.business.response.products.GetAllProductResponse;
@@ -75,7 +76,7 @@ public class ProductManager implements IProductService {
         try {
             currentProduct = this.productRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException("İlgili ürün bulunamadı.");
+            throw new RuntimeException(Messages.Product.ProductNotFound);
         }
         return currentProduct;
     }

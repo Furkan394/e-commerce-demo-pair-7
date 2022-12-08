@@ -2,6 +2,7 @@ package com.etiya.ecommercedemopair7.api.controllers;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IProductCharService;
 
+import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.productChars.AddProductCharRequest;
 import com.etiya.ecommercedemopair7.business.response.productChars.AddProductCharResponse;
 import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
@@ -11,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/product-chars")
+@RequestMapping(Paths.apiPrefix + "product-chars")
 public class ProductCharsController {
     private IProductCharService productCharService;
 

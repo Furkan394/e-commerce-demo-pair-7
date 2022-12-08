@@ -2,6 +2,7 @@ package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IBasketService;
 import com.etiya.ecommercedemopair7.business.abstracts.ICustomerService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.baskets.AddBasketRequest;
 import com.etiya.ecommercedemopair7.business.response.baskets.AddBasketResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
@@ -49,7 +50,12 @@ public class BasketManager implements IBasketService {
     }
 
     private Basket checkIfBasketExistsById(int basketId) {
-        Basket currentBasket = this.basketRepository.findById(basketId).orElseThrow();
+        Basket currentBasket;
+        try {
+            currentBasket = this.basketRepository.findById(basketId).get();
+        } catch (Exception e) {
+            throw new RuntimeException(Messages.Basket.BasketNotFound);
+        }
         return currentBasket;
     }
 }

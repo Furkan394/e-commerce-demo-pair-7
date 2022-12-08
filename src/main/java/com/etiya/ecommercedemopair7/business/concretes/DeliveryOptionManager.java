@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IDeliveryOptionService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.deliveryOptions.AddDeliveryOptionRequest;
 import com.etiya.ecommercedemopair7.business.response.deliveryOptions.AddDeliveryOptionResponse;
 import com.etiya.ecommercedemopair7.business.response.deliveryOptions.GetDeliveryOptionResponse;
@@ -23,19 +24,15 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
     }
 
     @Override
-    public GetDeliveryOptionResponse getById(int id) {
-        DeliveryOption deliveryOption = getDeliveryOption(id);
+    public GetDeliveryOptionResponse getById(int deliveryOptionId) {
+        DeliveryOption deliveryOption = getByDeliveryOptionId(deliveryOptionId);
         GetDeliveryOptionResponse response = mapper.forResponse().map(deliveryOption, GetDeliveryOptionResponse.class);
         return response;
     }
 
     @Override
-    public DeliveryOption getByDeliveryOptionId(int id) {
-        return getDeliveryOption(id);
-    }
-
-    private DeliveryOption getDeliveryOption(int id) {
-        return deliveryOptionRepository.findById(id).orElseThrow();
+    public DeliveryOption getByDeliveryOptionId(int deliveryOptionId) {
+        return checkIfDeliveryOptionExistsById(deliveryOptionId);
     }
 
     @Override
@@ -43,9 +40,19 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
         DeliveryOption deliveryOption = mapper.forRequest().map(addDeliveryOptionRequest, DeliveryOption.class);
 
         DeliveryOption savedDeliveryOption = deliveryOptionRepository.save(deliveryOption);
-       
+
         AddDeliveryOptionResponse response = mapper.forResponse().map(savedDeliveryOption, AddDeliveryOptionResponse.class);
 
         return response;
+    }
+
+    private DeliveryOption checkIfDeliveryOptionExistsById(int deliveryOptionId) {
+        DeliveryOption currentDeliveryOption;
+        try {
+            currentDeliveryOption = deliveryOptionRepository.findById(deliveryOptionId).get();
+        } catch (Exception e) {
+            throw new RuntimeException(Messages.DeliveryOption.DeliveryOptionNotFound);
+        }
+        return currentDeliveryOption;
     }
 }
