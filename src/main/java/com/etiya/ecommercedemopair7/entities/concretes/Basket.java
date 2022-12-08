@@ -26,7 +26,6 @@ public class Basket {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    @JsonManagedReference
     private Customer customer;
 
     @OneToMany(mappedBy = "basket")

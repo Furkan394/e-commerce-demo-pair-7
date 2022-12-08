@@ -20,6 +20,5 @@ public class Customer extends User {
     private String number;
 
     @OneToMany(mappedBy = "customer")
-    @JsonBackReference
     private List<Basket> baskets;
 }

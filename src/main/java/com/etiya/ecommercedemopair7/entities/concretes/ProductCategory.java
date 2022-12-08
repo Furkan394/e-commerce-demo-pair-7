@@ -21,11 +21,9 @@ public class ProductCategory {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonManagedReference
     private Category category;
 
     @ManyToOne()
     @JoinColumn(name = "product_id")
-    @JsonManagedReference
     private Product product;
 }
