@@ -5,6 +5,7 @@ import com.etiya.ecommercedemopair7.business.abstracts.IDeliveryOptionService;
 import com.etiya.ecommercedemopair7.business.abstracts.IOrderService;
 import com.etiya.ecommercedemopair7.business.request.orders.AddOrderRequest;
 import com.etiya.ecommercedemopair7.business.response.orders.AddOrderResponse;
+import com.etiya.ecommercedemopair7.business.response.orders.GetAllOrderResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.Address;
 import com.etiya.ecommercedemopair7.entities.concretes.DeliveryOption;
@@ -12,6 +13,9 @@ import com.etiya.ecommercedemopair7.entities.concretes.Order;
 import com.etiya.ecommercedemopair7.repository.abstracts.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderManager implements IOrderService {
@@ -26,6 +30,15 @@ public class OrderManager implements IOrderService {
         this.deliveryOptionService = deliveryOptionService;
         this.addressService = addressService;
         this.mapper = mapper;
+    }
+
+    @Override
+    public List<GetAllOrderResponse> getAll() {
+        List<Order> orders = orderRepository.findAll();
+        List<GetAllOrderResponse> response = orders.stream()
+                .map(order -> mapper.forResponse().map(order, GetAllOrderResponse.class))
+                .collect(Collectors.toList());
+        return response;
     }
 
     @Override

@@ -5,11 +5,14 @@ import com.etiya.ecommercedemopair7.business.abstracts.IProductCharService;
 import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.productChars.AddProductCharRequest;
 import com.etiya.ecommercedemopair7.business.response.productChars.AddProductCharResponse;
+import com.etiya.ecommercedemopair7.business.response.productChars.GetAllProductCharResponse;
 import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(Paths.apiPrefix + "product-chars")
@@ -21,8 +24,13 @@ public class ProductCharsController {
         this.productCharService = productCharService;
     }
 
+    @GetMapping
+    public List<GetAllProductCharResponse> getAll() {
+        return productCharService.getAll();
+    }
+
     @GetMapping("/{id}")
-    public GetProductCharResponse getById(@PathVariable int id){
+    public GetProductCharResponse getById(@PathVariable int id) {
         return productCharService.getById(id);
     }
 

@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetUserResponse {
     private int id;
+    private String email;
 }

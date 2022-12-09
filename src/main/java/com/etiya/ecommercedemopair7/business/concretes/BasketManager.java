@@ -5,12 +5,16 @@ import com.etiya.ecommercedemopair7.business.abstracts.ICustomerService;
 import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.baskets.AddBasketRequest;
 import com.etiya.ecommercedemopair7.business.response.baskets.AddBasketResponse;
+import com.etiya.ecommercedemopair7.business.response.baskets.GetAllBasketResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.Basket;
 import com.etiya.ecommercedemopair7.entities.concretes.Customer;
 import com.etiya.ecommercedemopair7.repository.abstracts.IBasketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BasketManager implements IBasketService {
@@ -23,6 +27,15 @@ public class BasketManager implements IBasketService {
         this.basketRepository = basketRepository;
         this.customerService = customerService;
         this.mapper = mapper;
+    }
+
+    @Override
+    public List<GetAllBasketResponse> getAll() {
+        List<Basket> baskets = basketRepository.findAll();
+        List<GetAllBasketResponse> response = baskets.stream()
+                .map(basket -> mapper.forResponse().map(basket, GetAllBasketResponse.class))
+                .collect(Collectors.toList());
+        return response;
     }
 
     @Override

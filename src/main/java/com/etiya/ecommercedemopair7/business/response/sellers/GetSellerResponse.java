@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetSellerResponse {
-    private String email;
     private String name;
     private String number;
     private boolean isVerified;

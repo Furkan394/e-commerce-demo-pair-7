@@ -4,15 +4,14 @@ import com.etiya.ecommercedemopair7.business.abstracts.ISellerProductService;
 import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.sellerProducts.AddSellerProductRequest;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.AddSellerProductResponse;
+import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetAllSellerProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(Paths.apiPrefix + "seller-products")
@@ -23,6 +22,11 @@ public class SellerProductsController {
     @Autowired
     public SellerProductsController(ISellerProductService sellerProductService) {
         this.sellerProductService = sellerProductService;
+    }
+
+    @GetMapping
+    public List<GetAllSellerProductResponse> getAll() {
+        return sellerProductService.getAll();
     }
 
     @PostMapping("/add")

@@ -4,11 +4,14 @@ import com.etiya.ecommercedemopair7.business.abstracts.ISellerService;
 import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.sellers.AddSellerRequest;
 import com.etiya.ecommercedemopair7.business.response.sellers.AddSellerResponse;
+import com.etiya.ecommercedemopair7.business.response.sellers.GetAllSellerResponse;
 import com.etiya.ecommercedemopair7.business.response.sellers.GetSellerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(Paths.apiPrefix + "sellers")
@@ -21,8 +24,13 @@ public class SellersController {
         this.sellerService = sellerService;
     }
 
+    @GetMapping
+    public List<GetAllSellerResponse> getAll() {
+        return sellerService.getAll();
+    }
+
     @GetMapping("/{id}")
-    public GetSellerResponse getById(@PathVariable int id){
+    public GetSellerResponse getById(@PathVariable int id) {
         return sellerService.getById(id);
     }
 

@@ -4,12 +4,16 @@ import com.etiya.ecommercedemopair7.business.abstracts.ISellerService;
 import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.sellers.AddSellerRequest;
 import com.etiya.ecommercedemopair7.business.response.sellers.AddSellerResponse;
+import com.etiya.ecommercedemopair7.business.response.sellers.GetAllSellerResponse;
 import com.etiya.ecommercedemopair7.business.response.sellers.GetSellerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.entities.concretes.Seller;
 import com.etiya.ecommercedemopair7.repository.abstracts.ISellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SellerManager implements ISellerService {
@@ -21,6 +25,15 @@ public class SellerManager implements ISellerService {
     public SellerManager(ISellerRepository sellerRepository, IModelMapperService mapper) {
         this.sellerRepository = sellerRepository;
         this.mapper = mapper;
+    }
+
+    @Override
+    public List<GetAllSellerResponse> getAll() {
+        List<Seller> sellers = sellerRepository.findAll();
+        List<GetAllSellerResponse> response = sellers.stream()
+                .map(seller -> mapper.forResponse().map(seller, GetAllSellerResponse.class))
+                .collect(Collectors.toList());
+        return response;
     }
 
     @Override
