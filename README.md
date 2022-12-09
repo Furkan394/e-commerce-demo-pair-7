@@ -42,8 +42,8 @@ Project Link: https://github.com/Furkan394/e-commerce-demo-pair-7
 
 <a href="https://github.com/engindemirog">🙏engindemirog</a> <br>
 <a href="https://github.com/halitkalayci">🙏halitkalayci</a> <br>
-<a href="https://github.com/iremcibal">🙏iremcibal</a>
-<a href="https://github.com/kadirdemirel">🙏kadirdemirel</a>
-<a href="https://github.com/MertSoyunmezoglu">🙏MertSoyunmezoglu</a>
-<a href="https://github.com/uonurcan">🙏uonurcan</a>
+<a href="https://github.com/iremcibal">🙏iremcibal</a><br>
+<a href="https://github.com/kadirdemirel">🙏kadirdemirel</a><br>
+<a href="https://github.com/MertSoyunmezoglu">🙏MertSoyunmezoglu</a><br>
+<a href="https://github.com/uonurcan">🙏uonurcan</a><br>
 <a href="https://github.com/zeynephan49">🙏zeynephan49</a>
