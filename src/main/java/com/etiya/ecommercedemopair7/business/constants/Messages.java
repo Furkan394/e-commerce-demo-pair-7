@@ -42,9 +42,9 @@ public class Messages {
     }
     public static class DeliveryOption {
         public static final String deliveryOptionNotFound = "İlgili teslimat seçeneği bulunamadı.";
-        public static final String deliveryOptionsListed = "Sepetler başarıyla listelendi";
-        public static final String deliveryOptionReceived = "Sepet başarıyla gösterildi";
-        public static final String deliveryOptionAdded = "Sepet başarıyla eklendi";
+        public static final String deliveryOptionsListed = "Teslimat seçenekleri başarıyla listelendi";
+        public static final String deliveryOptionReceived = "Teslimat seçeneği başarıyla gösterildi";
+        public static final String deliveryOptionAdded = "Teslimat seçeneği başarıyla eklendi";
     }
     public static class District {
         public static final String districtNotFound = "İlgili mahalle bulunamadı.";

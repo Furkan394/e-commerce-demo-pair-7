@@ -36,14 +36,14 @@ public class ProductManager implements IProductService {
         List<GetAllProductResponse> response = products.stream()
                 .map(product -> this.mapper.forResponse().map(product, GetAllProductResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Product.productsListed);
     }
 
     @Override
     public DataResult<GetProductResponse> getById(int productId) {
         Product product = existsByProductId(productId);
         GetProductResponse response = mapper.forResponse().map(product, GetProductResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Product.productReceived);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ProductManager implements IProductService {
 
         AddProductResponse response = mapper.forResponse().map(savedProduct, AddProductResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Product.productAdded);
     }
 
     private Product existsByProductId(int id) {
