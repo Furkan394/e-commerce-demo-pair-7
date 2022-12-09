@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.ICorporateCustomerService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.corporateCustomers.AddCorporateCustomerRequest;
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.AddCorporateCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.GetAllCorporateCustomerResponse;
@@ -33,7 +34,7 @@ public class CorporateCustomerManager implements ICorporateCustomerService {
         List<GetAllCorporateCustomerResponse> response = corporateCustomers.stream()
                 .map(corporateCustomer -> mapper.forResponse().map(corporateCustomer, GetAllCorporateCustomerResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.CorporateCustomer.corporateCustomersListed);
     }
 
     @Override
@@ -45,6 +46,6 @@ public class CorporateCustomerManager implements ICorporateCustomerService {
 
         AddCorporateCustomerResponse response = mapper.forResponse().map(savedCorporateCustomer, AddCorporateCustomerResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.CorporateCustomer.corporateCustomerAdded);
     }
 }

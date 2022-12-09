@@ -33,14 +33,14 @@ public class CountryManager implements ICountryService {
         List<GetAllCountryResponse> response = countries.stream()
                 .map(country -> mapper.forResponse().map(country, GetAllCountryResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Country.countriesListed);
     }
 
     @Override
     public DataResult<GetCountryResponse> getById(int countryId) {
         Country country = checkIfCountryExistsById(countryId);
         GetCountryResponse response = mapper.forResponse().map(country, GetCountryResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Country.countryReceived);
     }
 
     private Country checkIfCountryExistsById(int id) {

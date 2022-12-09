@@ -3,6 +3,7 @@ package com.etiya.ecommercedemopair7.business.concretes;
 import com.etiya.ecommercedemopair7.business.abstracts.ICategoryService;
 import com.etiya.ecommercedemopair7.business.abstracts.IProductCategoryService;
 import com.etiya.ecommercedemopair7.business.abstracts.IProductService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.productCategories.AddProductCategoryRequest;
 import com.etiya.ecommercedemopair7.business.response.productCategories.AddProductCategoryResponse;
 import com.etiya.ecommercedemopair7.business.response.productCategories.GetAllProductCategoryResponse;
@@ -42,17 +43,17 @@ public class ProductCategoryManager implements IProductCategoryService {
         List<GetAllProductCategoryResponse> response = productCategories.stream()
                 .map(productCategory -> mapper.forResponse().map(productCategory, GetAllProductCategoryResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.ProductCategory.productCategoriesListed);
     }
 
     @Override
     public DataResult<ProductCategory> getByCategoryId(int categoryId) {
-        return new SuccessDataResult<>(productCategoryRepository.findByCategoryId(categoryId));
+        return new SuccessDataResult<>(productCategoryRepository.findByCategoryId(categoryId), Messages.ProductCategory.productCategoryReceived);
     }
 
     @Override
     public DataResult<ProductCategory> getByProductId(int productId) {
-        return new SuccessDataResult<>(productCategoryRepository.findByProductId(productId));
+        return new SuccessDataResult<>(productCategoryRepository.findByProductId(productId), Messages.ProductCategory.productCategoryReceived);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class ProductCategoryManager implements IProductCategoryService {
 
         AddProductCategoryResponse response = mapper.forResponse().map(savedProductCategory, AddProductCategoryResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.ProductCategory.productCategoryAdded);
     }
 
     private DataResult<Product> existsByProduct(AddProductCategoryRequest addProductCategoryRequest) {

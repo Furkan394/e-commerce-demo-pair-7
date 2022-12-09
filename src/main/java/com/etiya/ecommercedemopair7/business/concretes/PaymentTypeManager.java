@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IPaymentTypeService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.paymentTypes.AddPaymentTypeRequest;
 import com.etiya.ecommercedemopair7.business.response.paymentTypes.AddPaymentTypeResponse;
 import com.etiya.ecommercedemopair7.business.response.paymentTypes.GetAllPaymentTypeResponse;
@@ -33,7 +34,7 @@ public class PaymentTypeManager implements IPaymentTypeService {
         List<GetAllPaymentTypeResponse> response = paymentTypes.stream()
                 .map(paymentType -> mapper.forResponse().map(paymentType, GetAllPaymentTypeResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.PaymentType.paymentTypesListed);
     }
 
     @Override
@@ -45,6 +46,6 @@ public class PaymentTypeManager implements IPaymentTypeService {
 
         AddPaymentTypeResponse response = mapper.forResponse().map(savedPaymentType, AddPaymentTypeResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.PaymentType.paymentTypeAdded);
     }
 }

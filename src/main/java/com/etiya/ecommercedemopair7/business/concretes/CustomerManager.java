@@ -33,19 +33,19 @@ public class CustomerManager implements ICustomerService {
         List<GetAllCustomerResponse> response = customers.stream()
                 .map(customer -> mapper.forResponse().map(customer, GetAllCustomerResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Customer.customersListed);
     }
 
     @Override
     public DataResult<GetCustomerResponse> getById(int customerId) {
         Customer customer = checkIfCustomerExistsById(customerId);
         GetCustomerResponse response = mapper.forResponse().map(customer, GetCustomerResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Customer.customerReceived);
     }
 
     @Override
     public DataResult<Customer> getByCustomerId(int customerId) {
-        return new SuccessDataResult<>(checkIfCustomerExistsById(customerId));
+        return new SuccessDataResult<>(checkIfCustomerExistsById(customerId), Messages.Customer.customerReceived);
     }
 
     private Customer checkIfCustomerExistsById(int id) {

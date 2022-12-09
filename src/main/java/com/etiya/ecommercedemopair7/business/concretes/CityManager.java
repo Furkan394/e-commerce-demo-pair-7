@@ -33,14 +33,14 @@ public class CityManager implements ICityService {
         List<GetAllCityResponse> response = cities.stream()
                 .map(city -> mapper.forResponse().map(city, GetAllCityResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.City.citiesListed);
     }
 
     @Override
     public DataResult<GetCityResponse> getById(int cityId) {
         City city = checkIfCityExistsById(cityId);
         GetCityResponse response = mapper.forResponse().map(city, GetCityResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.City.cityReceived);
     }
 
     private City checkIfCityExistsById(int id) {

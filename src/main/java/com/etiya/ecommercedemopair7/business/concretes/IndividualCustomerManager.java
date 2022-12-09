@@ -1,6 +1,7 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IIndividualCustomerService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.individualCustomers.AddIndividualCustomerRequest;
 import com.etiya.ecommercedemopair7.business.response.individualCustomers.AddIndividualCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.individualCustomers.GetAllIndividualCustomerResponse;
@@ -33,7 +34,7 @@ public class IndividualCustomerManager implements IIndividualCustomerService {
         List<GetAllIndividualCustomerResponse> response = individualCustomers.stream()
                 .map(individualCustomer -> mapper.forResponse().map(individualCustomer, GetAllIndividualCustomerResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.IndividualCustomer.individualCustomersListed);
     }
 
     @Override
@@ -45,6 +46,6 @@ public class IndividualCustomerManager implements IIndividualCustomerService {
 
         AddIndividualCustomerResponse response = mapper.forResponse().map(savedIndividualCustomer, AddIndividualCustomerResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.IndividualCustomer.individualCustomerAdded);
     }
 }

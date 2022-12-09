@@ -36,19 +36,19 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
         List<GetAllDeliveryOptionResponse> response = deliveryOptions.stream()
                 .map(deliveryOption -> mapper.forResponse().map(deliveryOption, GetAllDeliveryOptionResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.DeliveryOption.deliveryOptionsListed);
     }
 
     @Override
     public DataResult<GetDeliveryOptionResponse> getById(int deliveryOptionId) {
         DataResult<DeliveryOption> deliveryOption = getByDeliveryOptionId(deliveryOptionId);
         GetDeliveryOptionResponse response = mapper.forResponse().map(deliveryOption, GetDeliveryOptionResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.DeliveryOption.deliveryOptionReceived);
     }
 
     @Override
     public DataResult<DeliveryOption> getByDeliveryOptionId(int deliveryOptionId) {
-        return new SuccessDataResult<>(checkIfDeliveryOptionExistsById(deliveryOptionId));
+        return new SuccessDataResult<>(checkIfDeliveryOptionExistsById(deliveryOptionId),Messages.DeliveryOption.deliveryOptionReceived);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
 
         AddDeliveryOptionResponse response = mapper.forResponse().map(savedDeliveryOption, AddDeliveryOptionResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.DeliveryOption.deliveryOptionAdded);
     }
 
     private DeliveryOption checkIfDeliveryOptionExistsById(int deliveryOptionId) {

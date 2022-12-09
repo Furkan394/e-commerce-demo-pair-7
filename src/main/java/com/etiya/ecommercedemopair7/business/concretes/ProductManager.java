@@ -48,17 +48,17 @@ public class ProductManager implements IProductService {
 
     @Override
     public DataResult<Product> getByProductId(int productId) {
-        return new SuccessDataResult<>(existsByProductId(productId));
+        return new SuccessDataResult<>(existsByProductId(productId), Messages.Product.productReceived);
     }
 
     @Override
     public DataResult<Product> getByName(String name) {
-        return new SuccessDataResult<>(productRepository.findByName(name));
+        return new SuccessDataResult<>(productRepository.findByName(name), Messages.Product.productReceived);
     }
 
     @Override
     public DataResult<Product> customGetByName(String name) {
-        return new SuccessDataResult<>(productRepository.customFindByName(name));
+        return new SuccessDataResult<>(productRepository.customFindByName(name), Messages.Product.productReceived);
     }
 
     @Override

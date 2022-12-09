@@ -41,7 +41,7 @@ public class OrderManager implements IOrderService {
         List<GetAllOrderResponse> response = orders.stream()
                 .map(order -> mapper.forResponse().map(order, GetAllOrderResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Order.ordersListed);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class OrderManager implements IOrderService {
 
         AddOrderResponse response = mapper.forResponse().map(savedOrder, AddOrderResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Order.orderAdded);
     }
 
     private DataResult<Address> getInvoiceAddress(int invoiceAddressId) {

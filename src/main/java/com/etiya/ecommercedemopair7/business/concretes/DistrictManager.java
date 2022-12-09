@@ -33,14 +33,14 @@ public class DistrictManager implements IDistrictService {
         List<GetAllDistrictResponse> response = districts.stream()
                 .map(district -> mapper.forResponse().map(district, GetAllDistrictResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.District.districtsListed);
     }
 
     @Override
     public DataResult<GetDistrictResponse> getById(int districtId) {
         District district = checkIfDistrictExistsById(districtId);
         GetDistrictResponse response = mapper.forResponse().map(district, GetDistrictResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response,Messages.District.districtReceived);
     }
 
     private District checkIfDistrictExistsById(int id) {

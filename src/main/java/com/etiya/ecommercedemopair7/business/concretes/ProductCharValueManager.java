@@ -38,7 +38,7 @@ public class ProductCharValueManager implements IProductCharValueService {
         List<GetAllProductCharValueResponse> response = productCharValues.stream()
                 .map(productCharValue -> mapper.forResponse().map(productCharValue, GetAllProductCharValueResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.ProductCharValue.productCharValuesListed);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ProductCharValueManager implements IProductCharValueService {
 
         AddProductCharValueResponse response = mapper.forResponse().map(savedProductCharValue, AddProductCharValueResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.ProductCharValue.productCharValueAdded);
     }
 
     private DataResult<ProductChar> getProductChar(AddProductCharValueRequest addProductCharValueRequest) {
