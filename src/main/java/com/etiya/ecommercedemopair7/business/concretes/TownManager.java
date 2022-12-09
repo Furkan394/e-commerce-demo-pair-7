@@ -33,14 +33,14 @@ public class TownManager implements ITownService {
         List<GetAllTownResponse> response = towns.stream()
                 .map(town -> mapper.forResponse().map(town, GetAllTownResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Town.townsListed);
     }
 
     @Override
     public DataResult<GetTownResponse> getById(int townId) {
         Town town = checkIfTownExistsById(townId);
         GetTownResponse response = mapper.forResponse().map(town, GetTownResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Town.townReceived);
     }
 
     private Town checkIfTownExistsById(int id) {

@@ -35,19 +35,19 @@ public class SellerManager implements ISellerService {
         List<GetAllSellerResponse> response = sellers.stream()
                 .map(seller -> mapper.forResponse().map(seller, GetAllSellerResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Seller.sellersListed);
     }
 
     @Override
     public DataResult<GetSellerResponse> getById(int sellerId) {
         Seller seller = existsBySellerId(sellerId);
         GetSellerResponse response = mapper.forResponse().map(seller, GetSellerResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Seller.sellerReceived);
     }
 
     @Override
     public DataResult<Seller> getBySellerId(int sellerId) {
-        return new SuccessDataResult<>(existsBySellerId(sellerId));
+        return new SuccessDataResult<>(existsBySellerId(sellerId), Messages.Seller.sellerReceived);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SellerManager implements ISellerService {
 
         AddSellerResponse response = mapper.forResponse().map(savedSeller, AddSellerResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Seller.sellerAdded);
     }
 
     private Seller existsBySellerId(int sellerId) {

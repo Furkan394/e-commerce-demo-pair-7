@@ -3,6 +3,7 @@ package com.etiya.ecommercedemopair7.business.concretes;
 import com.etiya.ecommercedemopair7.business.abstracts.IProductService;
 import com.etiya.ecommercedemopair7.business.abstracts.ISellerProductService;
 import com.etiya.ecommercedemopair7.business.abstracts.ISellerService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.sellerProducts.AddSellerProductRequest;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.AddSellerProductResponse;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetAllSellerProductResponse;
@@ -42,7 +43,7 @@ public class SellerProductManager implements ISellerProductService {
         List<GetAllSellerProductResponse> response = sellerProducts.stream()
                 .map(sellerProduct -> mapper.forResponse().map(sellerProduct, GetAllSellerProductResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Product.productsListed);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class SellerProductManager implements ISellerProductService {
 
         AddSellerProductResponse response = mapper.forResponse().map(savedSellerProduct, AddSellerProductResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Product.productAdded);
     }
 
     private DataResult<Product> getProduct(AddSellerProductRequest addSellerProductRequest) {

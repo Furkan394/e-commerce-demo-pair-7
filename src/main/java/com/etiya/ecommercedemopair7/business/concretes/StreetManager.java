@@ -32,20 +32,20 @@ public class StreetManager implements IStreetService {
         List<GetAllStreetResponse> response = streets.stream()
                 .map(street -> mapper.forResponse().map(street, GetAllStreetResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Street.streetsListed);
     }
 
     @Override
     public DataResult<GetStreetResponse> getById(int streetId) {
         Street seller = checkIfStreetExistsById(streetId);
         GetStreetResponse response = mapper.forResponse().map(seller, GetStreetResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.Street.streetReceived);
 
     }
 
     @Override
     public DataResult<Street> getByStreetId(int streetId) {
-        return new SuccessDataResult<>(checkIfStreetExistsById(streetId));
+        return new SuccessDataResult<>(checkIfStreetExistsById(streetId), Messages.Street.streetReceived);
     }
 
     private Street checkIfStreetExistsById(int id) {

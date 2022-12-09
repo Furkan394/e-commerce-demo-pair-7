@@ -48,45 +48,45 @@ public class Messages {
     }
     public static class District {
         public static final String districtNotFound = "İlgili mahalle bulunamadı.";
-        public static final String districtsListed = "Sepetler başarıyla listelendi";
-        public static final String districtReceived = "Sepet başarıyla gösterildi";
-        public static final String districtAdded = "Sepet başarıyla eklendi";
+        public static final String districtsListed = "Mahalleler başarıyla listelendi";
+        public static final String districtReceived = "Mahalle başarıyla gösterildi";
+        public static final String districtAdded = "Mahalle başarıyla eklendi";
     }
     public static class ProductChar {
         public static final String productCharNotFound = "İlgili ürün özelliği bulunamadı.";
-        public static final String productCharsListed = "Sepetler başarıyla listelendi";
-        public static final String productCharReceived = "Sepet başarıyla gösterildi";
-        public static final String productCharAdded = "Sepet başarıyla eklendi";
+        public static final String productCharsListed = "Ürün özellikleri başarıyla listelendi";
+        public static final String productCharReceived = "Ürün özelliği başarıyla gösterildi";
+        public static final String productCharAdded = "Ürün özelliği başarıyla eklendi";
     }
 
     public static class Product {
         public static final String productNotFound = "İlgili ürün bulunamadı.";
-        public static final String productsListed = "Sepetler başarıyla listelendi";
-        public static final String productReceived = "Sepet başarıyla gösterildi";
-        public static final String productAdded = "Sepet başarıyla eklendi";
+        public static final String productsListed = "Ürünler başarıyla listelendi";
+        public static final String productReceived = "Ürün başarıyla gösterildi";
+        public static final String productAdded = "Ürün başarıyla eklendi";
     }
     public static class Seller {
         public static final String sellerNotFound = "İlgili satıcı bulunamadı.";
-        public static final String sellersListed = "Sepetler başarıyla listelendi";
-        public static final String sellerReceived = "Sepet başarıyla gösterildi";
-        public static final String sellerAdded = "Sepet başarıyla eklendi";
+        public static final String sellersListed = "Satıcılar başarıyla listelendi";
+        public static final String sellerReceived = "Satıcı başarıyla gösterildi";
+        public static final String sellerAdded = "Satıcı başarıyla eklendi";
     }
     public static class Street {
         public static final String streetNotFound = "İlgili sokak bulunamadı.";
-        public static final String streetsListed = "Sepetler başarıyla listelendi";
-        public static final String streetReceived = "Sepet başarıyla gösterildi";
-        public static final String streetAdded = "Sepet başarıyla eklendi";
+        public static final String streetsListed = "Sokaklar başarıyla listelendi";
+        public static final String streetReceived = "Sokak başarıyla gösterildi";
+        public static final String streetAdded = "Sokak başarıyla eklendi";
     }
     public static class Town {
         public static final String townNotFound = "İlgili ilçe bulunamadı.";
-        public static final String townsListed = "Sepetler başarıyla listelendi";
-        public static final String townReceived = "Sepet başarıyla gösterildi";
-        public static final String townAdded = "Sepet başarıyla eklendi";
+        public static final String townsListed = "İlçeler başarıyla listelendi";
+        public static final String townReceived = "İlçe başarıyla gösterildi";
+        public static final String townAdded = "İlçe başarıyla eklendi";
     }
     public static class User {
         public static final String userNotFound = "İlgili kullanıcı bulunamadı.";
-        public static final String usersListed = "Sepetler başarıyla listelendi";
-        public static final String userReceived = "Sepet başarıyla gösterildi";
-        public static final String userAdded = "Sepet başarıyla eklendi";
+        public static final String usersListed = "Kullanıcı başarıyla listelendi";
+        public static final String userReceived = "Kullanıcı başarıyla gösterildi";
+        public static final String userAdded = "Kullanıcı başarıyla eklendi";
     }
 }

@@ -35,19 +35,19 @@ public class ProductCharManager implements IProductCharService {
         List<GetAllProductCharResponse> response = productChars.stream()
                 .map(productChar -> mapper.forResponse().map(productChar, GetAllProductCharResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.ProductChar.productCharsListed);
     }
 
     @Override
     public DataResult<GetProductCharResponse> getById(int productCharId) {
         DataResult<ProductChar> productChar = getByProductCharId(productCharId);
         GetProductCharResponse response = mapper.forResponse().map(productChar, GetProductCharResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.ProductChar.productCharReceived);
     }
 
     @Override
     public DataResult<ProductChar> getByProductCharId(int productCharId) {
-        return new SuccessDataResult<>(checkIfProductCharExistsById(productCharId));
+        return new SuccessDataResult<>(checkIfProductCharExistsById(productCharId), Messages.ProductChar.productCharReceived);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ProductCharManager implements IProductCharService {
 
         AddProductCharResponse response = mapper.forResponse().map(savedProductChar, AddProductCharResponse.class);
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.ProductChar.productCharAdded);
 
     }
 

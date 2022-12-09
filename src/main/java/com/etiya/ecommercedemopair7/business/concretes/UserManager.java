@@ -32,19 +32,19 @@ public class UserManager implements IUserService {
         List<GetAllUserResponse> response = users.stream()
                 .map(user -> mapper.forResponse().map(user, GetAllUserResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.User.usersListed);
     }
 
     @Override
     public DataResult<GetUserResponse> getById(int userId) {
         User user = checkIfUserExistsById(userId);
         GetUserResponse response = mapper.forResponse().map(user, GetUserResponse.class);
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, Messages.User.userReceived);
     }
 
     @Override
     public DataResult<User> getByUserId(int userId) {
-        return new SuccessDataResult<>(checkIfUserExistsById(userId));
+        return new SuccessDataResult<>(checkIfUserExistsById(userId), Messages.User.userReceived);
     }
 
     private User checkIfUserExistsById(int userId) {
