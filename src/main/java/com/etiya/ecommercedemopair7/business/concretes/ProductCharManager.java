@@ -66,7 +66,7 @@ public class ProductCharManager implements IProductCharService {
         try {
             currentProductChar = productCharRepository.findById(productCharId).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.ProductChar.ProductCharNotFound);
+            throw new RuntimeException(Messages.ProductChar.productCharNotFound);
         }
         return currentProductChar;
     }

@@ -78,7 +78,7 @@ public class CategoryManager implements ICategoryService {
     private void categoryCanNotExistWithSameName(String name) {
         boolean isExists = categoryRepository.existsCategoryByName(name);
         if (isExists)
-            throw new RuntimeException(Messages.Category.CategoryExistsWithSameName);
+            throw new RuntimeException(Messages.Category.categoryExistsWithSameName);
     }
 
     private Category existsByCategoryId(int id) {
@@ -86,7 +86,7 @@ public class CategoryManager implements ICategoryService {
         try {
             currentCategory = this.categoryRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Category.CategoryNotFound);
+            throw new RuntimeException(Messages.Category.categoryNotFound);
         }
         return currentCategory;
     }

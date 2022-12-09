@@ -65,7 +65,7 @@ public class SellerManager implements ISellerService {
         try {
             currentSeller = this.sellerRepository.findById(sellerId).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Seller.SellerNotFound);
+            throw new RuntimeException(Messages.Seller.sellerNotFound);
         }
         return currentSeller;
     }

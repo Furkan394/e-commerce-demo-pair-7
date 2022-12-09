@@ -46,7 +46,7 @@ public class TownManager implements ITownService {
         try {
             currentTown = this.townRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Town.TownNotFound);
+            throw new RuntimeException(Messages.Town.townNotFound);
         }
         return currentTown;
     }

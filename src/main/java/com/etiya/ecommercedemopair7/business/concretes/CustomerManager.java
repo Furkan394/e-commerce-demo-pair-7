@@ -51,7 +51,7 @@ public class CustomerManager implements ICustomerService {
         try {
             currentCustomer = this.customerRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Customer.CustomerNotFound);
+            throw new RuntimeException(Messages.Customer.customerNotFound);
         }
         return currentCustomer;
     }

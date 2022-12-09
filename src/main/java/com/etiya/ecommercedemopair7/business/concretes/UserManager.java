@@ -50,7 +50,7 @@ public class UserManager implements IUserService {
         try {
             currentUser = this.userRepository.findById(userId).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.User.UserNotFound);
+            throw new RuntimeException(Messages.User.userNotFound);
         }
         return currentUser;
     }

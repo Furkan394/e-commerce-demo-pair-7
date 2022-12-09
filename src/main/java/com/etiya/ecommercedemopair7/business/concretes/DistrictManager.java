@@ -46,7 +46,7 @@ public class DistrictManager implements IDistrictService {
         try {
             currentDistrict = this.districtRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.District.DistrictNotFound);
+            throw new RuntimeException(Messages.District.districtNotFound);
         }
         return currentDistrict;
     }

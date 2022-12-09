@@ -86,7 +86,7 @@ public class AddressManager implements IAddressService {
         try {
             currentAddress = this.addressRepository.findById(addressId).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Address.AddressNotFound);
+            throw new RuntimeException(Messages.Address.addressNotFound);
         }
         return currentAddress;
     }

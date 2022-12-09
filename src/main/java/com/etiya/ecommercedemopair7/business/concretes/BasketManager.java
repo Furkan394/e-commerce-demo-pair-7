@@ -67,7 +67,7 @@ public class BasketManager implements IBasketService {
         try {
             currentBasket = this.basketRepository.findById(basketId).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Basket.BasketNotFound);
+            throw new RuntimeException(Messages.Basket.basketNotFound);
         }
         return currentBasket;
     }

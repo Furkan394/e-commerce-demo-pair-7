@@ -46,7 +46,7 @@ public class CityManager implements ICityService {
         try {
             currentCity = this.cityRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.City.CityNotFound);
+            throw new RuntimeException(Messages.City.cityNotFound);
         }
         return currentCity;
     }

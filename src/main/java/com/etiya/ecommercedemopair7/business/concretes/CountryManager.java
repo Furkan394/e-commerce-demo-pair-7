@@ -46,7 +46,7 @@ public class CountryManager implements ICountryService {
         try {
             currentCountry = this.countryRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Country.CountryNotFound);
+            throw new RuntimeException(Messages.Country.countryNotFound);
         }
         return currentCountry;
     }

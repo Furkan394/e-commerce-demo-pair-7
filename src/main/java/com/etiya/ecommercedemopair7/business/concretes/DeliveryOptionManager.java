@@ -64,7 +64,7 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
         try {
             currentDeliveryOption = deliveryOptionRepository.findById(deliveryOptionId).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.DeliveryOption.DeliveryOptionNotFound);
+            throw new RuntimeException(Messages.DeliveryOption.deliveryOptionNotFound);
         }
         return currentDeliveryOption;
     }

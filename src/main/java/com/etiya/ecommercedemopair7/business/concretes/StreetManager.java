@@ -51,7 +51,7 @@ public class StreetManager implements IStreetService {
         try {
             currentStreet = this.streetRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Street.StreetNotFound);
+            throw new RuntimeException(Messages.Street.streetNotFound);
         }
         return currentStreet;
     }
