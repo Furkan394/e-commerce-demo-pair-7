@@ -7,6 +7,8 @@ import com.etiya.ecommercedemopair7.business.request.productCategories.AddProduc
 import com.etiya.ecommercedemopair7.business.response.productCategories.AddProductCategoryResponse;
 import com.etiya.ecommercedemopair7.business.response.productCategories.GetAllProductCategoryResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Category;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCategory;
@@ -35,26 +37,26 @@ public class ProductCategoryManager implements IProductCategoryService {
     }
 
     @Override
-    public List<GetAllProductCategoryResponse> getAll() {
+    public DataResult<List<GetAllProductCategoryResponse>> getAll() {
         List<ProductCategory> productCategories = productCategoryRepository.findAll();
         List<GetAllProductCategoryResponse> response = productCategories.stream()
                 .map(productCategory -> mapper.forResponse().map(productCategory, GetAllProductCategoryResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public ProductCategory getByCategoryId(int categoryId) {
-        return this.productCategoryRepository.findByCategoryId(categoryId);
+    public DataResult<ProductCategory> getByCategoryId(int categoryId) {
+        return new SuccessDataResult<>(productCategoryRepository.findByCategoryId(categoryId));
     }
 
     @Override
-    public ProductCategory getByProductId(int productId) {
-        return this.productCategoryRepository.findByProductId(productId);
+    public DataResult<ProductCategory> getByProductId(int productId) {
+        return new SuccessDataResult<>(productCategoryRepository.findByProductId(productId));
     }
 
     @Override
-    public AddProductCategoryResponse add(AddProductCategoryRequest addProductCategoryRequest) {
+    public DataResult<AddProductCategoryResponse> add(AddProductCategoryRequest addProductCategoryRequest) {
 
         existsByProduct(addProductCategoryRequest);
         existsByCategory(addProductCategoryRequest);
@@ -65,16 +67,16 @@ public class ProductCategoryManager implements IProductCategoryService {
 
         AddProductCategoryResponse response = mapper.forResponse().map(savedProductCategory, AddProductCategoryResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
-    private Product existsByProduct(AddProductCategoryRequest addProductCategoryRequest) {
-        Product product = productService.getByProductId(addProductCategoryRequest.getProductId());
+    private DataResult<Product> existsByProduct(AddProductCategoryRequest addProductCategoryRequest) {
+        DataResult<Product> product = productService.getByProductId(addProductCategoryRequest.getProductId());
         return product;
     }
 
-    private Category existsByCategory(AddProductCategoryRequest addProductCategoryRequest) {
-        Category category = categoryService.getByCategoryId(addProductCategoryRequest.getCategoryId());
+    private DataResult<Category> existsByCategory(AddProductCategoryRequest addProductCategoryRequest) {
+        DataResult<Category> category = categoryService.getByCategoryId(addProductCategoryRequest.getCategoryId());
         return category;
     }
 }

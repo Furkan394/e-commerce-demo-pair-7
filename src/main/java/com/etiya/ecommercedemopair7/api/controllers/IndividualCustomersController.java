@@ -5,6 +5,7 @@ import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.individualCustomers.AddIndividualCustomerRequest;
 import com.etiya.ecommercedemopair7.business.response.individualCustomers.AddIndividualCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.individualCustomers.GetAllIndividualCustomerResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,12 @@ public class IndividualCustomersController {
     }
 
     @GetMapping
-    public List<GetAllIndividualCustomerResponse> getAll() {
+    public DataResult<List<GetAllIndividualCustomerResponse>> getAll() {
         return individualCustomerService.getAll();
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AddIndividualCustomerResponse> add(@RequestBody AddIndividualCustomerRequest addIndividualCustomerRequest) {
-        return new ResponseEntity<AddIndividualCustomerResponse>(individualCustomerService.add(addIndividualCustomerRequest), HttpStatus.CREATED);
+    public ResponseEntity<DataResult<AddIndividualCustomerResponse>> add(@RequestBody AddIndividualCustomerRequest addIndividualCustomerRequest) {
+        return new ResponseEntity<>(individualCustomerService.add(addIndividualCustomerRequest), HttpStatus.CREATED);
     }
 }

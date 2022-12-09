@@ -7,6 +7,8 @@ import com.etiya.ecommercedemopair7.business.request.sellerProducts.AddSellerPro
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.AddSellerProductResponse;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetAllSellerProductResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import com.etiya.ecommercedemopair7.entities.concretes.Seller;
 import com.etiya.ecommercedemopair7.entities.concretes.SellerProduct;
@@ -35,16 +37,16 @@ public class SellerProductManager implements ISellerProductService {
     }
 
     @Override
-    public List<GetAllSellerProductResponse> getAll() {
+    public DataResult<List<GetAllSellerProductResponse>> getAll() {
         List<SellerProduct> sellerProducts = sellerProductRepository.findAll();
         List<GetAllSellerProductResponse> response = sellerProducts.stream()
                 .map(sellerProduct -> mapper.forResponse().map(sellerProduct, GetAllSellerProductResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public AddSellerProductResponse add(AddSellerProductRequest addSellerProductRequest) {
+    public DataResult<AddSellerProductResponse> add(AddSellerProductRequest addSellerProductRequest) {
 
         getSeller(addSellerProductRequest);
         getProduct(addSellerProductRequest);
@@ -55,16 +57,16 @@ public class SellerProductManager implements ISellerProductService {
 
         AddSellerProductResponse response = mapper.forResponse().map(savedSellerProduct, AddSellerProductResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
-    private Product getProduct(AddSellerProductRequest addSellerProductRequest) {
-        Product product = productService.getByProductId(addSellerProductRequest.getProductId());
+    private DataResult<Product> getProduct(AddSellerProductRequest addSellerProductRequest) {
+        DataResult<Product> product = productService.getByProductId(addSellerProductRequest.getProductId());
         return product;
     }
 
-    private Seller getSeller(AddSellerProductRequest addSellerProductRequest) {
-        Seller seller = sellerService.getBySellerId(addSellerProductRequest.getSellerId());
+    private DataResult<Seller> getSeller(AddSellerProductRequest addSellerProductRequest) {
+        DataResult<Seller> seller = sellerService.getBySellerId(addSellerProductRequest.getSellerId());
         return seller;
     }
 }

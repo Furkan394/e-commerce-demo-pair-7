@@ -7,6 +7,8 @@ import com.etiya.ecommercedemopair7.business.request.orders.AddOrderRequest;
 import com.etiya.ecommercedemopair7.business.response.orders.AddOrderResponse;
 import com.etiya.ecommercedemopair7.business.response.orders.GetAllOrderResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Address;
 import com.etiya.ecommercedemopair7.entities.concretes.DeliveryOption;
 import com.etiya.ecommercedemopair7.entities.concretes.Order;
@@ -33,16 +35,16 @@ public class OrderManager implements IOrderService {
     }
 
     @Override
-    public List<GetAllOrderResponse> getAll() {
+    public DataResult<List<GetAllOrderResponse>> getAll() {
         List<Order> orders = orderRepository.findAll();
         List<GetAllOrderResponse> response = orders.stream()
                 .map(order -> mapper.forResponse().map(order, GetAllOrderResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public AddOrderResponse add(AddOrderRequest addOrderRequest) {
+    public DataResult<AddOrderResponse> add(AddOrderRequest addOrderRequest) {
 
         getDeliveryOption(addOrderRequest);
         getOrderAddress(addOrderRequest.getOrderAddressId());
@@ -54,21 +56,21 @@ public class OrderManager implements IOrderService {
 
         AddOrderResponse response = mapper.forResponse().map(savedOrder, AddOrderResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
-    private Address getInvoiceAddress(int invoiceAddressId) {
-        Address invoiceAddress = addressService.getByAddressId(invoiceAddressId);
+    private DataResult<Address> getInvoiceAddress(int invoiceAddressId) {
+        DataResult<Address> invoiceAddress = addressService.getByAddressId(invoiceAddressId);
         return invoiceAddress;
     }
 
-    private Address getOrderAddress(int orderAddressId) {
-        Address orderAddress = addressService.getByAddressId(orderAddressId);
+    private DataResult<Address> getOrderAddress(int orderAddressId) {
+        DataResult<Address> orderAddress = addressService.getByAddressId(orderAddressId);
         return orderAddress;
     }
 
-    private DeliveryOption getDeliveryOption(AddOrderRequest addOrderRequest) {
-        DeliveryOption deliveryOption = deliveryOptionService.getByDeliveryOptionId(addOrderRequest.getDeliveryOptionId());
+    private DataResult<DeliveryOption> getDeliveryOption(AddOrderRequest addOrderRequest) {
+        DataResult<DeliveryOption> deliveryOption = deliveryOptionService.getByDeliveryOptionId(addOrderRequest.getDeliveryOptionId());
         return deliveryOption;
     }
 }

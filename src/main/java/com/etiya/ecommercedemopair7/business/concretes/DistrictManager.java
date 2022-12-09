@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.districts.GetAllDistrictResponse;
 import com.etiya.ecommercedemopair7.business.response.districts.GetDistrictResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.District;
 import com.etiya.ecommercedemopair7.repository.abstracts.IDistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +28,19 @@ public class DistrictManager implements IDistrictService {
     }
 
     @Override
-    public List<GetAllDistrictResponse> getAll() {
+    public DataResult<List<GetAllDistrictResponse>> getAll() {
         List<District> districts = districtRepository.findAll();
         List<GetAllDistrictResponse> response = districts.stream()
                 .map(district -> mapper.forResponse().map(district, GetAllDistrictResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public GetDistrictResponse getById(int districtId) {
+    public DataResult<GetDistrictResponse> getById(int districtId) {
         District district = checkIfDistrictExistsById(districtId);
         GetDistrictResponse response = mapper.forResponse().map(district, GetDistrictResponse.class);
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     private District checkIfDistrictExistsById(int id) {

@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair7.business.request.individualCustomers.AddIndi
 import com.etiya.ecommercedemopair7.business.response.individualCustomers.AddIndividualCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.individualCustomers.GetAllIndividualCustomerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.IndividualCustomer;
 import com.etiya.ecommercedemopair7.repository.abstracts.IIndividualCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +28,16 @@ public class IndividualCustomerManager implements IIndividualCustomerService {
     }
 
     @Override
-    public List<GetAllIndividualCustomerResponse> getAll() {
+    public DataResult<List<GetAllIndividualCustomerResponse>> getAll() {
         List<IndividualCustomer> individualCustomers = individualCustomerRepository.findAll();
         List<GetAllIndividualCustomerResponse> response = individualCustomers.stream()
                 .map(individualCustomer -> mapper.forResponse().map(individualCustomer, GetAllIndividualCustomerResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public AddIndividualCustomerResponse add(AddIndividualCustomerRequest addIndividualCustomerRequest) {
+    public DataResult<AddIndividualCustomerResponse> add(AddIndividualCustomerRequest addIndividualCustomerRequest) {
 
         IndividualCustomer individualCustomer = mapper.forRequest().map(addIndividualCustomerRequest, IndividualCustomer.class);
 
@@ -43,6 +45,6 @@ public class IndividualCustomerManager implements IIndividualCustomerService {
 
         AddIndividualCustomerResponse response = mapper.forResponse().map(savedIndividualCustomer, AddIndividualCustomerResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response);
     }
 }

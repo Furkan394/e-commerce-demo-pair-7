@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.request.deliveryOptions.AddDelivery
 import com.etiya.ecommercedemopair7.business.response.deliveryOptions.AddDeliveryOptionResponse;
 import com.etiya.ecommercedemopair7.business.response.deliveryOptions.GetAllDeliveryOptionResponse;
 import com.etiya.ecommercedemopair7.business.response.deliveryOptions.GetDeliveryOptionResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +26,17 @@ public class DeliveryOptionsController {
     }
 
     @GetMapping
-    public List<GetAllDeliveryOptionResponse> getAll() {
+    public DataResult<List<GetAllDeliveryOptionResponse>> getAll() {
         return deliveryOptionService.getAll();
     }
 
     @GetMapping("/{id}")
-    public GetDeliveryOptionResponse getById(@PathVariable int id) {
+    public DataResult<GetDeliveryOptionResponse> getById(@PathVariable int id) {
         return deliveryOptionService.getById(id);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AddDeliveryOptionResponse> add(@RequestBody AddDeliveryOptionRequest addDeliveryOptionRequest) {
-        return new ResponseEntity<AddDeliveryOptionResponse>(deliveryOptionService.add(addDeliveryOptionRequest), HttpStatus.CREATED);
+    public ResponseEntity<DataResult<AddDeliveryOptionResponse>> add(@RequestBody AddDeliveryOptionRequest addDeliveryOptionRequest) {
+        return new ResponseEntity<>(deliveryOptionService.add(addDeliveryOptionRequest), HttpStatus.CREATED);
     }
 }

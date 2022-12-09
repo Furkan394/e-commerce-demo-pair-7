@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.request.products.AddProductRequest;
 import com.etiya.ecommercedemopair7.business.response.products.AddProductResponse;
 import com.etiya.ecommercedemopair7.business.response.products.GetAllProductResponse;
 import com.etiya.ecommercedemopair7.business.response.products.GetProductResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,27 +28,27 @@ public class ProductsController {
     }
 
     @GetMapping
-    public List<GetAllProductResponse> getAll(){
+    public DataResult<List<GetAllProductResponse>> getAll(){
         return productService.getAll();
     }
 
     @GetMapping("/{id}")
-    public GetProductResponse getById(@PathVariable int id){
+    public DataResult<GetProductResponse> getById(@PathVariable int id){
         return productService.getById(id);
     }
 
     @GetMapping("get-by-name")
-    public Product getByName(@RequestParam("name") String name){
+    public DataResult<Product> getByName(@RequestParam("name") String name){
         return productService.getByName(name);
     }
 
     @GetMapping("custom-get-by-name")
-    public Product customGetByName(@RequestParam("name") String name){
+    public DataResult<Product> customGetByName(@RequestParam("name") String name){
         return productService.customGetByName(name);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AddProductResponse> add(@RequestBody @Valid AddProductRequest addProductRequest) {
-        return new ResponseEntity<AddProductResponse>(productService.add(addProductRequest), HttpStatus.CREATED);
+    public ResponseEntity<DataResult<AddProductResponse>> add(@RequestBody @Valid AddProductRequest addProductRequest) {
+        return new ResponseEntity<>(productService.add(addProductRequest), HttpStatus.CREATED);
     }
 }

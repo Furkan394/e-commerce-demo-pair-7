@@ -7,6 +7,8 @@ import com.etiya.ecommercedemopair7.business.response.productChars.AddProductCha
 import com.etiya.ecommercedemopair7.business.response.productChars.GetAllProductCharResponse;
 import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductCharRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,28 +30,28 @@ public class ProductCharManager implements IProductCharService {
 
 
     @Override
-    public List<GetAllProductCharResponse> getAll() {
+    public DataResult<List<GetAllProductCharResponse>> getAll() {
         List<ProductChar> productChars = productCharRepository.findAll();
         List<GetAllProductCharResponse> response = productChars.stream()
                 .map(productChar -> mapper.forResponse().map(productChar, GetAllProductCharResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public GetProductCharResponse getById(int productCharId) {
-        ProductChar productChar = getByProductCharId(productCharId);
+    public DataResult<GetProductCharResponse> getById(int productCharId) {
+        DataResult<ProductChar> productChar = getByProductCharId(productCharId);
         GetProductCharResponse response = mapper.forResponse().map(productChar, GetProductCharResponse.class);
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public ProductChar getByProductCharId(int productCharId) {
-        return checkIfProductCharExistsById(productCharId);
+    public DataResult<ProductChar> getByProductCharId(int productCharId) {
+        return new SuccessDataResult<>(checkIfProductCharExistsById(productCharId));
     }
 
     @Override
-    public AddProductCharResponse add(AddProductCharRequest addProductCharRequest) {
+    public DataResult<AddProductCharResponse> add(AddProductCharRequest addProductCharRequest) {
 
         ProductChar productChar = mapper.forRequest().map(addProductCharRequest, ProductChar.class);
 
@@ -57,7 +59,7 @@ public class ProductCharManager implements IProductCharService {
 
         AddProductCharResponse response = mapper.forResponse().map(savedProductChar, AddProductCharResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response);
 
     }
 

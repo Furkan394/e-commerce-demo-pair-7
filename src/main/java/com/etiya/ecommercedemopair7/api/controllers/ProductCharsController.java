@@ -7,6 +7,7 @@ import com.etiya.ecommercedemopair7.business.request.productChars.AddProductChar
 import com.etiya.ecommercedemopair7.business.response.productChars.AddProductCharResponse;
 import com.etiya.ecommercedemopair7.business.response.productChars.GetAllProductCharResponse;
 import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,18 +26,18 @@ public class ProductCharsController {
     }
 
     @GetMapping
-    public List<GetAllProductCharResponse> getAll() {
+    public DataResult<List<GetAllProductCharResponse>> getAll() {
         return productCharService.getAll();
     }
 
     @GetMapping("/{id}")
-    public GetProductCharResponse getById(@PathVariable int id) {
+    public DataResult<GetProductCharResponse> getById(@PathVariable int id) {
         return productCharService.getById(id);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AddProductCharResponse> add(@RequestBody AddProductCharRequest addProductCharRequest) {
-        return new ResponseEntity<AddProductCharResponse>(productCharService.add(addProductCharRequest), HttpStatus.CREATED);
+    public ResponseEntity<DataResult<AddProductCharResponse>> add(@RequestBody AddProductCharRequest addProductCharRequest) {
+        return new ResponseEntity<>(productCharService.add(addProductCharRequest), HttpStatus.CREATED);
     }
 }
 

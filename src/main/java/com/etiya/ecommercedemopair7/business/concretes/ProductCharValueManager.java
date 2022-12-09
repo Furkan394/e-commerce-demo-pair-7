@@ -6,6 +6,8 @@ import com.etiya.ecommercedemopair7.business.request.productCharValues.AddProduc
 import com.etiya.ecommercedemopair7.business.response.productCharValues.AddProductCharValueResponse;
 import com.etiya.ecommercedemopair7.business.response.productCharValues.GetAllProductCharValueResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCharValue;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductCharValueRepository;
@@ -30,16 +32,16 @@ public class ProductCharValueManager implements IProductCharValueService {
     }
 
     @Override
-    public List<GetAllProductCharValueResponse> getAll() {
+    public DataResult<List<GetAllProductCharValueResponse>> getAll() {
         List<ProductCharValue> productCharValues = productCharValueRepository.findAll();
         List<GetAllProductCharValueResponse> response = productCharValues.stream()
                 .map(productCharValue -> mapper.forResponse().map(productCharValue, GetAllProductCharValueResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public AddProductCharValueResponse add(AddProductCharValueRequest addProductCharValueRequest) {
+    public DataResult<AddProductCharValueResponse> add(AddProductCharValueRequest addProductCharValueRequest) {
 
         getProductChar(addProductCharValueRequest);
 
@@ -49,11 +51,11 @@ public class ProductCharValueManager implements IProductCharValueService {
 
         AddProductCharValueResponse response = mapper.forResponse().map(savedProductCharValue, AddProductCharValueResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
-    private ProductChar getProductChar(AddProductCharValueRequest addProductCharValueRequest) {
-        ProductChar productChar = productCharService.getByProductCharId(addProductCharValueRequest.getProductCharId());
+    private DataResult<ProductChar> getProductChar(AddProductCharValueRequest addProductCharValueRequest) {
+        DataResult<ProductChar> productChar = productCharService.getByProductCharId(addProductCharValueRequest.getProductCharId());
         return productChar;
     }
 

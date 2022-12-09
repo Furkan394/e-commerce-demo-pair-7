@@ -7,6 +7,8 @@ import com.etiya.ecommercedemopair7.business.request.baskets.AddBasketRequest;
 import com.etiya.ecommercedemopair7.business.response.baskets.AddBasketResponse;
 import com.etiya.ecommercedemopair7.business.response.baskets.GetAllBasketResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Basket;
 import com.etiya.ecommercedemopair7.entities.concretes.Customer;
 import com.etiya.ecommercedemopair7.repository.abstracts.IBasketRepository;
@@ -30,21 +32,21 @@ public class BasketManager implements IBasketService {
     }
 
     @Override
-    public List<GetAllBasketResponse> getAll() {
+    public DataResult<List<GetAllBasketResponse>> getAll() {
         List<Basket> baskets = basketRepository.findAll();
         List<GetAllBasketResponse> response = baskets.stream()
                 .map(basket -> mapper.forResponse().map(basket, GetAllBasketResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response, Messages.Basket.basketsListed);
     }
 
     @Override
-    public Basket getById(int basketId) {
-        return checkIfBasketExistsById(basketId);
+    public DataResult<Basket> getById(int basketId) {
+        return new SuccessDataResult<>(checkIfBasketExistsById(basketId), Messages.Basket.basketReceived);
     }
 
     @Override
-    public AddBasketResponse add(AddBasketRequest addBasketRequest) {
+    public DataResult<AddBasketResponse> add(AddBasketRequest addBasketRequest) {
 
         getCustomer(addBasketRequest);
 
@@ -54,11 +56,11 @@ public class BasketManager implements IBasketService {
 
         AddBasketResponse response = mapper.forResponse().map(savedBasket, AddBasketResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response, Messages.Basket.basketAdded);
     }
 
-    private Customer getCustomer(AddBasketRequest addBasketRequest) {
-        Customer customer = customerService.getByCustomerId(addBasketRequest.getCustomerId());
+    private DataResult<Customer> getCustomer(AddBasketRequest addBasketRequest) {
+        DataResult<Customer> customer = customerService.getByCustomerId(addBasketRequest.getCustomerId());
         return customer;
     }
 

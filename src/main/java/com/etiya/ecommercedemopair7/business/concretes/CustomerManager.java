@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.customers.GetAllCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.customers.GetCustomerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Customer;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,24 +28,24 @@ public class CustomerManager implements ICustomerService {
     }
 
     @Override
-    public List<GetAllCustomerResponse> getAll() {
+    public DataResult<List<GetAllCustomerResponse>> getAll() {
         List<Customer> customers = customerRepository.findAll();
         List<GetAllCustomerResponse> response = customers.stream()
                 .map(customer -> mapper.forResponse().map(customer, GetAllCustomerResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public GetCustomerResponse getById(int customerId) {
+    public DataResult<GetCustomerResponse> getById(int customerId) {
         Customer customer = checkIfCustomerExistsById(customerId);
         GetCustomerResponse response = mapper.forResponse().map(customer, GetCustomerResponse.class);
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public Customer getByCustomerId(int customerId) {
-        return checkIfCustomerExistsById(customerId);
+    public DataResult<Customer> getByCustomerId(int customerId) {
+        return new SuccessDataResult<>(checkIfCustomerExistsById(customerId));
     }
 
     private Customer checkIfCustomerExistsById(int id) {

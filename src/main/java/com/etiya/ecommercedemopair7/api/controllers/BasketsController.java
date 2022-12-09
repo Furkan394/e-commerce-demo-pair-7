@@ -5,6 +5,7 @@ import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.baskets.AddBasketRequest;
 import com.etiya.ecommercedemopair7.business.response.baskets.AddBasketResponse;
 import com.etiya.ecommercedemopair7.business.response.baskets.GetAllBasketResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Basket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,17 +25,17 @@ public class BasketsController {
     }
 
     @GetMapping
-    public List<GetAllBasketResponse> getAll(){
+    public DataResult<List<GetAllBasketResponse>> getAll(){
         return basketService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Basket getById(@PathVariable int id){
+    public DataResult<Basket> getById(@PathVariable int id){
         return basketService.getById(id);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AddBasketResponse> add (@RequestBody AddBasketRequest addBasketRequest){
-        return new ResponseEntity<AddBasketResponse>(basketService.add(addBasketRequest), HttpStatus.CREATED);
+    public ResponseEntity<DataResult<AddBasketResponse>> add (@RequestBody AddBasketRequest addBasketRequest){
+        return new ResponseEntity<>(basketService.add(addBasketRequest), HttpStatus.CREATED);
     }
 }

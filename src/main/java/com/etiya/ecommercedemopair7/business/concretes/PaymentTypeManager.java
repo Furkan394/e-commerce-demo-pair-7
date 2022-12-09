@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair7.business.request.paymentTypes.AddPaymentType
 import com.etiya.ecommercedemopair7.business.response.paymentTypes.AddPaymentTypeResponse;
 import com.etiya.ecommercedemopair7.business.response.paymentTypes.GetAllPaymentTypeResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.PaymentType;
 import com.etiya.ecommercedemopair7.repository.abstracts.IPaymentTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +28,16 @@ public class PaymentTypeManager implements IPaymentTypeService {
     }
 
     @Override
-    public List<GetAllPaymentTypeResponse> getAll() {
+    public DataResult<List<GetAllPaymentTypeResponse>> getAll() {
         List<PaymentType> paymentTypes = paymentTypeRepository.findAll();
         List<GetAllPaymentTypeResponse> response = paymentTypes.stream()
                 .map(paymentType -> mapper.forResponse().map(paymentType, GetAllPaymentTypeResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public AddPaymentTypeResponse add(AddPaymentTypeRequest addPaymentTypeRequest) {
+    public DataResult<AddPaymentTypeResponse> add(AddPaymentTypeRequest addPaymentTypeRequest) {
 
         PaymentType paymentType = mapper.forRequest().map(addPaymentTypeRequest, PaymentType.class);
 
@@ -43,6 +45,6 @@ public class PaymentTypeManager implements IPaymentTypeService {
 
         AddPaymentTypeResponse response = mapper.forResponse().map(savedPaymentType, AddPaymentTypeResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response);
     }
 }

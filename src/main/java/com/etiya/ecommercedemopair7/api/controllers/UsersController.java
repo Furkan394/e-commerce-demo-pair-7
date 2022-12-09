@@ -4,6 +4,7 @@ import com.etiya.ecommercedemopair7.business.abstracts.IUserService;
 import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.response.users.GetAllUserResponse;
 import com.etiya.ecommercedemopair7.business.response.users.GetUserResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,12 +25,12 @@ public class UsersController {
     }
 
     @GetMapping
-    public List<GetAllUserResponse> getAll() {
+    public DataResult<List<GetAllUserResponse>> getAll() {
         return userService.getAll();
     }
 
     @GetMapping("/{id}")
-    public GetUserResponse getById(@PathVariable int id) {
+    public DataResult<GetUserResponse> getById(@PathVariable int id) {
         return userService.getById(id);
     }
 }

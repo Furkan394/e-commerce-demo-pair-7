@@ -5,6 +5,7 @@ import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.corporateCustomers.AddCorporateCustomerRequest;
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.AddCorporateCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.GetAllCorporateCustomerResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,12 @@ public class CorporateCustomersController {
     }
 
     @GetMapping
-    public List<GetAllCorporateCustomerResponse> getAll() {
+    public DataResult<List<GetAllCorporateCustomerResponse>> getAll() {
         return corporateCustomerService.getAll();
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AddCorporateCustomerResponse> add(@RequestBody AddCorporateCustomerRequest addCorporateCustomerRequest) {
-        return new ResponseEntity<AddCorporateCustomerResponse>(corporateCustomerService.add(addCorporateCustomerRequest), HttpStatus.CREATED);
+    public ResponseEntity<DataResult<AddCorporateCustomerResponse>> add(@RequestBody AddCorporateCustomerRequest addCorporateCustomerRequest) {
+        return new ResponseEntity<>(corporateCustomerService.add(addCorporateCustomerRequest), HttpStatus.CREATED);
     }
 }

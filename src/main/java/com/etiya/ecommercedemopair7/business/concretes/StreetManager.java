@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.streets.GetAllStreetResponse;
 import com.etiya.ecommercedemopair7.business.response.streets.GetStreetResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Street;
 import com.etiya.ecommercedemopair7.repository.abstracts.IStreetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,25 +27,25 @@ public class StreetManager implements IStreetService {
     }
 
     @Override
-    public List<GetAllStreetResponse> getAll() {
+    public DataResult<List<GetAllStreetResponse>> getAll() {
         List<Street> streets = streetRepository.findAll();
         List<GetAllStreetResponse> response = streets.stream()
                 .map(street -> mapper.forResponse().map(street, GetAllStreetResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public GetStreetResponse getById(int streetId) {
+    public DataResult<GetStreetResponse> getById(int streetId) {
         Street seller = checkIfStreetExistsById(streetId);
         GetStreetResponse response = mapper.forResponse().map(seller, GetStreetResponse.class);
-        return response;
+        return new SuccessDataResult<>(response);
 
     }
 
     @Override
-    public Street getByStreetId(int streetId) {
-        return checkIfStreetExistsById(streetId);
+    public DataResult<Street> getByStreetId(int streetId) {
+        return new SuccessDataResult<>(checkIfStreetExistsById(streetId));
     }
 
     private Street checkIfStreetExistsById(int id) {

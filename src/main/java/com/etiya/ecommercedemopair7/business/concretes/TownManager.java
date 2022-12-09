@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.towns.GetAllTownResponse;
 import com.etiya.ecommercedemopair7.business.response.towns.GetTownResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Town;
 import com.etiya.ecommercedemopair7.repository.abstracts.ITownRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +28,19 @@ public class TownManager implements ITownService {
     }
 
     @Override
-    public List<GetAllTownResponse> getAll() {
+    public DataResult<List<GetAllTownResponse>> getAll() {
         List<Town> towns = townRepository.findAll();
         List<GetAllTownResponse> response = towns.stream()
                 .map(town -> mapper.forResponse().map(town, GetAllTownResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public GetTownResponse getById(int townId) {
+    public DataResult<GetTownResponse> getById(int townId) {
         Town town = checkIfTownExistsById(townId);
         GetTownResponse response = mapper.forResponse().map(town, GetTownResponse.class);
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     private Town checkIfTownExistsById(int id) {

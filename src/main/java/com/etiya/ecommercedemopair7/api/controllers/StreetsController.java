@@ -4,6 +4,7 @@ import com.etiya.ecommercedemopair7.business.abstracts.IStreetService;
 import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.response.streets.GetAllStreetResponse;
 import com.etiya.ecommercedemopair7.business.response.streets.GetStreetResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,12 +26,12 @@ public class StreetsController {
 
 
     @GetMapping
-    public List<GetAllStreetResponse> getAll() {
+    public DataResult<List<GetAllStreetResponse>> getAll() {
         return streetService.getAll();
     }
 
     @GetMapping("/{id}")
-    public GetStreetResponse getById(@PathVariable int id) {
+    public DataResult<GetStreetResponse> getById(@PathVariable int id) {
         return this.streetService.getById(id);
     }
 }

@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.users.GetAllUserResponse;
 import com.etiya.ecommercedemopair7.business.response.users.GetUserResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.User;
 import com.etiya.ecommercedemopair7.repository.abstracts.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,24 +27,24 @@ public class UserManager implements IUserService {
     }
 
     @Override
-    public List<GetAllUserResponse> getAll() {
+    public DataResult<List<GetAllUserResponse>> getAll() {
         List<User> users = userRepository.findAll();
         List<GetAllUserResponse> response = users.stream()
                 .map(user -> mapper.forResponse().map(user, GetAllUserResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public GetUserResponse getById(int userId) {
+    public DataResult<GetUserResponse> getById(int userId) {
         User user = checkIfUserExistsById(userId);
         GetUserResponse response = mapper.forResponse().map(user, GetUserResponse.class);
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public User getByUserId(int userId) {
-        return checkIfUserExistsById(userId);
+    public DataResult<User> getByUserId(int userId) {
+        return new SuccessDataResult<>(checkIfUserExistsById(userId));
     }
 
     private User checkIfUserExistsById(int userId) {

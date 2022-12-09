@@ -4,6 +4,7 @@ import com.etiya.ecommercedemopair7.business.abstracts.IDistrictService;
 import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.response.districts.GetAllDistrictResponse;
 import com.etiya.ecommercedemopair7.business.response.districts.GetDistrictResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.District;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +26,12 @@ public class DistrictsController {
     }
 
     @GetMapping
-    public List<GetAllDistrictResponse> getAll() {
+    public DataResult<List<GetAllDistrictResponse>> getAll() {
         return districtService.getAll();
     }
 
     @GetMapping("/{id}")
-    public GetDistrictResponse getById(@PathVariable int id) {
+    public DataResult<GetDistrictResponse> getById(@PathVariable int id) {
         return this.districtService.getById(id);
     }
 }

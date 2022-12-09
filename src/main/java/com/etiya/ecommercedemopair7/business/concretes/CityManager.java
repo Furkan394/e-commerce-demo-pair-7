@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.cities.GetAllCityResponse;
 import com.etiya.ecommercedemopair7.business.response.cities.GetCityResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.City;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +28,19 @@ public class CityManager implements ICityService {
     }
 
     @Override
-    public List<GetAllCityResponse> getAll() {
+    public DataResult<List<GetAllCityResponse>> getAll() {
         List<City> cities = cityRepository.findAll();
         List<GetAllCityResponse> response = cities.stream()
                 .map(city -> mapper.forResponse().map(city, GetAllCityResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public GetCityResponse getById(int cityId) {
+    public DataResult<GetCityResponse> getById(int cityId) {
         City city = checkIfCityExistsById(cityId);
         GetCityResponse response = mapper.forResponse().map(city, GetCityResponse.class);
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     private City checkIfCityExistsById(int id) {

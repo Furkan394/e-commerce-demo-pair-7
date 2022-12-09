@@ -9,6 +9,8 @@ import com.etiya.ecommercedemopair7.business.response.addresses.AddAddressRespon
 import com.etiya.ecommercedemopair7.business.response.addresses.GetAddressResponse;
 import com.etiya.ecommercedemopair7.business.response.addresses.GetAllAddressResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Address;
 import com.etiya.ecommercedemopair7.entities.concretes.Street;
 import com.etiya.ecommercedemopair7.entities.concretes.User;
@@ -36,28 +38,28 @@ public class AddressManager implements IAddressService {
     }
 
     @Override
-    public List<GetAllAddressResponse> getAll() {
+    public DataResult<List<GetAllAddressResponse>> getAll() {
         List<Address> addresses = addressRepository.findAll();
         List<GetAllAddressResponse> response = addresses.stream()
                 .map(address -> mapper.forResponse().map(address, GetAllAddressResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response, Messages.Address.addressesListed);
     }
 
     @Override
-    public GetAddressResponse getById(int addressId) {
+    public DataResult<GetAddressResponse> getById(int addressId) {
         Address address = checkIfAddressExistsById(addressId);
         GetAddressResponse response = mapper.forResponse().map(address, GetAddressResponse.class);
-        return response;
+        return new SuccessDataResult<>(response, Messages.Address.addressReceived);
     }
 
     @Override
-    public Address getByAddressId(int addressId) {
-        return checkIfAddressExistsById(addressId);
+    public DataResult<Address> getByAddressId(int addressId) {
+        return new SuccessDataResult<>(checkIfAddressExistsById(addressId));
     }
 
     @Override
-    public AddAddressResponse add(AddAddressRequest addAddressRequest) {
+    public DataResult<AddAddressResponse> add(AddAddressRequest addAddressRequest) {
 
         getUser(addAddressRequest.getUserId());
         getStreet(addAddressRequest.getStreetId());
@@ -68,16 +70,16 @@ public class AddressManager implements IAddressService {
 
         AddAddressResponse response = mapper.forResponse().map(savedAddress, AddAddressResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response, Messages.Address.addressAdded);
     }
 
-    private User getUser(int userId) {
-        User user = userService.getByUserId(userId);
+    private DataResult<User> getUser(int userId) {
+        DataResult<User> user = userService.getByUserId(userId);
         return user;
     }
 
-    private Street getStreet(int streetId) {
-        Street street = streetService.getByStreetId(streetId);
+    private DataResult<Street> getStreet(int streetId) {
+        DataResult<Street> street = streetService.getByStreetId(streetId);
         return street;
     }
 

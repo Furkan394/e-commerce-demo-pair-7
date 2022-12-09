@@ -7,6 +7,8 @@ import com.etiya.ecommercedemopair7.business.request.basketItems.AddBasketItemRe
 import com.etiya.ecommercedemopair7.business.response.basketItems.AddBasketItemResponse;
 import com.etiya.ecommercedemopair7.business.response.basketItems.GetAllBasketItemResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Basket;
 import com.etiya.ecommercedemopair7.entities.concretes.BasketItem;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
@@ -33,16 +35,16 @@ public class BasketItemManager implements IBasketItemService {
     }
 
     @Override
-    public List<GetAllBasketItemResponse> getAll() {
+    public DataResult<List<GetAllBasketItemResponse>> getAll() {
         List<BasketItem> basketItems = basketItemRepository.findAll();
         List<GetAllBasketItemResponse> response = basketItems.stream()
                 .map(basketItem -> mapper.forResponse().map(basketItem, GetAllBasketItemResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public AddBasketItemResponse add(AddBasketItemRequest addBasketItemRequest) {
+    public DataResult<AddBasketItemResponse> add(AddBasketItemRequest addBasketItemRequest) {
 
         getProduct(addBasketItemRequest);
         getBasket(addBasketItemRequest);
@@ -53,16 +55,16 @@ public class BasketItemManager implements IBasketItemService {
 
         AddBasketItemResponse response = mapper.forResponse().map(savedBasketItem, AddBasketItemResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
-    private Product getProduct(AddBasketItemRequest addBasketItemRequest) {
-        Product product = productService.getByProductId(addBasketItemRequest.getProductId());
+    private DataResult<Product> getProduct(AddBasketItemRequest addBasketItemRequest) {
+        DataResult<Product> product = productService.getByProductId(addBasketItemRequest.getProductId());
         return product;
     }
 
-    private Basket getBasket(AddBasketItemRequest addBasketItemRequest) {
-        Basket basket = basketService.getById(addBasketItemRequest.getBasketId());
+    private DataResult<Basket> getBasket(AddBasketItemRequest addBasketItemRequest) {
+        DataResult<Basket> basket = basketService.getById(addBasketItemRequest.getBasketId());
         return basket;
     }
 }

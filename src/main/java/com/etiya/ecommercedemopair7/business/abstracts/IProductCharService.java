@@ -5,14 +5,15 @@ import com.etiya.ecommercedemopair7.business.request.productChars.AddProductChar
 import com.etiya.ecommercedemopair7.business.response.productChars.AddProductCharResponse;
 import com.etiya.ecommercedemopair7.business.response.productChars.GetAllProductCharResponse;
 import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
 
 import java.util.List;
 
 
 public interface IProductCharService {
-    List<GetAllProductCharResponse> getAll();
-    GetProductCharResponse getById(int productCharId);
-    ProductChar getByProductCharId(int productCharId);
-    AddProductCharResponse add(AddProductCharRequest addProductCharRequest);
+    DataResult<List<GetAllProductCharResponse>> getAll();
+    DataResult<GetProductCharResponse> getById(int productCharId);
+    DataResult<ProductChar> getByProductCharId(int productCharId);
+    DataResult<AddProductCharResponse> add(AddProductCharRequest addProductCharRequest);
 }

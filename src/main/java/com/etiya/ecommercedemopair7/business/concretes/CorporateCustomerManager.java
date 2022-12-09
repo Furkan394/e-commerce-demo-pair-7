@@ -5,6 +5,8 @@ import com.etiya.ecommercedemopair7.business.request.corporateCustomers.AddCorpo
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.AddCorporateCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.GetAllCorporateCustomerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.CorporateCustomer;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICorporateCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +28,16 @@ public class CorporateCustomerManager implements ICorporateCustomerService {
     }
 
     @Override
-    public List<GetAllCorporateCustomerResponse> getAll() {
+    public DataResult<List<GetAllCorporateCustomerResponse>> getAll() {
         List<CorporateCustomer> corporateCustomers = corporateCustomerRepository.findAll();
         List<GetAllCorporateCustomerResponse> response = corporateCustomers.stream()
                 .map(corporateCustomer -> mapper.forResponse().map(corporateCustomer, GetAllCorporateCustomerResponse.class))
                 .collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<>(response);
     }
 
     @Override
-    public AddCorporateCustomerResponse add(AddCorporateCustomerRequest addCorporateCustomerRequest) {
+    public DataResult<AddCorporateCustomerResponse> add(AddCorporateCustomerRequest addCorporateCustomerRequest) {
 
         CorporateCustomer corporateCustomer = mapper.forRequest().map(addCorporateCustomerRequest, CorporateCustomer.class);
 
@@ -43,6 +45,6 @@ public class CorporateCustomerManager implements ICorporateCustomerService {
 
         AddCorporateCustomerResponse response = mapper.forResponse().map(savedCorporateCustomer, AddCorporateCustomerResponse.class);
 
-        return response;
+        return new SuccessDataResult<>(response);
     }
 }
