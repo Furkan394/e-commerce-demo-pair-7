@@ -7,6 +7,7 @@ import com.etiya.ecommercedemopair7.business.response.productCategories.AddProdu
 import com.etiya.ecommercedemopair7.business.response.productCategories.GetAllProductCategoryResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCategory;
+import com.etiya.ecommercedemopair7.entities.dtos.ProductCategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +44,9 @@ public class ProductCategoriesController {
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddProductCategoryResponse>> add(@RequestBody AddProductCategoryRequest addProductCategoryRequest) {
         return new ResponseEntity<>(productCategoryService.add(addProductCategoryRequest), HttpStatus.CREATED);
+    }
+    @GetMapping("/get-product-category-dto")
+    public DataResult<List<ProductCategoryDto>> getProductCategoryDto() {
+        return productCategoryService.getProductCategoryDto();
     }
 }

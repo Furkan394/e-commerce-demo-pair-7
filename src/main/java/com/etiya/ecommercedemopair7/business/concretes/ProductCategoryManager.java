@@ -13,6 +13,7 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Category;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCategory;
+import com.etiya.ecommercedemopair7.entities.dtos.ProductCategoryDto;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,13 @@ public class ProductCategoryManager implements IProductCategoryService {
         AddProductCategoryResponse response = mapper.forResponse().map(savedProductCategory, AddProductCategoryResponse.class);
 
         return new SuccessDataResult<>(response, Messages.ProductCategory.productCategoryAdded);
+    }
+
+    @Override
+    public DataResult<List<ProductCategoryDto>> getProductCategoryDto() {
+        List<ProductCategory> productCategories = productCategoryRepository.findAll();
+        List<ProductCategoryDto> response = productCategories.stream().map(productCategory -> mapper.forResponse().map(productCategory, ProductCategoryDto.class)).collect(Collectors.toList());
+        return new SuccessDataResult<>(response, Messages.ProductCategory.productCategoriesListed);
     }
 
     private DataResult<Product> existsByProduct(AddProductCategoryRequest addProductCategoryRequest) {

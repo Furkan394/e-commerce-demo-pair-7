@@ -14,6 +14,7 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Address;
 import com.etiya.ecommercedemopair7.entities.concretes.Street;
 import com.etiya.ecommercedemopair7.entities.concretes.User;
+import com.etiya.ecommercedemopair7.entities.dtos.AddressDto;
 import com.etiya.ecommercedemopair7.repository.abstracts.IAddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,14 @@ public class AddressManager implements IAddressService {
         AddAddressResponse response = mapper.forResponse().map(savedAddress, AddAddressResponse.class);
 
         return new SuccessDataResult<>(response, Messages.Address.addressAdded);
+    }
+
+    @Override
+    public DataResult<List<AddressDto>> getAddressDto() {
+        //TODO: Countryname null
+        List<Address> addresses = this.addressRepository.findAll();
+        List<AddressDto> response = addresses.stream().map(address -> mapper.forResponse().map(address, AddressDto.class)).collect(Collectors.toList());
+        return new SuccessDataResult<>(response, Messages.Address.addressesListed);
     }
 
     private DataResult<User> getUser(int userId) {

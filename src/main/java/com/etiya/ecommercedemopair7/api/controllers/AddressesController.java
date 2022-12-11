@@ -7,6 +7,7 @@ import com.etiya.ecommercedemopair7.business.response.addresses.AddAddressRespon
 import com.etiya.ecommercedemopair7.business.response.addresses.GetAddressResponse;
 import com.etiya.ecommercedemopair7.business.response.addresses.GetAllAddressResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import com.etiya.ecommercedemopair7.entities.dtos.AddressDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +35,12 @@ public class AddressesController {
     public DataResult<GetAddressResponse> getById(@PathVariable int id) {
         return addressService.getById(id);
     }
-
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddAddressResponse>> add(@RequestBody @Valid AddAddressRequest addAddressRequest) {
         return new ResponseEntity<>(addressService.add(addAddressRequest), HttpStatus.CREATED);
+    }
+    @GetMapping("/get-address-dto")
+    public DataResult<List<AddressDto>> getAddressDto() {
+        return addressService.getAddressDto();
     }
 }

@@ -5,14 +5,14 @@ import com.etiya.ecommercedemopair7.business.response.productCategories.AddProdu
 import com.etiya.ecommercedemopair7.business.response.productCategories.GetAllProductCategoryResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCategory;
+import com.etiya.ecommercedemopair7.entities.dtos.ProductCategoryDto;
 
 import java.util.List;
 
 public interface IProductCategoryService {
     DataResult<List<GetAllProductCategoryResponse>> getAll();
     DataResult<ProductCategory> getByCategoryId(int categoryId);
-
     DataResult<ProductCategory> getByProductId(int productId);
-
     DataResult<AddProductCategoryResponse> add(AddProductCategoryRequest addProductCategoryRequest);
+    DataResult<List<ProductCategoryDto>> getProductCategoryDto();
 }

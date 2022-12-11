@@ -13,6 +13,7 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Address;
 import com.etiya.ecommercedemopair7.entities.concretes.DeliveryOption;
 import com.etiya.ecommercedemopair7.entities.concretes.Order;
+import com.etiya.ecommercedemopair7.entities.dtos.OrderDto;
 import com.etiya.ecommercedemopair7.repository.abstracts.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,14 @@ public class OrderManager implements IOrderService {
         AddOrderResponse response = mapper.forResponse().map(savedOrder, AddOrderResponse.class);
 
         return new SuccessDataResult<>(response, Messages.Order.orderAdded);
+    }
+
+    @Override
+    public DataResult<List<OrderDto>> getOrderDto() {
+        //TODO: İç içe dtolar hepsi maplenecek
+        List<Order> orders = orderRepository.findAll();
+        List<OrderDto> response = orders.stream().map(order -> mapper.forResponse().map(order, OrderDto.class)).collect(Collectors.toList());
+        return new SuccessDataResult<>(response, Messages.Order.ordersListed);
     }
 
     private DataResult<Address> getInvoiceAddress(int invoiceAddressId) {
