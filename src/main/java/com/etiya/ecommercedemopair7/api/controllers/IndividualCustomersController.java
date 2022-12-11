@@ -23,8 +23,8 @@ public class IndividualCustomersController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllIndividualCustomerResponse>> getAll() {
-        return individualCustomerService.getAll();
+    public ResponseEntity<DataResult<List<GetAllIndividualCustomerResponse>>> getAll() {
+        return ResponseEntity.ok(individualCustomerService.getAll());
     }
 
     @PostMapping("/add")

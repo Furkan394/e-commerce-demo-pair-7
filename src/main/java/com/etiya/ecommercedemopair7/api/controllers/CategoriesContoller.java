@@ -28,23 +28,23 @@ public class CategoriesContoller {
     }
 
     @GetMapping
-    public DataResult<List<GetAllCategoryResponse>> getAll() {
-        return categoryService.getAll();
+    public ResponseEntity<DataResult<List<GetAllCategoryResponse>>> getAll() {
+        return ResponseEntity.ok(categoryService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetCategoryResponse> getById(@PathVariable int id) {
-        return categoryService.getById(id);
+    public ResponseEntity<DataResult<GetCategoryResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(categoryService.getById(id));
     }
 
     @GetMapping("get-by-name")
-    public DataResult<Category> getByName(@RequestParam("name") String name) {
-        return categoryService.getByName(name);
+    public ResponseEntity<DataResult<Category>> getByName(@RequestParam("name") String name) {
+        return ResponseEntity.ok(categoryService.getByName(name));
     }
 
     @GetMapping("custom-get-by-name")
-    public DataResult<Category> customGetByName(@RequestParam("name") String name) {
-        return categoryService.customGetByName(name);
+    public ResponseEntity<DataResult<Category>> customGetByName(@RequestParam("name") String name) {
+        return ResponseEntity.ok(categoryService.customGetByName(name));
     }
 
     @PostMapping("/add")

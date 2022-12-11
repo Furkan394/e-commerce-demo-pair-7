@@ -5,6 +5,7 @@ import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.dtos.OrderItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,7 @@ public class OrderItemsController {
     }
 
     @GetMapping("/get-order-item-dto")
-    public DataResult<List<OrderItemDto>> getOrderItemDto(){
-        return orderItemService.getOrderItemDto();
+    public ResponseEntity<DataResult<List<OrderItemDto>>> getOrderItemDto() {
+        return ResponseEntity.ok(orderItemService.getOrderItemDto());
     }
 }

@@ -20,22 +20,22 @@ public class BasketsController {
     private IBasketService basketService;
 
     @Autowired
-    public BasketsController(IBasketService basketService){
+    public BasketsController(IBasketService basketService) {
         this.basketService = basketService;
     }
 
     @GetMapping
-    public DataResult<List<GetAllBasketResponse>> getAll(){
-        return basketService.getAll();
+    public ResponseEntity<DataResult<List<GetAllBasketResponse>>> getAll() {
+        return ResponseEntity.ok(basketService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DataResult<Basket> getById(@PathVariable int id){
-        return basketService.getById(id);
+    public ResponseEntity<DataResult<Basket>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(basketService.getById(id));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<DataResult<AddBasketResponse>> add (@RequestBody AddBasketRequest addBasketRequest){
+    public ResponseEntity<DataResult<AddBasketResponse>> add(@RequestBody AddBasketRequest addBasketRequest) {
         return new ResponseEntity<>(basketService.add(addBasketRequest), HttpStatus.CREATED);
     }
 }

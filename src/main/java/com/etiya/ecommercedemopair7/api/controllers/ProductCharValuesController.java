@@ -24,8 +24,8 @@ public class ProductCharValuesController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllProductCharValueResponse>> getAll() {
-        return productCharValueService.getAll();
+    public ResponseEntity<DataResult<List<GetAllProductCharValueResponse>>> getAll() {
+        return ResponseEntity.ok(productCharValueService.getAll());
     }
 
     @PostMapping("/add")

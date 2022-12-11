@@ -28,19 +28,19 @@ public class AddressesController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllAddressResponse>> getAll(){
-        return addressService.getAll();
+    public ResponseEntity<DataResult<List<GetAllAddressResponse>>> getAll(){
+        return ResponseEntity.ok(addressService.getAll());
     }
     @GetMapping("/{id}")
-    public DataResult<GetAddressResponse> getById(@PathVariable int id) {
-        return addressService.getById(id);
+    public ResponseEntity<DataResult<GetAddressResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(addressService.getById(id));
     }
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddAddressResponse>> add(@RequestBody @Valid AddAddressRequest addAddressRequest) {
         return new ResponseEntity<>(addressService.add(addAddressRequest), HttpStatus.CREATED);
     }
     @GetMapping("/get-address-dto")
-    public DataResult<List<AddressDto>> getAddressDto() {
-        return addressService.getAddressDto();
+    public ResponseEntity<DataResult<List<AddressDto>>> getAddressDto() {
+        return ResponseEntity.ok(addressService.getAddressDto());
     }
 }

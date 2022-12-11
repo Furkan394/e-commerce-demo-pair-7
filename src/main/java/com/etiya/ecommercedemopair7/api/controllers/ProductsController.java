@@ -28,23 +28,23 @@ public class ProductsController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllProductResponse>> getAll(){
-        return productService.getAll();
+    public ResponseEntity<DataResult<List<GetAllProductResponse>>> getAll() {
+        return ResponseEntity.ok(productService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetProductResponse> getById(@PathVariable int id){
-        return productService.getById(id);
+    public ResponseEntity<DataResult<GetProductResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(productService.getById(id));
     }
 
     @GetMapping("get-by-name")
-    public DataResult<Product> getByName(@RequestParam("name") String name){
-        return productService.getByName(name);
+    public ResponseEntity<DataResult<Product>> getByName(@RequestParam("name") String name) {
+        return ResponseEntity.ok(productService.getByName(name));
     }
 
     @GetMapping("custom-get-by-name")
-    public DataResult<Product> customGetByName(@RequestParam("name") String name){
-        return productService.customGetByName(name);
+    public ResponseEntity<DataResult<Product>> customGetByName(@RequestParam("name") String name) {
+        return ResponseEntity.ok(productService.customGetByName(name));
     }
 
     @PostMapping("/add")

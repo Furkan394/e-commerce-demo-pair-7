@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.response.streets.GetAllStreetRespon
 import com.etiya.ecommercedemopair7.business.response.streets.GetStreetResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,13 +27,13 @@ public class StreetsController {
 
 
     @GetMapping
-    public DataResult<List<GetAllStreetResponse>> getAll() {
-        return streetService.getAll();
+    public ResponseEntity<DataResult<List<GetAllStreetResponse>>> getAll() {
+        return ResponseEntity.ok(streetService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetStreetResponse> getById(@PathVariable int id) {
-        return this.streetService.getById(id);
+    public ResponseEntity<DataResult<GetStreetResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(streetService.getById(id));
     }
 }
 

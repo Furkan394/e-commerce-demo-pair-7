@@ -7,6 +7,7 @@ import com.etiya.ecommercedemopair7.business.response.cities.GetCityResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.City;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,17 +22,17 @@ public class CitiesController {
     private ICityService cityService;
 
     @Autowired
-    public CitiesController(ICityService cityService){
+    public CitiesController(ICityService cityService) {
         this.cityService = cityService;
     }
 
     @GetMapping
-    public DataResult<List<GetAllCityResponse>> getAll() {
-        return cityService.getAll();
+    public ResponseEntity<DataResult<List<GetAllCityResponse>>> getAll() {
+        return ResponseEntity.ok(cityService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetCityResponse> getById(@PathVariable int id) {
-        return this.cityService.getById(id);
+    public ResponseEntity<DataResult<GetCityResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(cityService.getById(id));
     }
 }

@@ -26,13 +26,13 @@ public class ProductCharsController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllProductCharResponse>> getAll() {
-        return productCharService.getAll();
+    public ResponseEntity<DataResult<List<GetAllProductCharResponse>>> getAll() {
+        return ResponseEntity.ok(productCharService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetProductCharResponse> getById(@PathVariable int id) {
-        return productCharService.getById(id);
+    public ResponseEntity<DataResult<GetProductCharResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(productCharService.getById(id));
     }
 
     @PostMapping("/add")

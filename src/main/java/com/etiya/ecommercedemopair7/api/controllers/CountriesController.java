@@ -7,6 +7,7 @@ import com.etiya.ecommercedemopair7.business.response.countries.GetCountryRespon
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Country;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,12 +24,12 @@ public class CountriesController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllCountryResponse>> getAll() {
-        return countryService.getAll();
+    public ResponseEntity<DataResult<List<GetAllCountryResponse>>> getAll() {
+        return ResponseEntity.ok(countryService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetCountryResponse> getById(@PathVariable int id) {
-        return this.countryService.getById(id);
+    public ResponseEntity<DataResult<GetCountryResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(countryService.getById(id));
     }
 }

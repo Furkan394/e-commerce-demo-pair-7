@@ -25,8 +25,8 @@ public class PaymentTypesController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllPaymentTypeResponse>> getAll() {
-        return paymentTypeService.getAll();
+    public ResponseEntity<DataResult<List<GetAllPaymentTypeResponse>>> getAll() {
+        return ResponseEntity.ok(paymentTypeService.getAll());
     }
 
     @PostMapping("/add")

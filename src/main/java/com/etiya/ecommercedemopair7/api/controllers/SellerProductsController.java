@@ -26,8 +26,8 @@ public class SellerProductsController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllSellerProductResponse>> getAll() {
-        return sellerProductService.getAll();
+    public ResponseEntity<DataResult<List<GetAllSellerProductResponse>>> getAll() {
+        return ResponseEntity.ok(sellerProductService.getAll());
     }
 
     @PostMapping("/add")

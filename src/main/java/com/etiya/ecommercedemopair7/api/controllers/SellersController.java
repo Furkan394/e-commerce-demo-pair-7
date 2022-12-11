@@ -26,13 +26,13 @@ public class SellersController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllSellerResponse>> getAll() {
-        return sellerService.getAll();
+    public ResponseEntity<DataResult<List<GetAllSellerResponse>>> getAll() {
+        return ResponseEntity.ok(sellerService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetSellerResponse> getById(@PathVariable int id) {
-        return sellerService.getById(id);
+    public ResponseEntity<DataResult<GetSellerResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(sellerService.getById(id));
     }
 
     @PostMapping("/add")

@@ -26,13 +26,13 @@ public class DeliveryOptionsController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllDeliveryOptionResponse>> getAll() {
-        return deliveryOptionService.getAll();
+    public ResponseEntity<DataResult<List<GetAllDeliveryOptionResponse>>> getAll() {
+        return ResponseEntity.ok(deliveryOptionService.getAll());
     }
 
     @GetMapping("/{id}")
-    public DataResult<GetDeliveryOptionResponse> getById(@PathVariable int id) {
-        return deliveryOptionService.getById(id);
+    public ResponseEntity<DataResult<GetDeliveryOptionResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(deliveryOptionService.getById(id));
     }
 
     @PostMapping("/add")

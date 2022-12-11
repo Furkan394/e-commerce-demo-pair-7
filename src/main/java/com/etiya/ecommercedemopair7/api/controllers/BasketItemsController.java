@@ -24,8 +24,8 @@ public class BasketItemsController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllBasketItemResponse>> getAll() {
-        return basketItemService.getAll();
+    public ResponseEntity<DataResult<List<GetAllBasketItemResponse>>> getAll() {
+        return ResponseEntity.ok(basketItemService.getAll());
     }
 
     @PostMapping("/add")

@@ -27,16 +27,17 @@ public class OrdersController {
     }
 
     @GetMapping
-    public DataResult<List<GetAllOrderResponse>> getAll() {
-        return orderService.getAll();
+    public ResponseEntity<DataResult<List<GetAllOrderResponse>>> getAll() {
+        return ResponseEntity.ok(orderService.getAll());
     }
 
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddOrderResponse>> add(@RequestBody AddOrderRequest addOrderRequest) {
         return new ResponseEntity<>(orderService.add(addOrderRequest), HttpStatus.CREATED);
     }
+
     @GetMapping("/get-order-dto")
-    public DataResult<List<OrderDto>> getOrderDto(){
-        return orderService.getOrderDto();
+    public ResponseEntity<DataResult<List<OrderDto>>> getOrderDto() {
+        return ResponseEntity.ok(orderService.getOrderDto());
     }
 }
