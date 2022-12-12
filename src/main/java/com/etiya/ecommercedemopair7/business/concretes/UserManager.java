@@ -2,6 +2,8 @@ package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IUserService;
 import com.etiya.ecommercedemopair7.business.constants.Messages;
+import com.etiya.ecommercedemopair7.business.request.users.AddUserRequest;
+import com.etiya.ecommercedemopair7.business.response.users.AddUserResponse;
 import com.etiya.ecommercedemopair7.business.response.users.GetAllUserResponse;
 import com.etiya.ecommercedemopair7.business.response.users.GetUserResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
@@ -46,6 +48,17 @@ public class UserManager implements IUserService {
     @Override
     public DataResult<User> getByUserId(int userId) {
         return new SuccessDataResult<>(checkIfUserExistsById(userId), Messages.User.userReceived);
+    }
+
+    @Override
+    public DataResult<AddUserResponse> add(AddUserRequest addUserRequest) {
+        User user = mapper.forRequest().map(addUserRequest, User.class);
+
+        User savedUser = userRepository.save(user);
+
+        AddUserResponse response = mapper.forResponse().map(savedUser, AddUserResponse.class);
+
+        return new SuccessDataResult<>(response, Messages.User.userAdded);
     }
 
     private User checkIfUserExistsById(int userId) {
