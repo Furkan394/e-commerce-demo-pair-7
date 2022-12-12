@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "orders")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Order {
 
     @Id
@@ -47,4 +46,7 @@ public class Order {
 
     @OneToOne(mappedBy = "order")
     private Invoice invoice;
+
+    @OneToOne(mappedBy = "order")
+    private Payment payment;
 }
