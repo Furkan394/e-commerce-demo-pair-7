@@ -70,6 +70,13 @@ public class Messages {
         public static final String individualCustomerAdded = "Bireysel müşteri başarıyla eklendi";
     }
 
+    public static class Invoice {
+        public static final String invoiceNotFound = "İlgili fatura bulunamadı.";
+        public static final String invoicesListed = "Faturalar başarıyla listelendi";
+        public static final String invoiceReceived = "Fatura başarıyla gösterildi";
+        public static final String invoiceAdded = "Fatura başarıyla eklendi";
+    }
+
     public static class Order {
         public static final String ordersListed = "Siparişler başarıyla listelendi";
         public static final String orderReceived = "Sipariş başarıyla gösterildi";
