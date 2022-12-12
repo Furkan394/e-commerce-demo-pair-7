@@ -19,6 +19,6 @@ public class Customer extends User {
     @Column(name = "number")
     private String number;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Basket> baskets;
+    @OneToOne(mappedBy = "customer")
+    private Basket basket;
 }

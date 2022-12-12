@@ -24,8 +24,8 @@ public class Basket {
     @Column(name = "shipping_price")
     private double shippingPrice;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @OneToOne()
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
     @OneToMany(mappedBy = "basket")
