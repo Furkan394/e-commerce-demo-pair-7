@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.request.deliveryOptions.AddDelivery
 import com.etiya.ecommercedemopair7.business.response.deliveryOptions.AddDeliveryOptionResponse;
 import com.etiya.ecommercedemopair7.business.response.deliveryOptions.GetAllDeliveryOptionResponse;
 import com.etiya.ecommercedemopair7.business.response.deliveryOptions.GetDeliveryOptionResponse;
+import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
@@ -67,7 +68,7 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
         try {
             currentDeliveryOption = deliveryOptionRepository.findById(deliveryOptionId).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.DeliveryOption.deliveryOptionNotFound);
+            throw new BusinessException(Messages.DeliveryOption.deliveryOptionNotFound);
         }
         return currentDeliveryOption;
     }

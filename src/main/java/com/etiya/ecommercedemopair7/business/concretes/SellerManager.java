@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.request.sellers.AddSellerRequest;
 import com.etiya.ecommercedemopair7.business.response.sellers.AddSellerResponse;
 import com.etiya.ecommercedemopair7.business.response.sellers.GetAllSellerResponse;
 import com.etiya.ecommercedemopair7.business.response.sellers.GetSellerResponse;
+import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
@@ -67,7 +68,7 @@ public class SellerManager implements ISellerService {
         try {
             currentSeller = this.sellerRepository.findById(sellerId).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Seller.sellerNotFound);
+            throw new BusinessException(Messages.Seller.sellerNotFound);
         }
         return currentSeller;
     }

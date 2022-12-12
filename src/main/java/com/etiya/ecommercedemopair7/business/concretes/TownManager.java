@@ -4,6 +4,7 @@ import com.etiya.ecommercedemopair7.business.abstracts.ITownService;
 import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.response.towns.GetAllTownResponse;
 import com.etiya.ecommercedemopair7.business.response.towns.GetTownResponse;
+import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
@@ -48,7 +49,7 @@ public class TownManager implements ITownService {
         try {
             currentTown = this.townRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.Town.townNotFound);
+            throw new BusinessException(Messages.Town.townNotFound);
         }
         return currentTown;
     }

@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.request.productChars.AddProductChar
 import com.etiya.ecommercedemopair7.business.response.productChars.AddProductCharResponse;
 import com.etiya.ecommercedemopair7.business.response.productChars.GetAllProductCharResponse;
 import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
+import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
@@ -68,7 +69,7 @@ public class ProductCharManager implements IProductCharService {
         try {
             currentProductChar = productCharRepository.findById(productCharId).get();
         } catch (Exception e) {
-            throw new RuntimeException(Messages.ProductChar.productCharNotFound);
+            throw new BusinessException(Messages.ProductChar.productCharNotFound);
         }
         return currentProductChar;
     }
