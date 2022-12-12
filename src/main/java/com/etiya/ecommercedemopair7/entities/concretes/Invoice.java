@@ -13,13 +13,21 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "invoices")
-@PrimaryKeyJoinColumn(name = "id")
-public class Invoice extends Order {
+public class Invoice {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
     
     @Column(name = "number")
     private String number;
 
     @Column(name = "created_date")
     private LocalDate createdDate;
+
+    @OneToOne()
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private Order order;
 }
 
