@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.response.streets.GetAllStreetRespon
 import com.etiya.ecommercedemopair7.business.response.streets.GetStreetResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Street;
@@ -20,11 +21,13 @@ import java.util.stream.Collectors;
 public class StreetManager implements IStreetService {
     private IStreetRepository streetRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    StreetManager(IStreetRepository streetRepository, IModelMapperService mapper) {
+    StreetManager(IStreetRepository streetRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.streetRepository = streetRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -33,20 +36,20 @@ public class StreetManager implements IStreetService {
         List<GetAllStreetResponse> response = streets.stream()
                 .map(street -> mapper.forResponse().map(street, GetAllStreetResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Street.streetsListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Street.streetsListed));
     }
 
     @Override
     public DataResult<GetStreetResponse> getById(int streetId) {
         Street seller = checkIfStreetExistsById(streetId);
         GetStreetResponse response = mapper.forResponse().map(seller, GetStreetResponse.class);
-        return new SuccessDataResult<>(response, Messages.Street.streetReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Street.streetReceived));
 
     }
 
     @Override
     public DataResult<Street> getByStreetId(int streetId) {
-        return new SuccessDataResult<>(checkIfStreetExistsById(streetId), Messages.Street.streetReceived);
+        return new SuccessDataResult<>(checkIfStreetExistsById(streetId), messageSourceService.getMessage(Messages.Street.streetReceived));
     }
 
     private Street checkIfStreetExistsById(int id) {
@@ -54,7 +57,7 @@ public class StreetManager implements IStreetService {
         try {
             currentStreet = this.streetRepository.findById(id).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.Street.streetNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.Street.streetNotFound));
         }
         return currentStreet;
     }

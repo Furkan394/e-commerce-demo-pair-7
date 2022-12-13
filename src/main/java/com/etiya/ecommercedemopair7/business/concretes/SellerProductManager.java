@@ -8,6 +8,7 @@ import com.etiya.ecommercedemopair7.business.request.sellerProducts.AddSellerPro
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.AddSellerProductResponse;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetAllSellerProductResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
@@ -27,14 +28,16 @@ public class SellerProductManager implements ISellerProductService {
     private ISellerService sellerService;
     private IProductService productService;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
     public SellerProductManager(ISellerProductRepository sellerProductRepository, ISellerService sellerService,
-                                IProductService productService, IModelMapperService mapper) {
+                                IProductService productService, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.sellerProductRepository = sellerProductRepository;
         this.sellerService = sellerService;
         this.productService = productService;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class SellerProductManager implements ISellerProductService {
         List<GetAllSellerProductResponse> response = sellerProducts.stream()
                 .map(sellerProduct -> mapper.forResponse().map(sellerProduct, GetAllSellerProductResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Product.productsListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Product.productsListed));
     }
 
     @Override
@@ -58,7 +61,7 @@ public class SellerProductManager implements ISellerProductService {
 
         AddSellerProductResponse response = mapper.forResponse().map(savedSellerProduct, AddSellerProductResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.Product.productAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Product.productAdded));
     }
 
     private DataResult<Product> getProduct(AddSellerProductRequest addSellerProductRequest) {

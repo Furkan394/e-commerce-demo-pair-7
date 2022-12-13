@@ -1,7 +1,9 @@
 package com.etiya.ecommercedemopair7.business.concretes;
 
 import com.etiya.ecommercedemopair7.business.abstracts.IProductDetailService;
+import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductDetail;
@@ -18,17 +20,19 @@ public class ProductDetailManager implements IProductDetailService {
 
     private IProductDetailRepository productDetailRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    ProductDetailManager(IProductDetailRepository productDetailRepository, IModelMapperService mapper) {
+    ProductDetailManager(IProductDetailRepository productDetailRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.productDetailRepository = productDetailRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
     public DataResult<List<ProductDetailDto>> getProductDetail() {
         List<ProductDetail> productDetails = productDetailRepository.findAll();
         List<ProductDetailDto> response = productDetails.stream().map(productDetail -> mapper.forResponse().map(productDetail, ProductDetailDto.class)).collect(Collectors.toList());
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Product.productsListed));
     }
 }

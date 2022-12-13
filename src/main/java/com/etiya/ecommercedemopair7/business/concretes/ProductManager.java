@@ -8,6 +8,7 @@ import com.etiya.ecommercedemopair7.business.response.products.GetAllProductResp
 import com.etiya.ecommercedemopair7.business.response.products.GetProductResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
@@ -28,13 +29,13 @@ public class ProductManager implements IProductService {
 
     private IProductRepository productRepository;
     private IModelMapperService mapper;
-    private MessageSource messageSource;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    ProductManager(IProductRepository productRepository, IModelMapperService mapper, MessageSource messageSource) {
+    ProductManager(IProductRepository productRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.productRepository = productRepository;
         this.mapper = mapper;
-        this.messageSource = messageSource;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -44,29 +45,29 @@ public class ProductManager implements IProductService {
         List<GetAllProductResponse> response = products.stream()
                 .map(product -> this.mapper.forResponse().map(product, GetAllProductResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Product.productsListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Product.productsListed));
     }
 
     @Override
     public DataResult<GetProductResponse> getById(int productId) {
         Product product = existsByProductId(productId);
         GetProductResponse response = mapper.forResponse().map(product, GetProductResponse.class);
-        return new SuccessDataResult<>(response, Messages.Product.productReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Product.productReceived));
     }
 
     @Override
     public DataResult<Product> getByProductId(int productId) {
-        return new SuccessDataResult<>(existsByProductId(productId), Messages.Product.productReceived);
+        return new SuccessDataResult<>(existsByProductId(productId), messageSourceService.getMessage(Messages.Product.productReceived));
     }
 
     @Override
     public DataResult<Product> getByName(String name) {
-        return new SuccessDataResult<>(productRepository.findByName(name), Messages.Product.productReceived);
+        return new SuccessDataResult<>(productRepository.findByName(name), messageSourceService.getMessage(Messages.Product.productReceived));
     }
 
     @Override
     public DataResult<Product> customGetByName(String name) {
-        return new SuccessDataResult<>(productRepository.customFindByName(name), Messages.Product.productReceived);
+        return new SuccessDataResult<>(productRepository.customFindByName(name), messageSourceService.getMessage(Messages.Product.productReceived));
     }
 
     @Override
@@ -78,17 +79,17 @@ public class ProductManager implements IProductService {
 
         AddProductResponse response = mapper.forResponse().map(savedProduct, AddProductResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.Product.productAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Product.productAdded));
     }
 
     @Override
     public DataResult<Page<GetAllProductResponse>> getAllWithPagination(Pageable pageable) {
-        return new SuccessDataResult<>(productRepository.findAllProducts(pageable), Messages.Product.productsListed);
+        return new SuccessDataResult<>(productRepository.findAllProducts(pageable), messageSourceService.getMessage(Messages.Product.productsListed));
     }
 
     @Override
     public DataResult<Slice<Product>> getAllWithSlice(Pageable pageable) {
-        return new SuccessDataResult<>(productRepository.findAllWithSlice(pageable), Messages.Product.productsListed);
+        return new SuccessDataResult<>(productRepository.findAllWithSlice(pageable), messageSourceService.getMessage(Messages.Product.productsListed));
     }
 
     private Product existsByProductId(int id) {
@@ -96,8 +97,7 @@ public class ProductManager implements IProductService {
         try {
             currentProduct = this.productRepository.findById(id).get();
         } catch (Exception e) {
-            throw new BusinessException(messageSource.getMessage(Messages.Product.productNotFound,
-                    null, LocaleContextHolder.getLocale()));
+            throw new BusinessException(messageSourceService.getMessage(Messages.Product.productNotFound));
         }
         return currentProduct;
     }

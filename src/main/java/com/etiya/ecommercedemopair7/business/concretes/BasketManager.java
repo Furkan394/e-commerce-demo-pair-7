@@ -8,6 +8,7 @@ import com.etiya.ecommercedemopair7.business.response.baskets.AddBasketResponse;
 import com.etiya.ecommercedemopair7.business.response.baskets.GetAllBasketResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Basket;
@@ -24,12 +25,14 @@ public class BasketManager implements IBasketService {
     private IBasketRepository basketRepository;
     private ICustomerService customerService;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public BasketManager(IBasketRepository basketRepository, ICustomerService customerService, IModelMapperService mapper) {
+    public BasketManager(IBasketRepository basketRepository, ICustomerService customerService, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.basketRepository = basketRepository;
         this.customerService = customerService;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -38,12 +41,12 @@ public class BasketManager implements IBasketService {
         List<GetAllBasketResponse> response = baskets.stream()
                 .map(basket -> mapper.forResponse().map(basket, GetAllBasketResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Basket.basketsListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Basket.basketsListed));
     }
 
     @Override
     public DataResult<Basket> getById(int basketId) {
-        return new SuccessDataResult<>(checkIfBasketExistsById(basketId), Messages.Basket.basketReceived);
+        return new SuccessDataResult<>(checkIfBasketExistsById(basketId), messageSourceService.getMessage(Messages.Basket.basketReceived));
     }
 
     @Override
@@ -57,7 +60,7 @@ public class BasketManager implements IBasketService {
 
         AddBasketResponse response = mapper.forResponse().map(savedBasket, AddBasketResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.Basket.basketAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Basket.basketAdded));
     }
 
     private DataResult<Customer> getCustomer(AddBasketRequest addBasketRequest) {
@@ -70,7 +73,7 @@ public class BasketManager implements IBasketService {
         try {
             currentBasket = this.basketRepository.findById(basketId).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.Basket.basketNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.Basket.basketNotFound));
         }
         return currentBasket;
     }

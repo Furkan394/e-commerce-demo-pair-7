@@ -8,6 +8,7 @@ import com.etiya.ecommercedemopair7.business.response.users.GetAllUserResponse;
 import com.etiya.ecommercedemopair7.business.response.users.GetUserResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.User;
@@ -22,11 +23,13 @@ import java.util.stream.Collectors;
 public class UserManager implements IUserService {
     private IUserRepository userRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    UserManager(IUserRepository userRepository, IModelMapperService mapper) {
+    UserManager(IUserRepository userRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -35,19 +38,19 @@ public class UserManager implements IUserService {
         List<GetAllUserResponse> response = users.stream()
                 .map(user -> mapper.forResponse().map(user, GetAllUserResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.User.usersListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.User.usersListed));
     }
 
     @Override
     public DataResult<GetUserResponse> getById(int userId) {
         User user = checkIfUserExistsById(userId);
         GetUserResponse response = mapper.forResponse().map(user, GetUserResponse.class);
-        return new SuccessDataResult<>(response, Messages.User.userReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.User.userReceived));
     }
 
     @Override
     public DataResult<User> getByUserId(int userId) {
-        return new SuccessDataResult<>(checkIfUserExistsById(userId), Messages.User.userReceived);
+        return new SuccessDataResult<>(checkIfUserExistsById(userId), messageSourceService.getMessage(Messages.User.userReceived));
     }
 
     @Override
@@ -58,7 +61,7 @@ public class UserManager implements IUserService {
 
         AddUserResponse response = mapper.forResponse().map(savedUser, AddUserResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.User.userAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.User.userAdded));
     }
 
     private User checkIfUserExistsById(int userId) {
@@ -66,7 +69,7 @@ public class UserManager implements IUserService {
         try {
             currentUser = this.userRepository.findById(userId).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.User.userNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.User.userNotFound));
         }
         return currentUser;
     }

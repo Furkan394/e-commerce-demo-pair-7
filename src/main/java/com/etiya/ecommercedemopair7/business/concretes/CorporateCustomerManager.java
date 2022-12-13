@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.request.corporateCustomers.AddCorpo
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.AddCorporateCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.GetAllCorporateCustomerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.CorporateCustomer;
@@ -21,11 +22,13 @@ public class CorporateCustomerManager implements ICorporateCustomerService {
 
     private ICorporateCustomerRepository corporateCustomerRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public CorporateCustomerManager(ICorporateCustomerRepository corporateCustomerRepository, IModelMapperService mapper) {
+    public CorporateCustomerManager(ICorporateCustomerRepository corporateCustomerRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.corporateCustomerRepository = corporateCustomerRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class CorporateCustomerManager implements ICorporateCustomerService {
         List<GetAllCorporateCustomerResponse> response = corporateCustomers.stream()
                 .map(corporateCustomer -> mapper.forResponse().map(corporateCustomer, GetAllCorporateCustomerResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.CorporateCustomer.corporateCustomersListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.CorporateCustomer.corporateCustomersListed));
     }
 
     @Override
@@ -46,6 +49,6 @@ public class CorporateCustomerManager implements ICorporateCustomerService {
 
         AddCorporateCustomerResponse response = mapper.forResponse().map(savedCorporateCustomer, AddCorporateCustomerResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.CorporateCustomer.corporateCustomerAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.CorporateCustomer.corporateCustomerAdded));
     }
 }

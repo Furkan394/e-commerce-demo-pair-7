@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.response.districts.GetAllDistrictRe
 import com.etiya.ecommercedemopair7.business.response.districts.GetDistrictResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.District;
@@ -21,11 +22,13 @@ public class DistrictManager implements IDistrictService {
 
     private IDistrictRepository districtRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public DistrictManager(IDistrictRepository districtRepository, IModelMapperService mapper) {
+    public DistrictManager(IDistrictRepository districtRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.districtRepository = districtRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -34,14 +37,14 @@ public class DistrictManager implements IDistrictService {
         List<GetAllDistrictResponse> response = districts.stream()
                 .map(district -> mapper.forResponse().map(district, GetAllDistrictResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.District.districtsListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.District.districtsListed));
     }
 
     @Override
     public DataResult<GetDistrictResponse> getById(int districtId) {
         District district = checkIfDistrictExistsById(districtId);
         GetDistrictResponse response = mapper.forResponse().map(district, GetDistrictResponse.class);
-        return new SuccessDataResult<>(response,Messages.District.districtReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.District.districtReceived));
     }
 
     private District checkIfDistrictExistsById(int id) {
@@ -49,7 +52,7 @@ public class DistrictManager implements IDistrictService {
         try {
             currentDistrict = this.districtRepository.findById(id).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.District.districtNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.District.districtNotFound));
         }
         return currentDistrict;
     }

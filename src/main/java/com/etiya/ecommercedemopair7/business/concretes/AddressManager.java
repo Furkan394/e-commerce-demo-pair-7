@@ -10,6 +10,7 @@ import com.etiya.ecommercedemopair7.business.response.addresses.GetAddressRespon
 import com.etiya.ecommercedemopair7.business.response.addresses.GetAllAddressResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Address;
@@ -30,13 +31,15 @@ public class AddressManager implements IAddressService {
     private IStreetService streetService;
     private IUserService userService;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    AddressManager(IAddressRepository addressRepository, IStreetService streetService, IUserService userService, IModelMapperService mapper) {
+    AddressManager(IAddressRepository addressRepository, IStreetService streetService, IUserService userService, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.addressRepository = addressRepository;
         this.streetService = streetService;
         this.userService = userService;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -45,14 +48,14 @@ public class AddressManager implements IAddressService {
         List<GetAllAddressResponse> response = addresses.stream()
                 .map(address -> mapper.forResponse().map(address, GetAllAddressResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Address.addressesListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Address.addressesListed));
     }
 
     @Override
     public DataResult<GetAddressResponse> getById(int addressId) {
         Address address = checkIfAddressExistsById(addressId);
         GetAddressResponse response = mapper.forResponse().map(address, GetAddressResponse.class);
-        return new SuccessDataResult<>(response, Messages.Address.addressReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Address.addressReceived));
     }
 
     @Override
@@ -72,7 +75,7 @@ public class AddressManager implements IAddressService {
 
         AddAddressResponse response = mapper.forResponse().map(savedAddress, AddAddressResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.Address.addressAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Address.addressAdded));
     }
 
     @Override
@@ -80,7 +83,7 @@ public class AddressManager implements IAddressService {
         //TODO: Countryname null
         List<Address> addresses = this.addressRepository.findAll();
         List<AddressDto> response = addresses.stream().map(address -> mapper.forResponse().map(address, AddressDto.class)).collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Address.addressesListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Address.addressesListed));
     }
 
     private DataResult<User> getUser(int userId) {
@@ -98,7 +101,7 @@ public class AddressManager implements IAddressService {
         try {
             currentAddress = this.addressRepository.findById(addressId).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.Address.addressNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.Address.addressNotFound));
         }
         return currentAddress;
     }

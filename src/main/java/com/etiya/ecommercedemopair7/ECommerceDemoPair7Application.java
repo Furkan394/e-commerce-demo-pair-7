@@ -36,7 +36,7 @@ public class ECommerceDemoPair7Application {
     @Bean
     public ResourceBundleMessageSource bundleMessageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages");
+        messageSource.setBasename("classpath:messages");
         return messageSource;
     }
 

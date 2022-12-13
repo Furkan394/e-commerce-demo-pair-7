@@ -2,6 +2,7 @@ package com.etiya.ecommercedemopair7.core.utilities.messages;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -18,7 +19,7 @@ public class MessageSourceManager implements IMessageSourceService {
 
     @Override
     public String getMessage(String code) {
-        messageSource.getMessage(code, null, Locale.US);
-        return messageSource.toString();
+        String message = messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
+        return message;
     }
 }

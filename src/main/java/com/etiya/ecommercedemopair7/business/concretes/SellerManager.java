@@ -8,6 +8,7 @@ import com.etiya.ecommercedemopair7.business.response.sellers.GetAllSellerRespon
 import com.etiya.ecommercedemopair7.business.response.sellers.GetSellerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Seller;
@@ -23,11 +24,13 @@ public class SellerManager implements ISellerService {
 
     private ISellerRepository sellerRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public SellerManager(ISellerRepository sellerRepository, IModelMapperService mapper) {
+    public SellerManager(ISellerRepository sellerRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.sellerRepository = sellerRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -36,19 +39,19 @@ public class SellerManager implements ISellerService {
         List<GetAllSellerResponse> response = sellers.stream()
                 .map(seller -> mapper.forResponse().map(seller, GetAllSellerResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Seller.sellersListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Seller.sellersListed));
     }
 
     @Override
     public DataResult<GetSellerResponse> getById(int sellerId) {
         Seller seller = existsBySellerId(sellerId);
         GetSellerResponse response = mapper.forResponse().map(seller, GetSellerResponse.class);
-        return new SuccessDataResult<>(response, Messages.Seller.sellerReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Seller.sellerReceived));
     }
 
     @Override
     public DataResult<Seller> getBySellerId(int sellerId) {
-        return new SuccessDataResult<>(existsBySellerId(sellerId), Messages.Seller.sellerReceived);
+        return new SuccessDataResult<>(existsBySellerId(sellerId), messageSourceService.getMessage(Messages.Seller.sellerReceived));
     }
 
     @Override
@@ -60,7 +63,7 @@ public class SellerManager implements ISellerService {
 
         AddSellerResponse response = mapper.forResponse().map(savedSeller, AddSellerResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.Seller.sellerAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Seller.sellerAdded));
     }
 
     private Seller existsBySellerId(int sellerId) {
@@ -68,7 +71,7 @@ public class SellerManager implements ISellerService {
         try {
             currentSeller = this.sellerRepository.findById(sellerId).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.Seller.sellerNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.Seller.sellerNotFound));
         }
         return currentSeller;
     }

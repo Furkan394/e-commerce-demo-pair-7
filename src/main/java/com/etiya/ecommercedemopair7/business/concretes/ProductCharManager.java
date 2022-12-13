@@ -8,6 +8,7 @@ import com.etiya.ecommercedemopair7.business.response.productChars.GetAllProduct
 import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
@@ -22,11 +23,13 @@ import java.util.stream.Collectors;
 public class ProductCharManager implements IProductCharService {
     private IProductCharRepository productCharRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public ProductCharManager(IProductCharRepository productcharRepository, IModelMapperService mapper) {
+    public ProductCharManager(IProductCharRepository productcharRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.productCharRepository = productcharRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
 
@@ -36,19 +39,20 @@ public class ProductCharManager implements IProductCharService {
         List<GetAllProductCharResponse> response = productChars.stream()
                 .map(productChar -> mapper.forResponse().map(productChar, GetAllProductCharResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.ProductChar.productCharsListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.ProductChar.productCharsListed));
     }
 
     @Override
     public DataResult<GetProductCharResponse> getById(int productCharId) {
         DataResult<ProductChar> productChar = getByProductCharId(productCharId);
         GetProductCharResponse response = mapper.forResponse().map(productChar, GetProductCharResponse.class);
-        return new SuccessDataResult<>(response, Messages.ProductChar.productCharReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.ProductChar.productCharReceived));
     }
 
     @Override
     public DataResult<ProductChar> getByProductCharId(int productCharId) {
-        return new SuccessDataResult<>(checkIfProductCharExistsById(productCharId), Messages.ProductChar.productCharReceived);
+        return new SuccessDataResult<>(checkIfProductCharExistsById(productCharId),
+                messageSourceService.getMessage(Messages.ProductChar.productCharReceived));
     }
 
     @Override
@@ -60,7 +64,7 @@ public class ProductCharManager implements IProductCharService {
 
         AddProductCharResponse response = mapper.forResponse().map(savedProductChar, AddProductCharResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.ProductChar.productCharAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.ProductChar.productCharAdded));
 
     }
 
@@ -69,7 +73,7 @@ public class ProductCharManager implements IProductCharService {
         try {
             currentProductChar = productCharRepository.findById(productCharId).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.ProductChar.productCharNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.ProductChar.productCharNotFound));
         }
         return currentProductChar;
     }

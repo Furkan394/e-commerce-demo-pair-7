@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.response.cities.GetAllCityResponse;
 import com.etiya.ecommercedemopair7.business.response.cities.GetCityResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.City;
@@ -21,11 +22,13 @@ public class CityManager implements ICityService {
 
     private ICityRepository cityRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public CityManager(ICityRepository cityRepository, IModelMapperService mapper) {
+    public CityManager(ICityRepository cityRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.cityRepository = cityRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -34,14 +37,14 @@ public class CityManager implements ICityService {
         List<GetAllCityResponse> response = cities.stream()
                 .map(city -> mapper.forResponse().map(city, GetAllCityResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.City.citiesListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.City.citiesListed));
     }
 
     @Override
     public DataResult<GetCityResponse> getById(int cityId) {
         City city = checkIfCityExistsById(cityId);
         GetCityResponse response = mapper.forResponse().map(city, GetCityResponse.class);
-        return new SuccessDataResult<>(response, Messages.City.cityReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.City.cityReceived));
     }
 
     private City checkIfCityExistsById(int id) {
@@ -49,7 +52,7 @@ public class CityManager implements ICityService {
         try {
             currentCity = this.cityRepository.findById(id).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.City.cityNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.City.cityNotFound));
         }
         return currentCity;
     }

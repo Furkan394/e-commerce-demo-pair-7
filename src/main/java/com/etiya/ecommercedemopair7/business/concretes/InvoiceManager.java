@@ -8,6 +8,7 @@ import com.etiya.ecommercedemopair7.business.response.invoices.GetAllInvoiceResp
 import com.etiya.ecommercedemopair7.business.response.invoices.GetInvoiceResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Invoice;
@@ -23,11 +24,13 @@ public class InvoiceManager implements IInvoiceService {
 
     private IInvoiceRepository invoiceRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public InvoiceManager(IInvoiceRepository invoiceRepository, IModelMapperService mapper) {
+    public InvoiceManager(IInvoiceRepository invoiceRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.invoiceRepository = invoiceRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -36,14 +39,14 @@ public class InvoiceManager implements IInvoiceService {
         List<GetAllInvoiceResponse> response = invoices.stream()
                 .map(invoice -> mapper.forResponse().map(invoice, GetAllInvoiceResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Invoice.invoicesListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Invoice.invoicesListed));
     }
 
     @Override
     public DataResult<GetInvoiceResponse> getById(int invoiceId) {
         Invoice invoice = checkIfInvoiceExistsById(invoiceId);
         GetInvoiceResponse response = mapper.forResponse().map(invoice, GetInvoiceResponse.class);
-        return new SuccessDataResult<>(response, Messages.Invoice.invoiceReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Invoice.invoiceReceived));
     }
 
     @Override
@@ -59,7 +62,7 @@ public class InvoiceManager implements IInvoiceService {
 
         AddInvoiceResponse response = mapper.forResponse().map(savedInvoice, AddInvoiceResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.Invoice.invoiceAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Invoice.invoiceAdded));
     }
 
     private Invoice checkIfInvoiceExistsById(int invoiceId) {
@@ -67,7 +70,7 @@ public class InvoiceManager implements IInvoiceService {
         try {
             currentInvoice = invoiceRepository.findById(invoiceId).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.Invoice.invoiceNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.Invoice.invoiceNotFound));
         }
         return currentInvoice;
     }

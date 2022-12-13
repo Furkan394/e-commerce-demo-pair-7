@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.request.paymentTypes.AddPaymentType
 import com.etiya.ecommercedemopair7.business.response.paymentTypes.AddPaymentTypeResponse;
 import com.etiya.ecommercedemopair7.business.response.paymentTypes.GetAllPaymentTypeResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.PaymentType;
@@ -21,11 +22,13 @@ public class PaymentTypeManager implements IPaymentTypeService {
 
     private IPaymentTypeRepository paymentTypeRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public PaymentTypeManager(IPaymentTypeRepository paymentTypeRepository, IModelMapperService mapper) {
+    public PaymentTypeManager(IPaymentTypeRepository paymentTypeRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.paymentTypeRepository = paymentTypeRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class PaymentTypeManager implements IPaymentTypeService {
         List<GetAllPaymentTypeResponse> response = paymentTypes.stream()
                 .map(paymentType -> mapper.forResponse().map(paymentType, GetAllPaymentTypeResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.PaymentType.paymentTypesListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.PaymentType.paymentTypesListed));
     }
 
     @Override
@@ -46,6 +49,6 @@ public class PaymentTypeManager implements IPaymentTypeService {
 
         AddPaymentTypeResponse response = mapper.forResponse().map(savedPaymentType, AddPaymentTypeResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.PaymentType.paymentTypeAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.PaymentType.paymentTypeAdded));
     }
 }

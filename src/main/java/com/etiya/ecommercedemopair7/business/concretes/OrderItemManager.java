@@ -3,6 +3,7 @@ package com.etiya.ecommercedemopair7.business.concretes;
 import com.etiya.ecommercedemopair7.business.abstracts.IOrderItemService;
 import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.OrderItem;
@@ -19,11 +20,13 @@ public class OrderItemManager implements IOrderItemService {
 
     private IOrderItemRepository orderItemRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public OrderItemManager(IOrderItemRepository orderItemRepository, IModelMapperService mapper) {
+    public OrderItemManager(IOrderItemRepository orderItemRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.orderItemRepository = orderItemRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -31,6 +34,6 @@ public class OrderItemManager implements IOrderItemService {
         //TODO: null değerler var
         List<OrderItem> orderItems = orderItemRepository.findAll();
         List<OrderItemDto> response = orderItems.stream().map(orderItem -> mapper.forResponse().map(orderItem, OrderItemDto.class)).collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Order.ordersListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Order.ordersListed));
     }
 }

@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 public class CategoryManager implements ICategoryService {
     private ICategoryRepository categoryRepository;
     private IModelMapperService mapper;
-    private IMessageSourceService messageSource;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    CategoryManager(ICategoryRepository categoryRepository, IModelMapperService mapper, IMessageSourceService messageSource) {
+    CategoryManager(ICategoryRepository categoryRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.categoryRepository = categoryRepository;
         this.mapper = mapper;
-        this.messageSource = messageSource;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -40,29 +40,29 @@ public class CategoryManager implements ICategoryService {
         List<GetAllCategoryResponse> response = categories.stream()
                 .map(category -> this.mapper.forResponse().map(category, GetAllCategoryResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Category.categoriesListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Category.categoriesListed));
     }
 
     @Override
     public DataResult<GetCategoryResponse> getById(int categoryId) {
         Category category = existsByCategoryId(categoryId);
         GetCategoryResponse response = mapper.forResponse().map(category, GetCategoryResponse.class);
-        return new SuccessDataResult<>(response, Messages.Category.categoryReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Category.categoryReceived));
     }
 
     @Override
     public DataResult<Category> getByCategoryId(int categoryId) {
-        return new SuccessDataResult<>(existsByCategoryId(categoryId), Messages.Category.categoryReceived);
+        return new SuccessDataResult<>(existsByCategoryId(categoryId), messageSourceService.getMessage(Messages.Category.categoryReceived));
     }
 
     @Override
     public DataResult<Category> getByName(String name) {
-        return new SuccessDataResult<>(categoryRepository.findByName(name), Messages.Category.categoryReceived);
+        return new SuccessDataResult<>(categoryRepository.findByName(name),messageSourceService.getMessage(Messages.Category.categoryReceived));
     }
 
     @Override
     public DataResult<Category> customGetByName(String name) {
-        return new SuccessDataResult<>(categoryRepository.customFindByName(name), Messages.Category.categoryReceived);
+        return new SuccessDataResult<>(categoryRepository.customFindByName(name), messageSourceService.getMessage(Messages.Category.categoryReceived));
     }
 
     @Override
@@ -80,13 +80,13 @@ public class CategoryManager implements ICategoryService {
         Category savedCategory = categoryRepository.save(category);
 
         AddCategoryResponse response = mapper.forResponse().map(savedCategory, AddCategoryResponse.class);
-        return new SuccessDataResult<>(response, Messages.Category.categoryAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Category.categoryAdded));
     }
 
     private void categoryCanNotExistWithSameName(String name) {
         boolean isExists = categoryRepository.existsCategoryByName(name);
         if (isExists)
-            throw new BusinessException(Messages.Category.categoryExistsWithSameName);
+            throw new BusinessException(messageSourceService.getMessage(Messages.Category.categoryExistsWithSameName));
     }
 
     private Category existsByCategoryId(int id) {
@@ -94,7 +94,7 @@ public class CategoryManager implements ICategoryService {
         try {
             currentCategory = this.categoryRepository.findById(id).get();
         } catch (Exception e) {
-            throw new BusinessException(messageSource.getMessage(Messages.Category.categoryNotFound));
+            throw new BusinessException(messageSourceService.getMessage(Messages.Category.categoryNotFound));
         }
         return currentCategory;
     }

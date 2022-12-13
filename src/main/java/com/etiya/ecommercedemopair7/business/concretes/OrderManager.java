@@ -8,6 +8,7 @@ import com.etiya.ecommercedemopair7.business.request.orders.AddOrderRequest;
 import com.etiya.ecommercedemopair7.business.response.orders.AddOrderResponse;
 import com.etiya.ecommercedemopair7.business.response.orders.GetAllOrderResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Address;
@@ -27,13 +28,15 @@ public class OrderManager implements IOrderService {
     private IDeliveryOptionService deliveryOptionService;
     private IAddressService addressService;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public OrderManager(IOrderRepository orderRepository, IDeliveryOptionService deliveryOptionService, IAddressService addressService, IModelMapperService mapper) {
+    public OrderManager(IOrderRepository orderRepository, IDeliveryOptionService deliveryOptionService, IAddressService addressService, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.orderRepository = orderRepository;
         this.deliveryOptionService = deliveryOptionService;
         this.addressService = addressService;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class OrderManager implements IOrderService {
         List<GetAllOrderResponse> response = orders.stream()
                 .map(order -> mapper.forResponse().map(order, GetAllOrderResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Order.ordersListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Order.ordersListed));
     }
 
     @Override
@@ -58,7 +61,7 @@ public class OrderManager implements IOrderService {
 
         AddOrderResponse response = mapper.forResponse().map(savedOrder, AddOrderResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.Order.orderAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Order.orderAdded));
     }
 
     @Override
@@ -66,7 +69,7 @@ public class OrderManager implements IOrderService {
         //TODO: İç içe dtolar hepsi maplenecek
         List<Order> orders = orderRepository.findAll();
         List<OrderDto> response = orders.stream().map(order -> mapper.forResponse().map(order, OrderDto.class)).collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Order.ordersListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Order.ordersListed));
     }
 
     private DataResult<Address> getInvoiceAddress(int invoiceAddressId) {

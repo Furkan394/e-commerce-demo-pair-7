@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.response.towns.GetAllTownResponse;
 import com.etiya.ecommercedemopair7.business.response.towns.GetTownResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Town;
@@ -21,11 +22,13 @@ public class TownManager implements ITownService {
 
     private ITownRepository townRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    public TownManager(ITownRepository townRepository, IModelMapperService mapper) {
+    public TownManager(ITownRepository townRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.townRepository = townRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -34,14 +37,14 @@ public class TownManager implements ITownService {
         List<GetAllTownResponse> response = towns.stream()
                 .map(town -> mapper.forResponse().map(town, GetAllTownResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.Town.townsListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Town.townsListed));
     }
 
     @Override
     public DataResult<GetTownResponse> getById(int townId) {
         Town town = checkIfTownExistsById(townId);
         GetTownResponse response = mapper.forResponse().map(town, GetTownResponse.class);
-        return new SuccessDataResult<>(response, Messages.Town.townReceived);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Town.townReceived));
     }
 
     private Town checkIfTownExistsById(int id) {
@@ -49,7 +52,7 @@ public class TownManager implements ITownService {
         try {
             currentTown = this.townRepository.findById(id).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.Town.townNotFound);
+            throw new BusinessException(messageSourceService.getMessage(Messages.Town.townNotFound));
         }
         return currentTown;
     }

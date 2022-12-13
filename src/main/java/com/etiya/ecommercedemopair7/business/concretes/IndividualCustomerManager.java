@@ -6,6 +6,7 @@ import com.etiya.ecommercedemopair7.business.request.individualCustomers.AddIndi
 import com.etiya.ecommercedemopair7.business.response.individualCustomers.AddIndividualCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.individualCustomers.GetAllIndividualCustomerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.IndividualCustomer;
@@ -21,11 +22,13 @@ public class IndividualCustomerManager implements IIndividualCustomerService {
 
     private IIndividualCustomerRepository individualCustomerRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    IndividualCustomerManager(IIndividualCustomerRepository individualCustomerRepository, IModelMapperService mapper) {
+    IndividualCustomerManager(IIndividualCustomerRepository individualCustomerRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.individualCustomerRepository = individualCustomerRepository;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class IndividualCustomerManager implements IIndividualCustomerService {
         List<GetAllIndividualCustomerResponse> response = individualCustomers.stream()
                 .map(individualCustomer -> mapper.forResponse().map(individualCustomer, GetAllIndividualCustomerResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.IndividualCustomer.individualCustomersListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.IndividualCustomer.individualCustomersListed));
     }
 
     @Override
@@ -46,6 +49,6 @@ public class IndividualCustomerManager implements IIndividualCustomerService {
 
         AddIndividualCustomerResponse response = mapper.forResponse().map(savedIndividualCustomer, AddIndividualCustomerResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.IndividualCustomer.individualCustomerAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.IndividualCustomer.individualCustomerAdded));
     }
 }

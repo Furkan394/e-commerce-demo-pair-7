@@ -7,6 +7,7 @@ import com.etiya.ecommercedemopair7.business.request.productCharValues.AddProduc
 import com.etiya.ecommercedemopair7.business.response.productCharValues.AddProductCharValueResponse;
 import com.etiya.ecommercedemopair7.business.response.productCharValues.GetAllProductCharValueResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
@@ -24,12 +25,14 @@ public class ProductCharValueManager implements IProductCharValueService {
     private IProductCharValueRepository productCharValueRepository;
     private IProductCharService productCharService;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSourceService;
 
     @Autowired
-    ProductCharValueManager(IProductCharValueRepository productCharValueRepository, IProductCharService productCharService, IModelMapperService mapper) {
+    ProductCharValueManager(IProductCharValueRepository productCharValueRepository, IProductCharService productCharService, IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.productCharValueRepository = productCharValueRepository;
         this.productCharService = productCharService;
         this.mapper = mapper;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class ProductCharValueManager implements IProductCharValueService {
         List<GetAllProductCharValueResponse> response = productCharValues.stream()
                 .map(productCharValue -> mapper.forResponse().map(productCharValue, GetAllProductCharValueResponse.class))
                 .collect(Collectors.toList());
-        return new SuccessDataResult<>(response, Messages.ProductCharValue.productCharValuesListed);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.ProductCharValue.productCharValuesListed));
     }
 
     @Override
@@ -52,7 +55,7 @@ public class ProductCharValueManager implements IProductCharValueService {
 
         AddProductCharValueResponse response = mapper.forResponse().map(savedProductCharValue, AddProductCharValueResponse.class);
 
-        return new SuccessDataResult<>(response, Messages.ProductCharValue.productCharValueAdded);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.ProductCharValue.productCharValueAdded));
     }
 
     private DataResult<ProductChar> getProductChar(AddProductCharValueRequest addProductCharValueRequest) {
