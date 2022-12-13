@@ -43,7 +43,7 @@ public class ProductsController {
         return ResponseEntity.ok(productService.getAllWithPagination(pageable));
     }
     @GetMapping("/slice")
-    public ResponseEntity<DataResult<Slice<Product>>> getAllWithSlice(@RequestParam("page") int page,
+    public ResponseEntity<DataResult<Slice<GetAllProductResponse>>> getAllWithSlice(@RequestParam("page") int page,
                                                                       @RequestParam("Pagesize") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return ResponseEntity.ok(productService.getAllWithSlice(pageable));

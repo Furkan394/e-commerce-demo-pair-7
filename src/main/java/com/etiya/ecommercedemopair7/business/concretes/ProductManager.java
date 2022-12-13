@@ -14,8 +14,6 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -88,8 +86,8 @@ public class ProductManager implements IProductService {
     }
 
     @Override
-    public DataResult<Slice<Product>> getAllWithSlice(Pageable pageable) {
-        return new SuccessDataResult<>(productRepository.findAllWithSlice(pageable), messageSourceService.getMessage(Messages.Product.productsListed));
+    public DataResult<Slice<GetAllProductResponse>> getAllWithSlice(Pageable pageable) {
+        return new SuccessDataResult<>(productRepository.findAllProductsWithSlice(pageable), messageSourceService.getMessage(Messages.Product.productsListed));
     }
 
     private Product existsByProductId(int id) {

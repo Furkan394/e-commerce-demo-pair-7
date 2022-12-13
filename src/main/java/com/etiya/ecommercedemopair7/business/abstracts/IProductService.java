@@ -20,6 +20,6 @@ public interface IProductService {
     DataResult<Product> customGetByName(String name);
     DataResult<AddProductResponse> add(AddProductRequest addProductRequest);
     DataResult<Page<GetAllProductResponse>> getAllWithPagination(Pageable pageable);
-    DataResult<Slice<Product>> getAllWithSlice(Pageable pageable);
+    DataResult<Slice<GetAllProductResponse>> getAllWithSlice(Pageable pageable);
 
 }
