@@ -13,6 +13,11 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Product;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +28,13 @@ public class ProductManager implements IProductService {
 
     private IProductRepository productRepository;
     private IModelMapperService mapper;
+    private MessageSource messageSource;
 
     @Autowired
-    ProductManager(IProductRepository productRepository, IModelMapperService mapper) {
+    ProductManager(IProductRepository productRepository, IModelMapperService mapper, MessageSource messageSource) {
         this.productRepository = productRepository;
         this.mapper = mapper;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -74,12 +81,23 @@ public class ProductManager implements IProductService {
         return new SuccessDataResult<>(response, Messages.Product.productAdded);
     }
 
+    @Override
+    public DataResult<Page<GetAllProductResponse>> getAllWithPagination(Pageable pageable) {
+        return new SuccessDataResult<>(productRepository.findAllProducts(pageable), Messages.Product.productsListed);
+    }
+
+    @Override
+    public DataResult<Slice<Product>> getAllWithSlice(Pageable pageable) {
+        return new SuccessDataResult<>(productRepository.findAllWithSlice(pageable), Messages.Product.productsListed);
+    }
+
     private Product existsByProductId(int id) {
         Product currentProduct;
         try {
             currentProduct = this.productRepository.findById(id).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.Product.productNotFound);
+            throw new BusinessException(messageSource.getMessage(Messages.Product.productNotFound,
+                    null, LocaleContextHolder.getLocale()));
         }
         return currentProduct;
     }

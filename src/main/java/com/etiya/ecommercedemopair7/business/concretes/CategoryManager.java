@@ -8,11 +8,14 @@ import com.etiya.ecommercedemopair7.business.response.categories.GetAllCategoryR
 import com.etiya.ecommercedemopair7.business.response.categories.GetCategoryResponse;
 import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
+import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Category;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,11 +25,13 @@ import java.util.stream.Collectors;
 public class CategoryManager implements ICategoryService {
     private ICategoryRepository categoryRepository;
     private IModelMapperService mapper;
+    private IMessageSourceService messageSource;
 
     @Autowired
-    CategoryManager(ICategoryRepository categoryRepository, IModelMapperService mapper) {
+    CategoryManager(ICategoryRepository categoryRepository, IModelMapperService mapper, IMessageSourceService messageSource) {
         this.categoryRepository = categoryRepository;
         this.mapper = mapper;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -89,7 +94,7 @@ public class CategoryManager implements ICategoryService {
         try {
             currentCategory = this.categoryRepository.findById(id).get();
         } catch (Exception e) {
-            throw new BusinessException(Messages.Category.categoryNotFound);
+            throw new BusinessException(messageSource.getMessage(Messages.Category.categoryNotFound));
         }
         return currentCategory;
     }
