@@ -52,6 +52,12 @@ public class CustomerManager implements ICustomerService {
         return new SuccessDataResult<>(checkIfCustomerExistsById(customerId), messageSourceService.getMessage(Messages.Customer.customerReceived));
     }
 
+    @Override
+    public DataResult<Slice<GetAllCustomerResponse>> getAllCustomersWithSlice(Pageable pageable) {
+        return new SuccessDataResult<>(customerRepository.findAllCustomersWithSlice(pageable),
+                messageSourceService.getMessage(Messages.Customer.customersListed));
+    }
+
     private Customer checkIfCustomerExistsById(int id) {
         Customer currentCustomer;
         try {

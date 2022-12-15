@@ -67,6 +67,12 @@ public class InvoiceManager implements IInvoiceService {
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Invoice.invoiceAdded));
     }
 
+    @Override
+    public DataResult<Slice<GetAllInvoiceResponse>> getAllInvoicesWithSlice(Pageable pageable) {
+        return new SuccessDataResult<>(invoiceRepository.findAllInvoicesWithSlice(pageable),
+                messageSourceService.getMessage(Messages.Invoice.invoicesListed));
+    }
+
     private Invoice checkIfInvoiceExistsById(int invoiceId) {
         Invoice currentInvoice;
         try {
