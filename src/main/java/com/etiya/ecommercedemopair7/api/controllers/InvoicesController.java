@@ -8,6 +8,9 @@ import com.etiya.ecommercedemopair7.business.response.invoices.GetAllInvoiceResp
 import com.etiya.ecommercedemopair7.business.response.invoices.GetInvoiceResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,4 +43,10 @@ public class InvoicesController {
         return new ResponseEntity<>(invoiceService.add(addInvoiceRequest), HttpStatus.CREATED);
     }
 
+    @GetMapping("/get-all-invoices-with-slice")
+    public ResponseEntity<DataResult<Slice<GetAllInvoiceResponse>>> getAllInvoicesWithSlice(@RequestParam("page") int page,
+                                                                                            @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(invoiceService.getAllInvoicesWithSlice(pageable));
+    }
 }

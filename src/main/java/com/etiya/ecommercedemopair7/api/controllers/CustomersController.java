@@ -7,11 +7,11 @@ import com.etiya.ecommercedemopair7.business.response.customers.GetCustomerRespo
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +34,12 @@ public class CustomersController {
     @GetMapping("/{id}")
     public ResponseEntity<DataResult<GetCustomerResponse>> getById(@PathVariable int id) {
         return ResponseEntity.ok(customerService.getById(id));
+    }
+
+    @GetMapping("/find-all-customers-with-slice")
+    public ResponseEntity<DataResult<Slice<GetAllCustomerResponse>>> getAllCustomersWithSlice(@RequestParam("page") int page,
+                                                                                            @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(customerService.getAllCustomersWithSlice(pageable));
     }
 }

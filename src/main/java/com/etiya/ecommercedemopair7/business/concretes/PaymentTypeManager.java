@@ -15,6 +15,8 @@ import com.etiya.ecommercedemopair7.entities.concretes.Address;
 import com.etiya.ecommercedemopair7.entities.concretes.PaymentType;
 import com.etiya.ecommercedemopair7.repository.abstracts.IPaymentTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -66,6 +68,12 @@ public class PaymentTypeManager implements IPaymentTypeService {
     @Override
     public PaymentType getByPaymentTypeId(int paymentTypeId) {
         return checkIfPaymentTypeExistsById(paymentTypeId);
+    }
+
+    @Override
+    public DataResult<Page<GetAllPaymentTypeResponse>> getAllPaymentTypesWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(paymentTypeRepository.findAllPaymentTypesWithPage(pageable),
+                messageSourceService.getMessage(Messages.PaymentType.paymentTypesListed));
     }
 
     private PaymentType checkIfPaymentTypeExistsById(int addressId) {

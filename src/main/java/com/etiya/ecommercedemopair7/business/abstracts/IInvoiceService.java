@@ -6,6 +6,8 @@ import com.etiya.ecommercedemopair7.business.response.invoices.GetAllInvoiceResp
 import com.etiya.ecommercedemopair7.business.response.invoices.GetInvoiceResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Invoice;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
@@ -14,4 +16,5 @@ public interface IInvoiceService {
     DataResult<GetInvoiceResponse> getById(int invoiceId);
     DataResult<Invoice> getByInvoiceId(int invoiceId);
     DataResult<AddInvoiceResponse> add(AddInvoiceRequest addInvoiceRequest);
+    DataResult<Slice<GetAllInvoiceResponse>> getAllInvoicesWithSlice(Pageable pageable);
 }
