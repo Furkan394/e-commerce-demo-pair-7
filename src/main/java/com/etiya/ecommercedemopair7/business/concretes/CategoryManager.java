@@ -57,7 +57,7 @@ public class CategoryManager implements ICategoryService {
 
     @Override
     public DataResult<Category> getByName(String name) {
-        return new SuccessDataResult<>(categoryRepository.findByName(name),messageSourceService.getMessage(Messages.Category.categoryReceived));
+        return new SuccessDataResult<>(categoryRepository.findByName(name), messageSourceService.getMessage(Messages.Category.categoryReceived));
     }
 
     @Override
@@ -67,12 +67,7 @@ public class CategoryManager implements ICategoryService {
 
     @Override
     public DataResult<AddCategoryResponse> add(AddCategoryRequest addCategoryRequest) {
-        //MANUAL MAPPING
-        //Category category = new Category();
-        //category.setName(addCategoryRequest.getName());
-        //category.setRefId(addCategoryRequest.getRefId());
 
-        //MODEL MAPPER
         Category category = mapper.forRequest().map(addCategoryRequest, Category.class);
 
         categoryCanNotExistWithSameName(addCategoryRequest.getName());

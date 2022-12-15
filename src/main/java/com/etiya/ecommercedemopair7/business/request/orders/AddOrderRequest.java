@@ -6,16 +6,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddOrderRequest {
-    private String orderNumber;
+    @Min(1)
     private double totalPrice;
     private LocalDate orderDate;
+    @Min(1)
     private int deliveryOptionId;
+    @Min(1)
     private int orderAddressId;
+    @Min(1)
     private int invoiceAddressId;
+    @Min(1)
+    private int paymentId;
 }

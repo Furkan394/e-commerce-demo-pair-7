@@ -21,5 +21,5 @@ public class DeliveryOption {
     private String name;
 
     @OneToMany(mappedBy = "deliveryOption")
-    private List<Order> orders;
+    private List<Payment> payments;
 }

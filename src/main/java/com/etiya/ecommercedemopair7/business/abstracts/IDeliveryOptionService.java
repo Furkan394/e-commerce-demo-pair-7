@@ -12,6 +12,6 @@ import java.util.List;
 public interface IDeliveryOptionService {
     DataResult<List<GetAllDeliveryOptionResponse>> getAll();
     DataResult<GetDeliveryOptionResponse> getById(int deliveryOptionId);
-    DataResult<DeliveryOption> getByDeliveryOptionId(int deliveryOptionId);
+    DeliveryOption getByDeliveryOptionId(int deliveryOptionId);
     DataResult<AddDeliveryOptionResponse> add(AddDeliveryOptionRequest addDeliveryOptionRequest);
 }

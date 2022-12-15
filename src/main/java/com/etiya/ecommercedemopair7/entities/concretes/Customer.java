@@ -1,8 +1,10 @@
 package com.etiya.ecommercedemopair7.entities.concretes;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,4 +20,7 @@ public class Customer extends User {
 
     @OneToOne(mappedBy = "customer")
     private Basket basket;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Payment> payments;
 }

@@ -12,6 +12,6 @@ public interface IOrderItemRepository extends JpaRepository<OrderItem, Integer> 
             "oi.itemTotalPrice,o.orderNumber,o.totalPrice,o.orderDate,d.name,oa.address,ia.address," +
             "p.name,sp.description,sp.imageUrl,sp.stock,sp.unitPrice) from OrderItem oi inner join" +
             " oi.order o inner join o.deliveryOption d inner join o.orderAddress oa inner join o.invoiceAddress ia " +
-            "inner join oi.product p inner join p.sellerProducts sp ")
+            "inner join oi.sellerProduct sp inner join sp.product p")
     List<OrderItem> getOrderItemDto();
 }

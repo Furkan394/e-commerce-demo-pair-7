@@ -3,8 +3,10 @@ package com.etiya.ecommercedemopair7.api.controllers;
 import com.etiya.ecommercedemopair7.business.abstracts.ISellerProductService;
 import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.sellerProducts.AddSellerProductRequest;
+import com.etiya.ecommercedemopair7.business.response.products.GetProductResponse;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.AddSellerProductResponse;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetAllSellerProductResponse;
+import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetSellerProductResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,11 @@ public class SellerProductsController {
     @GetMapping
     public ResponseEntity<DataResult<List<GetAllSellerProductResponse>>> getAll() {
         return ResponseEntity.ok(sellerProductService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DataResult<GetSellerProductResponse>> getById(@PathVariable int id) {
+        return ResponseEntity.ok(sellerProductService.getById(id));
     }
 
     @PostMapping("/add")

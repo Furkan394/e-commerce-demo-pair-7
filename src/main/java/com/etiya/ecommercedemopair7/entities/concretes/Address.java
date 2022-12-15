@@ -32,8 +32,8 @@ public class Address {
     private Street street;
 
     @OneToMany(mappedBy = "orderAddress")
-    private List<Order> orderAddresses;
+    private List<Payment> orderAddresses;
 
     @OneToMany(mappedBy = "invoiceAddress")
-    private List<Order> invoiceAddresses;
+    private List<Payment> invoiceAddresses;
 }

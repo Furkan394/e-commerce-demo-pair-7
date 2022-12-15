@@ -16,6 +16,7 @@ import com.etiya.ecommercedemopair7.repository.abstracts.IInvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,6 +55,7 @@ public class InvoiceManager implements IInvoiceService {
         return new SuccessDataResult<>(checkIfInvoiceExistsById(invoiceId));
     }
 
+    @Transactional
     @Override
     public DataResult<AddInvoiceResponse> add(AddInvoiceRequest addInvoiceRequest) {
         Invoice invoice = mapper.forRequest().map(addInvoiceRequest, Invoice.class);

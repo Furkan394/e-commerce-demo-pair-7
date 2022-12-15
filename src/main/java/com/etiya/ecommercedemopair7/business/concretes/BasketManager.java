@@ -4,15 +4,14 @@ import com.etiya.ecommercedemopair7.business.abstracts.IBasketService;
 import com.etiya.ecommercedemopair7.business.abstracts.ICustomerService;
 import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.baskets.AddBasketRequest;
+import com.etiya.ecommercedemopair7.business.request.baskets.UpdateBasketRequest;
 import com.etiya.ecommercedemopair7.business.response.baskets.AddBasketResponse;
 import com.etiya.ecommercedemopair7.business.response.baskets.GetAllBasketResponse;
-import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Basket;
-import com.etiya.ecommercedemopair7.entities.concretes.Customer;
 import com.etiya.ecommercedemopair7.repository.abstracts.IBasketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,8 @@ public class BasketManager implements IBasketService {
     private IMessageSourceService messageSourceService;
 
     @Autowired
-    public BasketManager(IBasketRepository basketRepository, ICustomerService customerService, IModelMapperService mapper, IMessageSourceService messageSourceService) {
+    public BasketManager(IBasketRepository basketRepository, ICustomerService customerService, IModelMapperService mapper,
+                         IMessageSourceService messageSourceService) {
         this.basketRepository = basketRepository;
         this.customerService = customerService;
         this.mapper = mapper;
@@ -45,37 +45,30 @@ public class BasketManager implements IBasketService {
     }
 
     @Override
-    public DataResult<Basket> getById(int basketId) {
-        return new SuccessDataResult<>(checkIfBasketExistsById(basketId), messageSourceService.getMessage(Messages.Basket.basketReceived));
+    public Basket createBasket(AddBasketRequest addBasketRequest) {
+        Basket basket = mapper.forRequest().map(addBasketRequest, Basket.class);
+        Basket savedBasket = basketRepository.save(basket);
+        return savedBasket;
     }
 
     @Override
-    public DataResult<AddBasketResponse> add(AddBasketRequest addBasketRequest) {
-
-        getCustomer(addBasketRequest);
-
-        Basket basket = mapper.forRequest().map(addBasketRequest, Basket.class);
+    public DataResult<AddBasketResponse> updateBasket(UpdateBasketRequest updateBasketRequest, Basket getBasket) {
+        Basket basket = mapper.forRequest().map(updateBasketRequest, Basket.class);
+        basket.setId(getBasket.getId());
+        basket.setShippingPrice(getBasket.getShippingPrice());
+        basket.setTotalPrice(getBasket.getTotalPrice());
 
         Basket savedBasket = basketRepository.save(basket);
 
         AddBasketResponse response = mapper.forResponse().map(savedBasket, AddBasketResponse.class);
-
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Basket.basketAdded));
     }
 
-    private DataResult<Customer> getCustomer(AddBasketRequest addBasketRequest) {
-        DataResult<Customer> customer = customerService.getByCustomerId(addBasketRequest.getCustomerId());
-        return customer;
+    @Override
+    public Basket getByCustomerId(int customerId) {
+        return basketRepository.findByCustomerId(customerId);
     }
 
-    private Basket checkIfBasketExistsById(int basketId) {
-        Basket currentBasket;
-        try {
-            currentBasket = this.basketRepository.findById(basketId).get();
-        } catch (Exception e) {
-            throw new BusinessException(messageSourceService.getMessage(Messages.Basket.basketNotFound));
-        }
-        return currentBasket;
-    }
+
 }
 

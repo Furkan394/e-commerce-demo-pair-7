@@ -20,15 +20,6 @@ public class Order {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "order_number")
-    private String orderNumber;
-
-    @Column(name = "total_price")
-    private double totalPrice;
-
-    @Column(name = "order_date")
-    private LocalDate orderDate;
-
     @ManyToOne
     @JoinColumn(name = "delivery_options_id")
     private DeliveryOption deliveryOption;
@@ -41,12 +32,24 @@ public class Order {
     @JoinColumn(name = "invoice_address_id")
     private Address invoiceAddress;
 
+    @OneToOne
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+    private Payment payment;
+
+    @Column(name = "order_number")
+    private String orderNumber;
+
+    @Column(name = "total_price")
+    private double totalPrice;
+
+    @Column(name = "order_date")
+    private LocalDate orderDate;
+
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Invoice invoice;
 
-    @OneToOne(mappedBy = "order")
-    private Payment payment;
+
 }

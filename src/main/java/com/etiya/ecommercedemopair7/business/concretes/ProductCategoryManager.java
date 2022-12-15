@@ -81,7 +81,9 @@ public class ProductCategoryManager implements IProductCategoryService {
     @Override
     public DataResult<List<ProductCategoryDto>> getProductCategoryDto() {
         List<ProductCategory> productCategories = productCategoryRepository.findAll();
-        List<ProductCategoryDto> response = productCategories.stream().map(productCategory -> mapper.forResponse().map(productCategory, ProductCategoryDto.class)).collect(Collectors.toList());
+        List<ProductCategoryDto> response = productCategories.stream()
+                .map(productCategory -> mapper.forResponse().map(productCategory, ProductCategoryDto.class))
+                .collect(Collectors.toList());
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.ProductCategory.productCategoriesListed));
     }
 

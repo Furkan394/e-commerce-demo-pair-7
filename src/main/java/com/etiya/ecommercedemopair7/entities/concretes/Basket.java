@@ -1,5 +1,6 @@
 package com.etiya.ecommercedemopair7.entities.concretes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;

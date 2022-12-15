@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class AddBasketItemRequest {
     private int quantity;
-    private double itemTotalPrice;
+    private int sellerProductId;
     private int basketId;
-    private int productId;
 }

@@ -3,6 +3,7 @@ package com.etiya.ecommercedemopair7.api.controllers;
 import com.etiya.ecommercedemopair7.business.abstracts.IBasketService;
 import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.baskets.AddBasketRequest;
+import com.etiya.ecommercedemopair7.business.request.baskets.UpdateBasketRequest;
 import com.etiya.ecommercedemopair7.business.response.baskets.AddBasketResponse;
 import com.etiya.ecommercedemopair7.business.response.baskets.GetAllBasketResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
@@ -29,13 +30,8 @@ public class BasketsController {
         return ResponseEntity.ok(basketService.getAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DataResult<Basket>> getById(@PathVariable int id) {
-        return ResponseEntity.ok(basketService.getById(id));
-    }
-
     @PostMapping("/add")
-    public ResponseEntity<DataResult<AddBasketResponse>> add(@RequestBody AddBasketRequest addBasketRequest) {
-        return new ResponseEntity<>(basketService.add(addBasketRequest), HttpStatus.CREATED);
+    public ResponseEntity<Basket> add(@RequestBody AddBasketRequest addBasketRequest) {
+        return new ResponseEntity<>(basketService.createBasket(addBasketRequest), HttpStatus.CREATED);
     }
 }

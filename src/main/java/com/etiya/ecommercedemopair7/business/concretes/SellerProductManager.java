@@ -7,6 +7,8 @@ import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.sellerProducts.AddSellerProductRequest;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.AddSellerProductResponse;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetAllSellerProductResponse;
+import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetSellerProductResponse;
+import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
@@ -32,7 +34,8 @@ public class SellerProductManager implements ISellerProductService {
 
     @Autowired
     public SellerProductManager(ISellerProductRepository sellerProductRepository, ISellerService sellerService,
-                                IProductService productService, IModelMapperService mapper, IMessageSourceService messageSourceService) {
+                                IProductService productService, IModelMapperService mapper,
+                                IMessageSourceService messageSourceService) {
         this.sellerProductRepository = sellerProductRepository;
         this.sellerService = sellerService;
         this.productService = productService;
@@ -64,6 +67,18 @@ public class SellerProductManager implements ISellerProductService {
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Product.productAdded));
     }
 
+    @Override
+    public DataResult<GetSellerProductResponse> getById(int id) {
+        SellerProduct sellerProduct = checkIfSellerProductExistsById(id);
+        GetSellerProductResponse response = mapper.forResponse().map(sellerProduct, GetSellerProductResponse.class);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Product.productReceived));
+    }
+
+    @Override
+    public SellerProduct getBySellerProductId(int id) {
+        return checkIfSellerProductExistsById(id);
+    }
+
     private DataResult<Product> getProduct(AddSellerProductRequest addSellerProductRequest) {
         DataResult<Product> product = productService.getByProductId(addSellerProductRequest.getProductId());
         return product;
@@ -72,5 +87,15 @@ public class SellerProductManager implements ISellerProductService {
     private DataResult<Seller> getSeller(AddSellerProductRequest addSellerProductRequest) {
         DataResult<Seller> seller = sellerService.getBySellerId(addSellerProductRequest.getSellerId());
         return seller;
+    }
+
+    private SellerProduct checkIfSellerProductExistsById(int id) {
+        SellerProduct currentSellerProduct;
+        try {
+            currentSellerProduct = this.sellerProductRepository.findById(id).get();
+        } catch (Exception e) {
+            throw new BusinessException(messageSourceService.getMessage(Messages.Product.productNotFound));
+        }
+        return currentSellerProduct;
     }
 }

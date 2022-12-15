@@ -3,6 +3,7 @@ package com.etiya.ecommercedemopair7.entities.concretes;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,14 +18,32 @@ public class Payment {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "is_verified")
-    private boolean isVerified;
+    @ManyToOne
+    @JoinColumn(name = "delivery_options_id")
+    private DeliveryOption deliveryOption;
+
+    @ManyToOne
+    @JoinColumn(name = "order_address_id")
+    private Address orderAddress;
+
+    @ManyToOne
+    @JoinColumn(name = "invoice_address_id")
+    private Address invoiceAddress;
 
     @ManyToOne
     @JoinColumn(name = "payment_type_id")
     private PaymentType paymentType;
 
-    @OneToOne()
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @Column(name = "total_price")
+    private double totalPrice;
+
+    @Column(name = "is_verified")
+    private boolean isVerified;
+
+    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
     private Order order;
 }

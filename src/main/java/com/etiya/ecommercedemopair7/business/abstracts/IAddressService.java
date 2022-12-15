@@ -13,7 +13,8 @@ import java.util.List;
 public interface IAddressService {
     DataResult<List<GetAllAddressResponse>> getAll();
     DataResult<GetAddressResponse> getById(int addressId);
-    DataResult<Address> getByAddressId(int addressId);
+    Address getByAddressId(int addressId);
     DataResult<AddAddressResponse> add(AddAddressRequest addAddressRequest);
     DataResult<List<AddressDto>> getAddressDto();
+    Address getByUserId(int userId);
 }

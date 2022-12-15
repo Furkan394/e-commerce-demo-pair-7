@@ -23,7 +23,8 @@ public class ProductDetailManager implements IProductDetailService {
     private IMessageSourceService messageSourceService;
 
     @Autowired
-    ProductDetailManager(IProductDetailRepository productDetailRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
+    ProductDetailManager(IProductDetailRepository productDetailRepository, IModelMapperService mapper,
+                         IMessageSourceService messageSourceService) {
         this.productDetailRepository = productDetailRepository;
         this.mapper = mapper;
         this.messageSourceService = messageSourceService;
@@ -32,7 +33,9 @@ public class ProductDetailManager implements IProductDetailService {
     @Override
     public DataResult<List<ProductDetailDto>> getProductDetail() {
         List<ProductDetail> productDetails = productDetailRepository.findAll();
-        List<ProductDetailDto> response = productDetails.stream().map(productDetail -> mapper.forResponse().map(productDetail, ProductDetailDto.class)).collect(Collectors.toList());
+        List<ProductDetailDto> response = productDetails.stream()
+                .map(productDetail -> mapper.forResponse().map(productDetail, ProductDetailDto.class))
+                .collect(Collectors.toList());
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Product.productsListed));
     }
 }

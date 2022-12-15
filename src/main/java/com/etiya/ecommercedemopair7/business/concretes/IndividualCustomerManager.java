@@ -25,7 +25,8 @@ public class IndividualCustomerManager implements IIndividualCustomerService {
     private IMessageSourceService messageSourceService;
 
     @Autowired
-    IndividualCustomerManager(IIndividualCustomerRepository individualCustomerRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
+    IndividualCustomerManager(IIndividualCustomerRepository individualCustomerRepository,
+                              IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.individualCustomerRepository = individualCustomerRepository;
         this.mapper = mapper;
         this.messageSourceService = messageSourceService;

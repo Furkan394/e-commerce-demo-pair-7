@@ -27,7 +27,8 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
     private IMessageSourceService messageSourceService;
 
     @Autowired
-    public DeliveryOptionManager(IDeliveryOptionRepository deliveryOptionRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
+    public DeliveryOptionManager(IDeliveryOptionRepository deliveryOptionRepository,
+                                 IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.deliveryOptionRepository = deliveryOptionRepository;
         this.mapper = mapper;
         this.messageSourceService = messageSourceService;
@@ -44,14 +45,14 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
 
     @Override
     public DataResult<GetDeliveryOptionResponse> getById(int deliveryOptionId) {
-        DataResult<DeliveryOption> deliveryOption = getByDeliveryOptionId(deliveryOptionId);
+        DeliveryOption deliveryOption = getByDeliveryOptionId(deliveryOptionId);
         GetDeliveryOptionResponse response = mapper.forResponse().map(deliveryOption, GetDeliveryOptionResponse.class);
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.DeliveryOption.deliveryOptionReceived));
     }
 
     @Override
-    public DataResult<DeliveryOption> getByDeliveryOptionId(int deliveryOptionId) {
-        return new SuccessDataResult<>(checkIfDeliveryOptionExistsById(deliveryOptionId), messageSourceService.getMessage(Messages.DeliveryOption.deliveryOptionReceived));
+    public DeliveryOption getByDeliveryOptionId(int deliveryOptionId) {
+        return checkIfDeliveryOptionExistsById(deliveryOptionId);
     }
 
     @Override

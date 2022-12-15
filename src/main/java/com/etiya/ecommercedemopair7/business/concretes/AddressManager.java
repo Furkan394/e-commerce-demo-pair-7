@@ -34,7 +34,8 @@ public class AddressManager implements IAddressService {
     private IMessageSourceService messageSourceService;
 
     @Autowired
-    AddressManager(IAddressRepository addressRepository, IStreetService streetService, IUserService userService, IModelMapperService mapper, IMessageSourceService messageSourceService) {
+    AddressManager(IAddressRepository addressRepository, IStreetService streetService, IUserService userService,
+                   IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.addressRepository = addressRepository;
         this.streetService = streetService;
         this.userService = userService;
@@ -59,8 +60,8 @@ public class AddressManager implements IAddressService {
     }
 
     @Override
-    public DataResult<Address> getByAddressId(int addressId) {
-        return new SuccessDataResult<>(checkIfAddressExistsById(addressId));
+    public Address getByAddressId(int addressId) {
+        return checkIfAddressExistsById(addressId);
     }
 
     @Override
@@ -82,8 +83,14 @@ public class AddressManager implements IAddressService {
     public DataResult<List<AddressDto>> getAddressDto() {
         //TODO: Countryname null
         List<Address> addresses = this.addressRepository.findAll();
-        List<AddressDto> response = addresses.stream().map(address -> mapper.forResponse().map(address, AddressDto.class)).collect(Collectors.toList());
+        List<AddressDto> response = addresses.stream()
+                .map(address -> mapper.forResponse().map(address, AddressDto.class)).collect(Collectors.toList());
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Address.addressesListed));
+    }
+
+    @Override
+    public Address getByUserId(int userId) {
+        return addressRepository.findByUserId(userId);
     }
 
     private DataResult<User> getUser(int userId) {

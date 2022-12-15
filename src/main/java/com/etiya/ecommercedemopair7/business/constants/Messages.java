@@ -72,14 +72,24 @@ public class Messages {
         public static final String invoiceReceived = "invoiceReceived";
         public static final String invoiceAdded = "invoiceAdded";
     }
+    public static class OrderItem {
+        public static final String orderItemsListed = "orderItemsListed";
+        public static final String orderItemAdded = "orderItemAdded";
+    }
 
     public static class Order {
+        public static final String orderNotFound = "orderNotFound";
         public static final String ordersListed = "ordersListed";
         public static final String orderReceived = "orderReceived";
         public static final String orderAdded = "orderAdded";
     }
 
+    public static class Payment {
+        public static final String paymentAdded = "paymentAdded";
+    }
+
     public static class PaymentType {
+        public static final String paymentTypeNotFound = "paymentTypeNotFound";
         public static final String paymentTypesListed = "paymentTypesListed";
         public static final String paymentTypeReceived = "paymentTypeReceived";
         public static final String paymentTypeAdded = "paymentTypeAdded";

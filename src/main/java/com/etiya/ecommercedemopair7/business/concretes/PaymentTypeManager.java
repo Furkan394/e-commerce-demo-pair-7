@@ -5,10 +5,13 @@ import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.paymentTypes.AddPaymentTypeRequest;
 import com.etiya.ecommercedemopair7.business.response.paymentTypes.AddPaymentTypeResponse;
 import com.etiya.ecommercedemopair7.business.response.paymentTypes.GetAllPaymentTypeResponse;
+import com.etiya.ecommercedemopair7.business.response.paymentTypes.GetPaymentTypeResponse;
+import com.etiya.ecommercedemopair7.core.utilities.exceptions.BusinessException;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
+import com.etiya.ecommercedemopair7.entities.concretes.Address;
 import com.etiya.ecommercedemopair7.entities.concretes.PaymentType;
 import com.etiya.ecommercedemopair7.repository.abstracts.IPaymentTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,8 @@ public class PaymentTypeManager implements IPaymentTypeService {
     private IMessageSourceService messageSourceService;
 
     @Autowired
-    public PaymentTypeManager(IPaymentTypeRepository paymentTypeRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
+    public PaymentTypeManager(IPaymentTypeRepository paymentTypeRepository,
+                              IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.paymentTypeRepository = paymentTypeRepository;
         this.mapper = mapper;
         this.messageSourceService = messageSourceService;
@@ -50,5 +54,27 @@ public class PaymentTypeManager implements IPaymentTypeService {
         AddPaymentTypeResponse response = mapper.forResponse().map(savedPaymentType, AddPaymentTypeResponse.class);
 
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.PaymentType.paymentTypeAdded));
+    }
+
+    @Override
+    public DataResult<GetPaymentTypeResponse> getById(int paymentTypeId) {
+        PaymentType paymentType = checkIfPaymentTypeExistsById(paymentTypeId);
+        GetPaymentTypeResponse response = mapper.forResponse().map(paymentType, GetPaymentTypeResponse.class);
+        return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.PaymentType.paymentTypeReceived));
+    }
+
+    @Override
+    public PaymentType getByPaymentTypeId(int paymentTypeId) {
+        return checkIfPaymentTypeExistsById(paymentTypeId);
+    }
+
+    private PaymentType checkIfPaymentTypeExistsById(int addressId) {
+        PaymentType currentPaymentType;
+        try {
+            currentPaymentType = this.paymentTypeRepository.findById(addressId).get();
+        } catch (Exception e) {
+            throw new BusinessException(messageSourceService.getMessage(Messages.PaymentType.paymentTypeNotFound));
+        }
+        return currentPaymentType;
     }
 }

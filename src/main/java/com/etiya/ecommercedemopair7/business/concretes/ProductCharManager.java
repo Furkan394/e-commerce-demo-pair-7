@@ -26,7 +26,8 @@ public class ProductCharManager implements IProductCharService {
     private IMessageSourceService messageSourceService;
 
     @Autowired
-    public ProductCharManager(IProductCharRepository productcharRepository, IModelMapperService mapper, IMessageSourceService messageSourceService) {
+    public ProductCharManager(IProductCharRepository productcharRepository,
+                              IModelMapperService mapper, IMessageSourceService messageSourceService) {
         this.productCharRepository = productcharRepository;
         this.mapper = mapper;
         this.messageSourceService = messageSourceService;

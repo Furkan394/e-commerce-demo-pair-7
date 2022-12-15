@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddBasketRequest {
+public class UpdateBasketRequest {
+    private int id;
     private int customerId;
-
 }
