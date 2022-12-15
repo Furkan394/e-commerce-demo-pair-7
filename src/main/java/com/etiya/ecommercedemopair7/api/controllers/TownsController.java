@@ -7,11 +7,11 @@ import com.etiya.ecommercedemopair7.business.response.towns.GetTownResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Town;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +34,12 @@ public class TownsController {
     @GetMapping("/{id}")
     public ResponseEntity<DataResult<GetTownResponse>> getById(@PathVariable int id) {
         return ResponseEntity.ok(townService.getById(id));
+    }
+
+    @GetMapping("/get-all-towns-with-slice")
+    public ResponseEntity<DataResult<Page<GetAllTownResponse>>> getAllTownsWithPage(@RequestParam("page") int page,
+                                                                                     @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(townService.getAllTownsWithPage(pageable));
     }
 }

@@ -8,6 +8,9 @@ import com.etiya.ecommercedemopair7.business.response.users.GetAllUserResponse;
 import com.etiya.ecommercedemopair7.business.response.users.GetUserResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,5 +42,11 @@ public class UsersController {
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddUserResponse>> add(@RequestBody @Valid AddUserRequest addUserRequest) {
         return new ResponseEntity<>(userService.add(addUserRequest), HttpStatus.CREATED);
+    }
+    @GetMapping("/get-all-users-with-page")
+    public ResponseEntity<DataResult<Page<GetAllUserResponse>>> getAllUsersWithPage(@RequestParam("page") int page,
+                                                                                    @RequestParam("size") int pageSize){
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(userService.getAllUsersWithPage(pageable));
     }
 }

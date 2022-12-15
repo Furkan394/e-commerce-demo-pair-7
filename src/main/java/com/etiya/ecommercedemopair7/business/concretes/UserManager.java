@@ -73,4 +73,5 @@ public class UserManager implements IUserService {
         }
         return currentUser;
     }
+
 }
