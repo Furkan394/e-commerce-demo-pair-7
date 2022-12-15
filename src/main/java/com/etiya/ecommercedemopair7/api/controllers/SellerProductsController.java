@@ -9,6 +9,9 @@ import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetAllSelle
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetSellerProductResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +38,13 @@ public class SellerProductsController {
     @GetMapping("/{id}")
     public ResponseEntity<DataResult<GetSellerProductResponse>> getById(@PathVariable int id) {
         return ResponseEntity.ok(sellerProductService.getById(id));
+    }
+
+    @GetMapping("/get-all-seller-products-with-page")
+    public ResponseEntity<DataResult<Page<GetAllSellerProductResponse>>> getSellerProductsWithPage
+            (@RequestParam("page") int page, @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(sellerProductService.getSellerProductsWithPage(pageable));
     }
 
     @PostMapping("/add")

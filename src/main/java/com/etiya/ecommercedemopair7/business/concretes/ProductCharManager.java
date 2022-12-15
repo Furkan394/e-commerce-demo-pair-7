@@ -14,6 +14,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductCharRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,6 +69,12 @@ public class ProductCharManager implements IProductCharService {
 
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.ProductChar.productCharAdded));
 
+    }
+
+    @Override
+    public DataResult<Page<GetAllProductCharResponse>> getAllProductCharsWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(productCharRepository.findAllProductCharsWithPage(pageable),
+                messageSourceService.getMessage(Messages.ProductChar.productCharsListed));
     }
 
     private ProductChar checkIfProductCharExistsById(int productCharId) {

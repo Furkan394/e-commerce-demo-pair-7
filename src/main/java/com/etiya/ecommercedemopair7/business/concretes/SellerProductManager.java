@@ -18,6 +18,8 @@ import com.etiya.ecommercedemopair7.entities.concretes.Seller;
 import com.etiya.ecommercedemopair7.entities.concretes.SellerProduct;
 import com.etiya.ecommercedemopair7.repository.abstracts.ISellerProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -82,6 +84,11 @@ public class SellerProductManager implements ISellerProductService {
     private DataResult<Product> getProduct(AddSellerProductRequest addSellerProductRequest) {
         DataResult<Product> product = productService.getByProductId(addSellerProductRequest.getProductId());
         return product;
+    }
+    @Override
+    public DataResult<Page<GetAllSellerProductResponse>> getSellerProductsWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(sellerProductRepository.findAllSellerProductsWithPage(pageable),
+                messageSourceService.getMessage(Messages.Product.productsListed));
     }
 
     private DataResult<Seller> getSeller(AddSellerProductRequest addSellerProductRequest) {

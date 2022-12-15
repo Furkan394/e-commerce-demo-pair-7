@@ -9,6 +9,9 @@ import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCategory;
 import com.etiya.ecommercedemopair7.entities.dtos.ProductCategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +43,12 @@ public class ProductCategoriesController {
     public ResponseEntity<DataResult<ProductCategory>> getByProductId(@RequestParam("id") int id) {
         return ResponseEntity.ok(productCategoryService.getByProductId(id));
     }
-
+    @GetMapping("/get-all-product-categories-with-page")
+    public ResponseEntity<DataResult<Page<GetAllProductCategoryResponse>>> getAllProductCategoriesWithPage
+            (@RequestParam("page") int page, @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(productCategoryService.getAllProductCategoriesWithPage(pageable));
+    }
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddProductCategoryResponse>> add(@RequestBody AddProductCategoryRequest addProductCategoryRequest) {
         return new ResponseEntity<>(productCategoryService.add(addProductCategoryRequest), HttpStatus.CREATED);

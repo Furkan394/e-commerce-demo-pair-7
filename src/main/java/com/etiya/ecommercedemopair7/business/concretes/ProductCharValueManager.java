@@ -14,6 +14,8 @@ import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductCharValue;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductCharValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,7 +61,10 @@ public class ProductCharValueManager implements IProductCharValueService {
 
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.ProductCharValue.productCharValueAdded));
     }
-
+    @Override
+    public DataResult<Page<GetAllProductCharValueResponse>> getProductCharValuesWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(productCharValueRepository.findAllProductCharValuesWithPage(pageable));
+    }
     private DataResult<ProductChar> getProductChar(AddProductCharValueRequest addProductCharValueRequest) {
         DataResult<ProductChar> productChar = productCharService.getByProductCharId(addProductCharValueRequest.getProductCharId());
         return productChar;

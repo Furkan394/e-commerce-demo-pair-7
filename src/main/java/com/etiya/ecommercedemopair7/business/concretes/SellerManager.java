@@ -14,6 +14,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Seller;
 import com.etiya.ecommercedemopair7.repository.abstracts.ISellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,6 +66,12 @@ public class SellerManager implements ISellerService {
         AddSellerResponse response = mapper.forResponse().map(savedSeller, AddSellerResponse.class);
 
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Seller.sellerAdded));
+    }
+
+    @Override
+    public DataResult<Page<GetAllSellerResponse>> getSellersWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(sellerRepository.findAllSellersWithPage(pageable),
+                messageSourceService.getMessage(Messages.Seller.sellersListed));
     }
 
     private Seller existsBySellerId(int sellerId) {

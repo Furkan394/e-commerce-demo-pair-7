@@ -7,6 +7,7 @@ import com.etiya.ecommercedemopair7.business.constants.Messages;
 import com.etiya.ecommercedemopair7.business.request.productCategories.AddProductCategoryRequest;
 import com.etiya.ecommercedemopair7.business.response.productCategories.AddProductCategoryResponse;
 import com.etiya.ecommercedemopair7.business.response.productCategories.GetAllProductCategoryResponse;
+import com.etiya.ecommercedemopair7.business.response.productChars.GetAllProductCharResponse;
 import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
@@ -17,6 +18,8 @@ import com.etiya.ecommercedemopair7.entities.concretes.ProductCategory;
 import com.etiya.ecommercedemopair7.entities.dtos.ProductCategoryDto;
 import com.etiya.ecommercedemopair7.repository.abstracts.IProductCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -85,6 +88,12 @@ public class ProductCategoryManager implements IProductCategoryService {
                 .map(productCategory -> mapper.forResponse().map(productCategory, ProductCategoryDto.class))
                 .collect(Collectors.toList());
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.ProductCategory.productCategoriesListed));
+    }
+
+    @Override
+    public DataResult<Page<GetAllProductCategoryResponse>> getAllProductCategoriesWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(productCategoryRepository.findAllProductCategoriesWithPage(pageable),
+                messageSourceService.getMessage(Messages.ProductCategory.productCategoriesListed));
     }
 
     private DataResult<Product> existsByProduct(AddProductCategoryRequest addProductCategoryRequest) {

@@ -9,6 +9,9 @@ import com.etiya.ecommercedemopair7.business.response.productChars.GetAllProduct
 import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +36,12 @@ public class ProductCharsController {
     @GetMapping("/{id}")
     public ResponseEntity<DataResult<GetProductCharResponse>> getById(@PathVariable int id) {
         return ResponseEntity.ok(productCharService.getById(id));
+    }
+    @GetMapping("/get-all-product-chars-with-page")
+    public ResponseEntity<DataResult<Page<GetAllProductCharResponse>>> getAllProductCharsWithPage
+            (@RequestParam("page") int page, @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(productCharService.getAllProductCharsWithPage(pageable));
     }
 
     @PostMapping("/add")
