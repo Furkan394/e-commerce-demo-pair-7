@@ -16,12 +16,9 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT p from Product as p where p.name=:name")
     Product customFindByName(String name);
 
-    @Query("Select p from Product as p")
-    Slice<Product> findAllWithSlice(Pageable pageable);
-
     @Query("Select new com.etiya.ecommercedemopair7.business.response.products.GetAllProductResponse(p.id,p.name) " +
             "from Product as p")
-    Page<GetAllProductResponse> findAllProducts(Pageable pageable);
+    Page<GetAllProductResponse> findAllProductsWithPage(Pageable pageable);
 
     @Query("Select new com.etiya.ecommercedemopair7.business.response.products.GetAllProductResponse(p.id,p.name) " +
             "from Product as p")

@@ -12,6 +12,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Country;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +47,12 @@ public class CountryManager implements ICountryService {
         Country country = checkIfCountryExistsById(countryId);
         GetCountryResponse response = mapper.forResponse().map(country, GetCountryResponse.class);
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Country.countryReceived));
+    }
+
+    @Override
+    public DataResult<Page<GetAllCountryResponse>> getAllCountriesWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(countryRepository.findAllCountriesWithPage(pageable),
+                messageSourceService.getMessage(Messages.Country.countriesListed));
     }
 
     private Country checkIfCountryExistsById(int id) {

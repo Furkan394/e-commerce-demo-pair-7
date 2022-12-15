@@ -3,7 +3,6 @@ package com.etiya.ecommercedemopair7.api.controllers;
 import com.etiya.ecommercedemopair7.business.abstracts.ISellerProductService;
 import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.request.sellerProducts.AddSellerProductRequest;
-import com.etiya.ecommercedemopair7.business.response.products.GetProductResponse;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.AddSellerProductResponse;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetAllSellerProductResponse;
 import com.etiya.ecommercedemopair7.business.response.sellerProducts.GetSellerProductResponse;

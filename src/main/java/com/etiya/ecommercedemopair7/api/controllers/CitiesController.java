@@ -5,13 +5,12 @@ import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.response.cities.GetAllCityResponse;
 import com.etiya.ecommercedemopair7.business.response.cities.GetCityResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
-import com.etiya.ecommercedemopair7.entities.concretes.City;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +33,12 @@ public class CitiesController {
     @GetMapping("/{id}")
     public ResponseEntity<DataResult<GetCityResponse>> getById(@PathVariable int id) {
         return ResponseEntity.ok(cityService.getById(id));
+    }
+
+    @GetMapping("/get-all-cities-with-page")
+    public ResponseEntity<DataResult<Page<GetAllCityResponse>>> getAllCitiesWithPage(@RequestParam("page") int page,
+                                                                                        @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(cityService.getAllCitiesWithPage(pageable));
     }
 }

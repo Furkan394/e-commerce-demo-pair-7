@@ -12,6 +12,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.CorporateCustomer;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICorporateCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,5 +52,11 @@ public class CorporateCustomerManager implements ICorporateCustomerService {
         AddCorporateCustomerResponse response = mapper.forResponse().map(savedCorporateCustomer, AddCorporateCustomerResponse.class);
 
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.CorporateCustomer.corporateCustomerAdded));
+    }
+
+    @Override
+    public DataResult<Slice<GetAllCorporateCustomerResponse>> getAllCorporateCustomersWithSlice(Pageable pageable) {
+        return new SuccessDataResult<>(corporateCustomerRepository.findAllCorporateCustomersWithSlice(pageable),
+                messageSourceService.getMessage(Messages.CorporateCustomer.corporateCustomersListed));
     }
 }

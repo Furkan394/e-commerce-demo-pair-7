@@ -11,7 +11,6 @@ import com.etiya.ecommercedemopair7.core.utilities.mapping.IModelMapperService;
 import com.etiya.ecommercedemopair7.core.utilities.messages.IMessageSourceService;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
-import com.etiya.ecommercedemopair7.entities.concretes.Address;
 import com.etiya.ecommercedemopair7.entities.concretes.PaymentType;
 import com.etiya.ecommercedemopair7.repository.abstracts.IPaymentTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -14,6 +14,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Basket;
 import com.etiya.ecommercedemopair7.repository.abstracts.IBasketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,6 +69,12 @@ public class BasketManager implements IBasketService {
     @Override
     public Basket getByCustomerId(int customerId) {
         return basketRepository.findByCustomerId(customerId);
+    }
+
+    @Override
+    public DataResult<Page<GetAllBasketResponse>> getAllBasketsWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(basketRepository.findAllBasketsWithPage(pageable),
+                messageSourceService.getMessage(Messages.Basket.basketsListed));
     }
 
 

@@ -7,6 +7,9 @@ import com.etiya.ecommercedemopair7.business.response.paymentTypes.AddPaymentTyp
 import com.etiya.ecommercedemopair7.business.response.paymentTypes.GetAllPaymentTypeResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +35,12 @@ public class PaymentTypesController {
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddPaymentTypeResponse>> add(@RequestBody AddPaymentTypeRequest addPaymentTypeRequest) {
         return new ResponseEntity<>(paymentTypeService.add(addPaymentTypeRequest), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/get-all-payment-types-with-page")
+    public ResponseEntity<DataResult<Page<GetAllPaymentTypeResponse>>> getAllPaymentTypesWithPage(@RequestParam("page") int page,
+                                                                                                  @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(paymentTypeService.getAllPaymentTypesWithPage(pageable));
     }
 }

@@ -81,12 +81,12 @@ public class ProductManager implements IProductService {
     }
 
     @Override
-    public DataResult<Page<GetAllProductResponse>> getAllWithPagination(Pageable pageable) {
-        return new SuccessDataResult<>(productRepository.findAllProducts(pageable), messageSourceService.getMessage(Messages.Product.productsListed));
+    public DataResult<Page<GetAllProductResponse>> getAllProductsWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(productRepository.findAllProductsWithPage(pageable), messageSourceService.getMessage(Messages.Product.productsListed));
     }
 
     @Override
-    public DataResult<Slice<GetAllProductResponse>> getAllWithSlice(Pageable pageable) {
+    public DataResult<Slice<GetAllProductResponse>> getAllProductsWithSlice(Pageable pageable) {
         return new SuccessDataResult<>(productRepository.findAllProductsWithSlice(pageable), messageSourceService.getMessage(Messages.Product.productsListed));
     }
 

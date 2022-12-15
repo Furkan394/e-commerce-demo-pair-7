@@ -5,8 +5,10 @@ import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.response.countries.GetAllCountryResponse;
 import com.etiya.ecommercedemopair7.business.response.countries.GetCountryResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
-import com.etiya.ecommercedemopair7.entities.concretes.Country;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,5 +33,12 @@ public class CountriesController {
     @GetMapping("/{id}")
     public ResponseEntity<DataResult<GetCountryResponse>> getById(@PathVariable int id) {
         return ResponseEntity.ok(countryService.getById(id));
+    }
+
+    @GetMapping("/get-all-countries-with-page")
+    public ResponseEntity<DataResult<Page<GetAllCountryResponse>>> getAllCountriesWithPage(@RequestParam("page") int page,
+                                                                                           @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(countryService.getAllCountriesWithPage(pageable));
     }
 }

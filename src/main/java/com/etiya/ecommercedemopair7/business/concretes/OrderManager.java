@@ -19,6 +19,8 @@ import com.etiya.ecommercedemopair7.entities.concretes.Order;
 import com.etiya.ecommercedemopair7.entities.dtos.OrderDto;
 import com.etiya.ecommercedemopair7.repository.abstracts.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -120,6 +122,12 @@ public class OrderManager implements IOrderService {
     @Override
     public Order getByOrderId(int orderId) {
         return checkIfOrderExistsById(orderId);
+    }
+
+    @Override
+    public DataResult<Page<GetAllOrderResponse>> getAllOrdersWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(orderRepository.findAllOrdersWithPage(pageable),
+                messageSourceService.getMessage(Messages.Order.ordersListed));
     }
 
     private Address getInvoiceAddress(int invoiceAddressId) {

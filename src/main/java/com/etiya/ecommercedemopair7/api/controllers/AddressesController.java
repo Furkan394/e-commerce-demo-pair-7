@@ -9,6 +9,9 @@ import com.etiya.ecommercedemopair7.business.response.addresses.GetAllAddressRes
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.dtos.AddressDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,19 +31,29 @@ public class AddressesController {
     }
 
     @GetMapping
-    public ResponseEntity<DataResult<List<GetAllAddressResponse>>> getAll(){
+    public ResponseEntity<DataResult<List<GetAllAddressResponse>>> getAll() {
         return ResponseEntity.ok(addressService.getAll());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<DataResult<GetAddressResponse>> getById(@PathVariable int id) {
         return ResponseEntity.ok(addressService.getById(id));
     }
+
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddAddressResponse>> add(@RequestBody @Valid AddAddressRequest addAddressRequest) {
         return new ResponseEntity<>(addressService.add(addAddressRequest), HttpStatus.CREATED);
     }
+
     @GetMapping("/get-address-dto")
     public ResponseEntity<DataResult<List<AddressDto>>> getAddressDto() {
         return ResponseEntity.ok(addressService.getAddressDto());
+    }
+
+    @GetMapping("/get-address-dto-with-page")
+    public ResponseEntity<DataResult<Page<List<AddressDto>>>> getAddressDtoWithPage(@RequestParam("page") int page,
+                                                                                    @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(addressService.getAddressDtoWithPage(pageable));
     }
 }

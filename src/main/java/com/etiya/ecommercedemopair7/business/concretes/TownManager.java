@@ -12,6 +12,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Town;
 import com.etiya.ecommercedemopair7.repository.abstracts.ITownRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +47,12 @@ public class TownManager implements ITownService {
         Town town = checkIfTownExistsById(townId);
         GetTownResponse response = mapper.forResponse().map(town, GetTownResponse.class);
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Town.townReceived));
+    }
+
+    @Override
+    public DataResult<Page<GetAllTownResponse>> getAllTownsWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(townRepository.findAllTownsWithPage(pageable),
+                messageSourceService.getMessage(Messages.Town.townsListed));
     }
 
     private Town checkIfTownExistsById(int id) {

@@ -7,6 +7,8 @@ import com.etiya.ecommercedemopair7.business.response.addresses.GetAllAddressRes
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Address;
 import com.etiya.ecommercedemopair7.entities.dtos.AddressDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -17,4 +19,5 @@ public interface IAddressService {
     DataResult<AddAddressResponse> add(AddAddressRequest addAddressRequest);
     DataResult<List<AddressDto>> getAddressDto();
     Address getByUserId(int userId);
+    DataResult<Page<List<AddressDto>>> getAddressDtoWithPage(Pageable pageable);
 }

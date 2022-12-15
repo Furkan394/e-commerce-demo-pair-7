@@ -5,7 +5,6 @@ import com.etiya.ecommercedemopair7.business.constants.Paths;
 import com.etiya.ecommercedemopair7.business.response.customers.GetAllCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.customers.GetCustomerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
-import com.etiya.ecommercedemopair7.entities.concretes.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

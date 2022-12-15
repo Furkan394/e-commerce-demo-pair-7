@@ -7,6 +7,8 @@ import com.etiya.ecommercedemopair7.business.response.productChars.GetAllProduct
 import com.etiya.ecommercedemopair7.business.response.productChars.GetProductCharResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.ProductChar;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,4 +18,8 @@ public interface IProductCharService {
     DataResult<GetProductCharResponse> getById(int productCharId);
     DataResult<ProductChar> getByProductCharId(int productCharId);
     DataResult<AddProductCharResponse> add(AddProductCharRequest addProductCharRequest);
+    DataResult<Page<GetAllProductCharResponse>> getAllProductCharsWithPage(Pageable pageable);
+
+
+
 }

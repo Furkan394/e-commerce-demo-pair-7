@@ -14,6 +14,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.User;
 import com.etiya.ecommercedemopair7.repository.abstracts.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,6 +64,11 @@ public class UserManager implements IUserService {
         AddUserResponse response = mapper.forResponse().map(savedUser, AddUserResponse.class);
 
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.User.userAdded));
+    }
+
+    @Override
+    public DataResult<Page<GetAllUserResponse>> getAllUsersWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(userRepository.findAllUsersWithPage(pageable));
     }
 
     private User checkIfUserExistsById(int userId) {

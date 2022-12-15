@@ -12,6 +12,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Street;
 import com.etiya.ecommercedemopair7.repository.abstracts.IStreetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,6 +52,11 @@ public class StreetManager implements IStreetService {
     @Override
     public DataResult<Street> getByStreetId(int streetId) {
         return new SuccessDataResult<>(checkIfStreetExistsById(streetId), messageSourceService.getMessage(Messages.Street.streetReceived));
+    }
+
+    @Override
+    public DataResult<Page<GetAllStreetResponse>> getAllStreetsWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(streetRepository.findAllStreetsWithPage(pageable), messageSourceService.getMessage(Messages.Street.streetsListed));
     }
 
     private Street checkIfStreetExistsById(int id) {

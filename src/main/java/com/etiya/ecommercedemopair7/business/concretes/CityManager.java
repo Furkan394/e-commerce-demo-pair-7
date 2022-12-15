@@ -12,6 +12,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.City;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +47,11 @@ public class CityManager implements ICityService {
         City city = checkIfCityExistsById(cityId);
         GetCityResponse response = mapper.forResponse().map(city, GetCityResponse.class);
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.City.cityReceived));
+    }
+
+    @Override
+    public DataResult<Page<GetAllCityResponse>> getAllCitiesWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(cityRepository.findAllCitiesWithPage(pageable), messageSourceService.getMessage(Messages.City.citiesListed));
     }
 
     private City checkIfCityExistsById(int id) {

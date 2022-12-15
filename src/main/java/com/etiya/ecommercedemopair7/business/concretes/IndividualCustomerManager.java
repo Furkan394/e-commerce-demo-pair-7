@@ -12,6 +12,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.IndividualCustomer;
 import com.etiya.ecommercedemopair7.repository.abstracts.IIndividualCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,5 +53,11 @@ public class IndividualCustomerManager implements IIndividualCustomerService {
         AddIndividualCustomerResponse response = mapper.forResponse().map(savedIndividualCustomer, AddIndividualCustomerResponse.class);
 
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.IndividualCustomer.individualCustomerAdded));
+    }
+
+    @Override
+    public DataResult<Page<GetAllIndividualCustomerResponse>> getAllIndividualCustomersWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(individualCustomerRepository.findAllIndividualCustomersWithPage(pageable),
+                messageSourceService.getMessage(Messages.IndividualCustomer.individualCustomersListed));
     }
 }

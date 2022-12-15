@@ -14,8 +14,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Category;
 import com.etiya.ecommercedemopair7.repository.abstracts.ICategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,6 +76,12 @@ public class CategoryManager implements ICategoryService {
 
         AddCategoryResponse response = mapper.forResponse().map(savedCategory, AddCategoryResponse.class);
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.Category.categoryAdded));
+    }
+
+    @Override
+    public DataResult<Slice<GetAllCategoryResponse>> getAllCategoriesWithSlice(Pageable pageable) {
+        return new SuccessDataResult<>(categoryRepository.findAllCategoriesWithSlice(pageable),
+                messageSourceService.getMessage(Messages.Category.categoriesListed));
     }
 
     private void categoryCanNotExistWithSameName(String name) {

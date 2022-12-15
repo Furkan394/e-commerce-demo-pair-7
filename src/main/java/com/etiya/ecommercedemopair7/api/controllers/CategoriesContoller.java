@@ -9,6 +9,9 @@ import com.etiya.ecommercedemopair7.business.response.categories.GetCategoryResp
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,5 +53,12 @@ public class CategoriesContoller {
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddCategoryResponse>> add(@RequestBody @Valid AddCategoryRequest addCategoryRequest) {
         return new ResponseEntity<>(categoryService.add(addCategoryRequest), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/get-all-categories-with-slice")
+    public ResponseEntity<DataResult<Slice<GetAllCategoryResponse>>> getAllCategoriesWithSlice(@RequestParam("page") int page,
+                                                                                               @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(categoryService.getAllCategoriesWithSlice(pageable));
     }
 }

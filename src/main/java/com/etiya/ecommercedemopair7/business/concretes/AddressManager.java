@@ -19,6 +19,8 @@ import com.etiya.ecommercedemopair7.entities.concretes.User;
 import com.etiya.ecommercedemopair7.entities.dtos.AddressDto;
 import com.etiya.ecommercedemopair7.repository.abstracts.IAddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -91,6 +93,11 @@ public class AddressManager implements IAddressService {
     @Override
     public Address getByUserId(int userId) {
         return addressRepository.findByUserId(userId);
+    }
+
+    @Override
+    public DataResult<Page<List<AddressDto>>>  getAddressDtoWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(addressRepository.getAddressDtoWithPage(pageable), messageSourceService.getMessage(Messages.Address.addressesListed));
     }
 
     private DataResult<User> getUser(int userId) {

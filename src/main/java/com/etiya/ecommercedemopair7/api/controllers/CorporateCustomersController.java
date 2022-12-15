@@ -6,6 +6,9 @@ import com.etiya.ecommercedemopair7.business.request.corporateCustomers.AddCorpo
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.AddCorporateCustomerResponse;
 import com.etiya.ecommercedemopair7.business.response.corporateCustomers.GetAllCorporateCustomerResponse;
 import com.etiya.ecommercedemopair7.core.utilities.results.DataResult;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +33,12 @@ public class CorporateCustomersController {
     @PostMapping("/add")
     public ResponseEntity<DataResult<AddCorporateCustomerResponse>> add(@RequestBody AddCorporateCustomerRequest addCorporateCustomerRequest) {
         return new ResponseEntity<>(corporateCustomerService.add(addCorporateCustomerRequest), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/get-all-corporate-customers-with-slice")
+    public ResponseEntity<DataResult<Slice<GetAllCorporateCustomerResponse>>> getAllCorporateCustomersWithSlice(@RequestParam("page") int page,
+                                                                                                                @RequestParam("size") int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return ResponseEntity.ok(corporateCustomerService.getAllCorporateCustomersWithSlice(pageable));
     }
 }

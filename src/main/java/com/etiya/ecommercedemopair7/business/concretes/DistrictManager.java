@@ -12,6 +12,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.District;
 import com.etiya.ecommercedemopair7.repository.abstracts.IDistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +47,12 @@ public class DistrictManager implements IDistrictService {
         District district = checkIfDistrictExistsById(districtId);
         GetDistrictResponse response = mapper.forResponse().map(district, GetDistrictResponse.class);
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.District.districtReceived));
+    }
+
+    @Override
+    public DataResult<Slice<GetAllDistrictResponse>> getAllDistrictsWithSlice(Pageable pageable) {
+        return new SuccessDataResult<>(districtRepository.findAllDistrictsWithSlice(pageable),
+                messageSourceService.getMessage(Messages.District.districtsListed));
     }
 
     private District checkIfDistrictExistsById(int id) {

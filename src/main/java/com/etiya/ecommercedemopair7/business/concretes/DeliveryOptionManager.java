@@ -14,6 +14,8 @@ import com.etiya.ecommercedemopair7.core.utilities.results.SuccessDataResult;
 import com.etiya.ecommercedemopair7.entities.concretes.DeliveryOption;
 import com.etiya.ecommercedemopair7.repository.abstracts.IDeliveryOptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,6 +66,12 @@ public class DeliveryOptionManager implements IDeliveryOptionService {
         AddDeliveryOptionResponse response = mapper.forResponse().map(savedDeliveryOption, AddDeliveryOptionResponse.class);
 
         return new SuccessDataResult<>(response, messageSourceService.getMessage(Messages.DeliveryOption.deliveryOptionAdded));
+    }
+
+    @Override
+    public DataResult<Page<GetAllDeliveryOptionResponse>> getAllDeliveryOptionsWithPage(Pageable pageable) {
+        return new SuccessDataResult<>(deliveryOptionRepository.findAllDeliveryOptionsWithPage(pageable),
+                messageSourceService.getMessage(Messages.DeliveryOption.deliveryOptionsListed));
     }
 
     private DeliveryOption checkIfDeliveryOptionExistsById(int deliveryOptionId) {

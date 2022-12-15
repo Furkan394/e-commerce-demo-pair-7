@@ -36,17 +36,18 @@ public class ProductsController {
         return ResponseEntity.ok(productService.getAll());
     }
 
-    @GetMapping("/pagination")
-    public ResponseEntity<DataResult<Page<GetAllProductResponse>>> getAllWithPagination(@RequestParam("page") int page,
-                                                                          @RequestParam("Pagesize") int pageSize) {
+    @GetMapping("/get-all-products-with-page")
+    public ResponseEntity<DataResult<Page<GetAllProductResponse>>> getAllProductsWithPage(@RequestParam("page") int page,
+                                                                                          @RequestParam("Pagesize") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return ResponseEntity.ok(productService.getAllWithPagination(pageable));
+        return ResponseEntity.ok(productService.getAllProductsWithPage(pageable));
     }
-    @GetMapping("/slice")
-    public ResponseEntity<DataResult<Slice<GetAllProductResponse>>> getAllWithSlice(@RequestParam("page") int page,
-                                                                      @RequestParam("Pagesize") int pageSize) {
+
+    @GetMapping("/get-all-products-with-slice")
+    public ResponseEntity<DataResult<Slice<GetAllProductResponse>>> getAllProductsWithSlice(@RequestParam("page") int page,
+                                                                                            @RequestParam("Pagesize") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return ResponseEntity.ok(productService.getAllWithSlice(pageable));
+        return ResponseEntity.ok(productService.getAllProductsWithSlice(pageable));
     }
 
     @GetMapping("/{id}")
